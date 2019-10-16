@@ -1,10 +1,16 @@
 # SYSC-3110
 
+Milestone 1
+
+Tasks agreed upon:
+Change GamePiece to abstract class
+implemennt moving 
+documentation
+new UML diagrams
+
+
 Authors: 
-Sean Wallach
 Andrew Foster
 Ashton Mohns
 Nicholas Porter
-
-Milestone 1
-
+Sean Wallach
