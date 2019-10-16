@@ -2,15 +2,24 @@
 
 Milestone 1
 
+
 Tasks agreed upon:
-Change GamePiece to abstract class
-implemennt moving 
-documentation
-new UML diagrams
+
+- Change GamePiece to abstract class
+
+- implemennt moving 
+
+- documentation
+
+- new UML diagrams
 
 
 Authors: 
+
 Andrew Foster
+
 Ashton Mohns
+
 Nicholas Porter
+
 Sean Wallach
