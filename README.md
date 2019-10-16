@@ -1,6 +1,7 @@
 # SYSC-3110
 
-Milestone 1
+#Milestone 1
+---------------------------------
 
 
 Tasks agreed upon:
