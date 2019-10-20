@@ -21,16 +21,26 @@ public class Game {
 		running = true;
 		pieces = new ArrayList<GamePiece>();
 		
-		boolean f1Vert = book.getSetup(puzzlenumber)[12] == 1;
-		boolean f2Vert = book.getSetup(puzzlenumber)[15] == 1;
+		boolean f1Vert = book.getSetup(puzzlenumber)[14] == 1;
+		boolean f2Vert = book.getSetup(puzzlenumber)[17] == 1;
 
-		pieces.add(new Bunny("Bunny1", book.getSetup(puzzlenumber)[0], book.getSetup(puzzlenumber)[1]));
-		pieces.add(new Bunny("Bunny2", book.getSetup(puzzlenumber)[4], book.getSetup(puzzlenumber)[5]));
-		pieces.add(new Bunny("Bunny3", book.getSetup(puzzlenumber)[8], book.getSetup(puzzlenumber)[9]));	
-		pieces.add(new Mushroom("Mushroom1", book.getSetup(puzzlenumber)[2], book.getSetup(puzzlenumber)[3]));
-		pieces.add(new Mushroom("Mushroom2", book.getSetup(puzzlenumber)[6], book.getSetup(puzzlenumber)[7]));	
-		pieces.add(new Fox("Fox1", book.getSetup(puzzlenumber)[10], book.getSetup(puzzlenumber)[11], f1Vert));
-		pieces.add(new Fox("Fox2", book.getSetup(puzzlenumber)[13], book.getSetup(puzzlenumber)[14], f2Vert));
+		for(int i = 0; i < 3; i++) {
+			//Ensuring that the bunny is within the game boundaries.
+			//If it is not, there are less than three bunnies in this game.
+			if(book.getSetup(puzzlenumber)[4 * i] < GameBoard.SIZE && 
+					book.getSetup(puzzlenumber)[4 * i + 1] < GameBoard.SIZE) pieces.add(
+							new Bunny("Bunny" + Integer.toString(i + 1), book.getSetup(puzzlenumber)[4 * i], 
+									book.getSetup(puzzlenumber)[4 * i + 1]));
+			//Ensuring that the mushroom is within the game boundaries.
+			//If it is not, there are less than three mushrooms in this game.
+			if(book.getSetup(puzzlenumber)[4 * i + 2] < GameBoard.SIZE && 
+					book.getSetup(puzzlenumber)[4 * i + 3] < GameBoard.SIZE) pieces.add(
+							new Mushroom("Mushroom" + Integer.toString(i + 1), book.getSetup(puzzlenumber)[4 * i + 2], 
+									book.getSetup(puzzlenumber)[4 * i + 3]));
+		}
+		//Assuming that there will always be 2 foxes per game.
+		pieces.add(new Fox("Fox1", book.getSetup(puzzlenumber)[12], book.getSetup(puzzlenumber)[13], f1Vert));
+		pieces.add(new Fox("Fox2", book.getSetup(puzzlenumber)[15], book.getSetup(puzzlenumber)[16], f2Vert));
 		
 		gameboard = new GameBoard(pieces);
 	}

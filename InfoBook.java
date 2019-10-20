@@ -20,14 +20,16 @@ public class InfoBook {
 		7: Mushroom2 Y
 		8: Bunny3 X
 		9: Bunny3 Y
-		10: Fox1 X
-		11: Fox1 Y
-		12: Fox1 isVertical
-		13: Fox2 X
-		14: Fox2 Y
-		15: Fox2 isVertical
+		10: Mushroom3 X
+		11: Mushroom3 Y
+		12: Fox1 X
+		13: Fox1 Y
+		14: Fox1 isVertical
+		15: Fox2 X
+		16: Fox2 Y
+		17: Fox2 isVertical
 		*/
-		int[] positions1 = {3,0,3,1,4,2,2,4,1,4,1,0,1,3,3,0} ;
+		int[] positions1 = {3,0,3,1,4,2,2,4,1,4,GameBoard.SIZE,GameBoard.SIZE,1,0,1,3,3,0} ;
 		setups.add(positions1);
 		solutions = new ArrayList<int[]>();
 	}
