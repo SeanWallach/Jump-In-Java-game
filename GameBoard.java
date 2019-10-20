@@ -36,38 +36,36 @@ public class GameBoard {
 		Tile newTile = tiles[x][y];
 		
 		switch(direction) {
-			case 0: 
+			case 0: // moving up
 				if(y == 0) System.out.println("Cannot move up.");
-				else newTile = tiles[x][y - 1]; // moving up
+				else newTile = tiles[x][y - 1]; 
 				break;
 			
-			case 1: 
-				
+			case 1: // moving right
 				if(g instanceof Fox) {
 					if(x + 2 == GameBoard.SIZE) System.out.println("Cannot move right.");
 					else newTile = tiles[x + 2][y];
 				}
 				else {
 					if(x + 1 == GameBoard.SIZE) System.out.println("Cannot move right.");
-					else newTile = tiles[x + 1][y]; // moving right
+					else newTile = tiles[x + 1][y]; 
 				}
 				break;
 			
-			case 2: 
-				
+			case 2: // moving down
 				if(g instanceof Fox) {
 					if(y + 2 == GameBoard.SIZE) System.out.println("Cannot move down.");
 					else newTile = tiles[x][y + 2];
 				}
 				else {
 					if(y + 1 == GameBoard.SIZE) System.out.println("Cannot move down.");
-					else newTile = tiles[x][y + 1]; // moving down
+					else newTile = tiles[x][y + 1]; 
 				}
 				break;
 			
-			case 3: 
+			case 3: // moving left
 				if(x == 0) System.out.println("Cannot move left.");
-				else newTile = tiles[x - 1][y]; // moving left
+				else newTile = tiles[x - 1][y];
 				break;
 				
 			default: 
@@ -77,6 +75,7 @@ public class GameBoard {
 		
 		if(newTile != null) {
 			if(g instanceof Fox) {
+				//Foxes need to clear both the back and front tile when moving.
 				tiles[((Fox) g).getBackX()][((Fox) g).getBackY()].setEmpty();
 			}
 			g.move(direction);
@@ -85,12 +84,19 @@ public class GameBoard {
 			if(!(newTile.isEmpty())) {
 				if(g instanceof Fox) newTile.getOnTop().handleFoxCollision(new MoveEvent(
 						x, y, direction, g));
+				
 				else {
 					boolean foundTile = false;
+					//Trying to find a position for the bunny to land in the given direction.
+					//It will continue moving in the direction until it either finds an unoccupied
+					//tile or it hits a wall.
 					while(!foundTile) {
 						newTile.getOnTop().handleBunnyCollision(new MoveEvent(
 								g.getX(), g.getY(), direction, g));
+						//Checking if the bunny has found a final position.
 						if(tiles[g.getX()][g.getY()].isEmpty()) foundTile = true;
+						
+						//Checking if the bunny is about to collide with a wall.
 						boolean hitWall = false;
 						switch(direction) {
 							case 0:
@@ -107,6 +113,7 @@ public class GameBoard {
 								break;
 						}
 						if(!foundTile && hitWall) {
+							//No spots for the bunny, must return to starting position.
 							g.setX(x);
 							g.setY(y);
 							break;
@@ -115,6 +122,8 @@ public class GameBoard {
 				}
 			}
 			
+			//The next lines are determining and setting the final positions of the moved piece
+			//and setting that piece on its new tile. 
 			if(g instanceof Fox) {
 				tiles[((Fox) g).getBackX()][((Fox) g).getBackY()].setOnTop(g);
 			}

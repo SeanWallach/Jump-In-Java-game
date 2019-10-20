@@ -41,7 +41,9 @@ public class Fox extends GamePiece {
 	public void move(int direction) {
 		if((upDown && (direction == 0 || direction == 2)) || 
 				(!upDown && (direction == 1 || direction == 3))){
+			//Checking that the this fox can move in the direction the user is wanting it to.
 			super.move(direction);
+			//Have to move both the front and back of the fox.
 			switch(direction) {
 				case 0: 
 					if(this.y != 0 && upDown) this.backY = this.backY - 1; // moving up

@@ -8,7 +8,7 @@ public class Tile {
 	public Tile(int x, int y) {
 		empty = true;
 		ontop = null;
-		//Corner hole
+		//Corner holes
 		if((x % 4) == 0 && (y % 4) == 0) grass = false;
 		//Center Hole
 		else if(x==2 && y == 2) grass = false;

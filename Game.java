@@ -20,9 +20,6 @@ public class Game {
 		book = new InfoBook();
 		running = true;
 		pieces = new ArrayList<GamePiece>();
-		
-		boolean f1Vert = book.getSetup(puzzlenumber)[14] == 1;
-		boolean f2Vert = book.getSetup(puzzlenumber)[17] == 1;
 
 		for(int i = 0; i < 3; i++) {
 			//Ensuring that the bunny is within the game boundaries.
@@ -38,6 +35,11 @@ public class Game {
 							new Mushroom("Mushroom" + Integer.toString(i + 1), book.getSetup(puzzlenumber)[4 * i + 2], 
 									book.getSetup(puzzlenumber)[4 * i + 3]));
 		}
+		//The next two booleans are used for the fox constructors to determine if they are
+		//vertical or horizontal foxes.
+		boolean f1Vert = book.getSetup(puzzlenumber)[14] == 1;
+		boolean f2Vert = book.getSetup(puzzlenumber)[17] == 1;
+		
 		//Assuming that there will always be 2 foxes per game.
 		pieces.add(new Fox("Fox1", book.getSetup(puzzlenumber)[12], book.getSetup(puzzlenumber)[13], f1Vert));
 		pieces.add(new Fox("Fox2", book.getSetup(puzzlenumber)[15], book.getSetup(puzzlenumber)[16], f2Vert));
@@ -50,6 +52,7 @@ public class Game {
 		Game jumpin = new Game();
 		
 		while(jumpin.getRunning()) {
+			//The read-eval-print loop for the game.
 			jumpin.gameboard.printBoard();
 		    
 		    for(int i = 0; i < jumpin.pieces.size(); i++) {
@@ -65,13 +68,14 @@ public class Game {
 		    
 		    System.out.println("Enter the direction you wish to move.");
 		    System.out.println("0: up \n1: right \n2: down \n3: left");
-		    int direction = input.nextInt();
+		    int direction = input.nextInt(); // Read user input direction
 		    
 		    jumpin.gameboard.movePiece(jumpin.pieces.get(move_piece).getX(), jumpin.pieces.get(move_piece).getY(), direction);
 			
+		    //At the end of each iteration, the game state must be tested.
 		    jumpin.testGameState(jumpin);
 		}	
-		System.out.println("GAME IS DONE");
+		System.out.println("GAME IS WON");
 		input.close();
 	}
 	
@@ -93,6 +97,7 @@ public class Game {
 	
 	public void testGameState(Game jumpin) {
 		boolean allBunniesInHoles = true;
+		//Check if all bunnies have found their final position in one of the holes.
 		for(GamePiece g : jumpin.getPieces()) {
 			if(g instanceof Bunny) {
 				if(jumpin.getGameBoard().getTile(g.getX(), g.getY()).getGrass()) {
