@@ -35,15 +35,15 @@ public class Game {
 							new Mushroom("Mushroom" + Integer.toString(i + 1), book.getSetup(puzzlenumber)[4 * i + 2], 
 									book.getSetup(puzzlenumber)[4 * i + 3]));
 		}
-		//The next two booleans are used for the fox constructors to determine if they are
-		//vertical or horizontal foxes.
-		boolean f1Vert = book.getSetup(puzzlenumber)[14] == 1;
-		boolean f2Vert = book.getSetup(puzzlenumber)[17] == 1;
-		
-		//Assuming that there will always be 2 foxes per game.
-		pieces.add(new Fox("Fox1", book.getSetup(puzzlenumber)[12], book.getSetup(puzzlenumber)[13], f1Vert));
-		pieces.add(new Fox("Fox2", book.getSetup(puzzlenumber)[15], book.getSetup(puzzlenumber)[16], f2Vert));
-		
+
+		//Adding foxes to the game pieces.
+		for(int i = 0; i < 2; i++) {
+			if(book.getSetup(puzzlenumber)[3 * i + 13] < GameBoard.SIZE &&
+					book.getSetup(puzzlenumber)[3 * i + 14] < GameBoard.SIZE)
+				pieces.add(new Fox("Fox1", book.getSetup(puzzlenumber)[3 * i + 12], 
+						book.getSetup(puzzlenumber)[3 * i + 13], 
+						book.getSetup(puzzlenumber)[3 * i + 14] == 1));
+		}
 		gameboard = new GameBoard(pieces);
 	}
 	
