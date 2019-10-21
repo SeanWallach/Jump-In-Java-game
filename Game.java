@@ -3,6 +3,10 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Class Game
+ * @author (of JavaDoc comments) Nicholas
+ */
 public class Game {
 	private GameBoard gameboard;
 	private ArrayList<GamePiece> pieces;
@@ -11,6 +15,11 @@ public class Game {
 	private int puzzlenumber;
 	private static Scanner input;
 	
+	/**
+	 * Game constructor
+	 * creating a new game, allowing the player
+	 * to select the puzzle they wish to play.
+	 */
 	public Game() { 
 		input = new Scanner(System.in);  // Create a Scanner object
 	    System.out.println("Enter puzzle number you wish to play: 0,1,2");
@@ -46,7 +55,10 @@ public class Game {
 		}
 		gameboard = new GameBoard(pieces);
 	}
-	
+
+	/**
+	 * Main method to create new game of jumpin
+	 */
 	public static void main(String args[]) {
 		
 		Game jumpin = new Game();
@@ -79,22 +91,43 @@ public class Game {
 		input.close();
 	}
 	
+	/**
+	 * Method getPieces gets the game pieces
+	 * @return ArrayList<GamePiece> of game pieces.
+	 */
 	public ArrayList<GamePiece> getPieces(){
 		return this.pieces;
 	}
 	
+	/**
+	 * Method getGameBoard gets the jumpin gameboard
+	 * @return GameBoard
+	 */
 	public GameBoard getGameBoard() {
 		return this.gameboard;
 	}
 	
+	/**
+	 * Method getRunning checks if game is running
+	 * @return boolean representing if game is running
+	 */
 	public boolean getRunning() {
 		return this.running;
 	}
 	
+
+	/**
+	 * Method set running sets if game is running or not
+	 * @param running Boolean value representing if game is running
+	 */
 	public void setRunning(boolean running) {
 		this.running = running;
 	}
 	
+	/**
+	 * Method testGameState tests the state of the game
+	 * @param jumpin
+	 */
 	public void testGameState(Game jumpin) {
 		boolean allBunniesInHoles = true;
 		//Check if all bunnies have found their final position in one of the holes.

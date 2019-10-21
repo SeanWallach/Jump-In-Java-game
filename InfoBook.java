@@ -2,10 +2,18 @@
 
 import java.util.ArrayList;
 
+/**
+ * Class InfoBook
+ * @author (of JavaDoc comments) Nicholas
+ */
 public class InfoBook {
 	private ArrayList<int[]> setups;
-	private ArrayList<int[]> solutions;
 	
+	/**
+     * InfoBook constructor
+     * creating ArrayList of where on the game board
+     * all the attributes are located
+     */
 	public InfoBook() {
 		setups = new ArrayList<int[]>();
 		/*setups follow the following orders
@@ -31,9 +39,17 @@ public class InfoBook {
 		*/
 		int[] positions1 = {3,0,3,1,4,2,2,4,1,4,GameBoard.SIZE,GameBoard.SIZE,1,0,1,3,3,0} ;
 		setups.add(positions1);
-		solutions = new ArrayList<int[]>();
+		int[] positions2 = {2,1,1,1,GameBoard.SIZE,GameBoard.SIZE,2,2,GameBoard.SIZE,GameBoard.SIZE,3,0,3,1,0,GameBoard.SIZE,GameBoard.SIZE,GameBoard.SIZE};
+        setups.add(positions2);
+        int[] positions3 = {3,0,1,2,GameBoard.SIZE,GameBoard.SIZE,2,2,GameBoard.SIZE,GameBoard.SIZE,4,2,1,1,0,GameBoard.SIZE,GameBoard.SIZE,GameBoard.SIZE};
+        setups.add(positions3);
 	}
 	
+	/**
+     * Method getSetup gets the game setup
+     * @param index Int value representing index
+     * @return int[] array of game setup
+     */
 	public int[] getSetup(int index) {
 		return setups.get(index);
 	}
