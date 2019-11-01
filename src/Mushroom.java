@@ -1,20 +1,21 @@
+//Class written by Ashton and Andrew
 
+/**
+ * Class for game piece Mushroom
+ * @author (for JavaDoc comments) Nicholas
+ */
 public class Mushroom extends GamePiece {
-	private String name;
 	
+	/**
+     * Mushroom constructor. A mushroom is a piece that
+     * cannot move, so it does not need to extend
+     * MovableGamePiece.
+     * 
+     * @param s Name of game piece
+     * @param xpos X-coordinate of Mushroom
+     * @param ypos Y-coordinate of Mushroom
+     */
 	public Mushroom(String s, int xpos, int ypos) {
-		name = s;
-		x = xpos;
-		y = ypos;
-		fox = false;
-		bunny = false;
-		mushroom = true;
-	}
-	public void move() {
-		
-	}
-	@Override
-	public String getName(){
-		return name;
+		super(xpos, ypos, 1, s);
 	}
 }

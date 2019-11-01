@@ -1,34 +1,67 @@
+//Class written by Ashton and Andrew
 
-public class GamePiece {
+/**
+ * Abstract class GamePiece
+ * @author (of JavaDoc comments) Nicholas 
+ * 
+ */
+public abstract class GamePiece {
 	protected int x;
 	protected int y;
-	protected boolean fox;
-	protected boolean bunny;
-	protected boolean mushroom;
-	protected boolean updown;
 	private int size;
+	private String name;
 	
-	public GamePiece() {
+	/**
+     *      GamePiece constructor
+     * @param x This is the piece's x-coordinate
+     * @param y This is the piece's y-coordinate
+     * @param size Describes the number of tiles the piece covers
+     * @param name The name of the game piece
+     */
+	protected GamePiece(int x, int y, int size, String name) {
+		this.x = x;
+		this.y = y;
+		this.size = size;
+		this.name = name;
 	}
 
-	public boolean getUpDown() {
-		return updown;
-	}
-	public boolean getFox() {
-		return fox;
-	}
+	/**
+     * Get game piece x-coordinate
+     * @return int value representing x-coordinate 
+     */
 	public int getX() {
 		return x;
 	}
+	
+	 /**
+     * Get game piece y-coordinate
+     * @return int value representing y-coordinate
+     */
 	public int getY() {
 		return y;
 	}
+	
+	/**
+     * Get game piece size
+     * @return int value representing size of game piece
+     */
 	public int getSize() {
 		return size;
 	}
-
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	/**
+     * Get the name of the game piece
+     * @return String representing the name of the game piece
+     */
+	public String getName(){
+		return this.name;
+	}
+	
+	/**
+     * toString method for game piece
+     * @return String representing game piece name
+     */
+	public String toString() {
+		return this.name;
 	}
 }
