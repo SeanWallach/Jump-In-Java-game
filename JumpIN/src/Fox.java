@@ -132,6 +132,7 @@ public class Fox extends MovableGamePiece {
 			if(newX < this.x - 1) return false;
 			else if(newX > this.backX + 1) return false;
 		}
+		//CommentExampleComment
 		return true;
 	}
 	
