@@ -12,7 +12,6 @@ public class Game {
 	private ArrayList<GamePiece> pieces;
 	private InfoBook book;
 	private boolean running;
-	private int puzzlenumber;
 	private static Scanner input;
 	
 	/**
@@ -21,13 +20,17 @@ public class Game {
 	 * to select the puzzle they wish to play.
 	 */
 	public Game() { 
-		input = new Scanner(System.in);  // Create a Scanner object
-	    System.out.println("Enter puzzle number you wish to play: 0,1,2");
-	    puzzlenumber = input.nextInt();  // Read user input
-	    System.out.println("Puzzle selected is: " + puzzlenumber); 
-	    
 		book = new InfoBook();
-		running = true;
+		input = new Scanner(System.in);  // Create a Scanner object
+	    running = false;
+	    int puzzlenumber = -1;
+		while(!running) {
+	    	System.out.println("Enter puzzle number you wish to play: 0,1,2");
+	    	puzzlenumber = input.nextInt();  // Read user input
+	    	System.out.println("Puzzle selected is: " + puzzlenumber);
+	    	if(puzzlenumber >= 0 && puzzlenumber < book.getSetupCount()) running = true;
+	    }
+		
 		pieces = new ArrayList<GamePiece>();
 
 		for(int i = 0; i < 3; i++) {
@@ -75,8 +78,11 @@ public class Game {
 		    	 
 		    }
 		    
-		    System.out.println("Enter the piece you wish to move.");
-		    int move_piece = input.nextInt();  // Read user input
+		    int move_piece = -1;
+		    while(move_piece < 0 || move_piece >= jumpin.getPieces().size()) {
+		    	System.out.println("Enter the piece you wish to move.");
+		    	move_piece = input.nextInt();  // Read user input
+		    }
 		    
 		    System.out.println("Enter the direction you wish to move.");
 		    System.out.println("0: up \n1: right \n2: down \n3: left");

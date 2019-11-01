@@ -4,7 +4,7 @@
  * Class for game piece Fox
  * @author (of JavaDoc comments) Nicholas
  */
-public class Fox extends GamePiece {
+public class Fox extends MovableGamePiece {
 	private boolean upDown;
 	private int backX, backY;
 	
@@ -65,31 +65,73 @@ public class Fox extends GamePiece {
 	}
 	
 	/**
-	 * Move method for Fox
-	 * @param direction Int value representing direction to move
+	 * Moving a fox piece.
+	 * @param newX the x value it is trying to move to.
+	 * @param newY the y value it is trying to move to.
+	 * @param tiles 
 	 */
 	@Override
-	public void move(int direction) {
-		if((upDown && (direction == 0 || direction == 2)) || 
-				(!upDown && (direction == 1 || direction == 3))){
-			//Checking that the this fox can move in the direction the user is wanting it to.
-			super.move(direction);
-			//Have to move both the front and back of the fox.
-			switch(direction) {
-				case 0: 
-					if(this.y != 0 && upDown) this.backY = this.backY - 1; // moving up
-					break;
-				case 1: 
-					if(this.x != GameBoard.SIZE && !upDown) this.backX = this.backX + 1; // moving right
-					break;
-				case 2: 
-					if(this.y != GameBoard.SIZE && upDown) this.backY = this.backY + 1; // moving down
-					break;
-				case 3: 
-					if(this.x != 0 && !upDown) this.backX = this.backX - 1; // moving left
-					break;
+	public void move(int newX, int newY, Tile[][] tiles) {
+		if(!this.canMove(newX, newY)) {
+			System.out.println("Fox cannot move to the new position.");
+			return;
+		}
+		
+		//Have the tiles remove the old fox position.
+		tiles[this.x][this.y].setEmpty();
+		tiles[this.backX][this.backY].setEmpty();
+		
+		//Move the fox piece.
+		if(this.upDown) {
+			if(this.y > newY) {
+				super.setY(newY);
+				this.backY = newY + 1;
+			}
+			else {
+				this.backY = newY;
+				super.setY(newY - 1);
 			}
 		}
-		else System.out.println("Cannot move this fox in that direction.");
+		else {
+			if(this.x > newX) {
+				super.setX(newX);
+				this.backX = newX + 1;
+			}
+			else {
+				this.backX = newX;
+				super.setX(newX - 1);
+			}
+		}
+		//Place the new fox location on the tiles.
+		tiles[this.x][this.y].setOnTop(this);
+		tiles[this.backX][this.backY].setOnTop(this);
+	}
+	
+	/**
+	 * This method checks that the passed in X and Y values are
+	 * a legal move for the fox. 
+	 * Rules of a fox: cannot jump and can only move vertically
+	 * or horizontally depending on the setup of the fox.
+	 * 
+	 * @param newX the X position the fox will move to.
+	 * @param newY the Y position the fox will move to.
+	 * @return if the new position is a valid move.
+	 */
+	private boolean canMove(int newX, int newY) {
+		//First testing that the fox is moving in a valid direction.
+		if(upDown && (newX != this.x)) return false;
+		else if(!upDown && (newY != this.y)) return false;
+		
+		//Next, testing that the fox does not jump. Foxes can only
+		//move one square at a time.
+		if(upDown) {
+			if(newY < this.y - 1) return false;
+			else if(newY > this.backY + 1) return false;
+		}
+		else {
+			if(newX < this.x - 1) return false;
+			else if(newX > this.backX + 1) return false;
+		}
+		return true;
 	}
 }

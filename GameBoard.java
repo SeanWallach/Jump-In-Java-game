@@ -47,112 +47,82 @@ public class GameBoard {
 	 * @param direction Direction game piece is moving
 	 */
 	public void movePiece(int x, int y, int direction) {
+		
+		//Since the GamePieces don't know which other pieces are around them, this
+		//class finds the empty position, then tells the piece to move to that
+		//new position.
+		int[] newCoord = this.getEmptyPosition(x, y, direction);
+		
+		if(newCoord[0] == x && newCoord[1] == y) {
+			System.out.println("Cannot move in that direction.");
+			return;
+		}
+		
 		GamePiece g = tiles[x][y].getOnTop();
-		Tile newTile = tiles[x][y];
+		
+		if(!(g instanceof MovableGamePiece)) {
+			System.out.println(g.toString() + " cannot move.");
+			return;
+		}
+		
+		//This downcasting is safe because of the previous if statement.
+		MovableGamePiece m = (MovableGamePiece) g;
+		
+		m.move(newCoord[0], newCoord[1], this.tiles);
+	}
+	
+	/**
+	 * 
+	 * @param currX
+	 * @param currY
+	 * @param direction
+	 * @return
+	 */
+	private int[] getEmptyPosition(int currX, int currY, int direction) {
+		int[] coord = new int[2];
 		
 		switch(direction) {
-			case 0: // moving up
-				if(y == 0) System.out.println("Cannot move up.");
-				else newTile = tiles[x][y - 1]; 
-				break;
-			
-			case 1: // moving right
-				if(g instanceof Fox) {
-					if(x + 2 == GameBoard.SIZE) System.out.println("Cannot move right.");
-					else newTile = tiles[x + 2][y];
+		case 0:
+			//Checking for empty square upwards from current position.
+			for(int j = currY - 1; j >= 0; j--) {
+				if(this.tiles[currX][j].isEmpty()) {
+					currY = j; 
+					break;
 				}
-				else {
-					if(x + 1 == GameBoard.SIZE) System.out.println("Cannot move right.");
-					else newTile = tiles[x + 1][y]; 
+			}
+			break;
+		case 1:
+			//Checking for empty square to the right of current position.
+			for(int i = currX + 1; i < GameBoard.SIZE; i++) {
+				if(this.tiles[i][currY].isEmpty()) {
+					currX = i;
+					break;
 				}
-				break;
-			
-			case 2: // moving down
-				if(g instanceof Fox) {
-					if(y + 2 == GameBoard.SIZE) System.out.println("Cannot move down.");
-					else newTile = tiles[x][y + 2];
+			}
+			break;
+		case 2:
+			//Checking for empty square downwards from the current position.
+			for(int j = currY + 1; j < GameBoard.SIZE; j++) {
+				if(this.tiles[currX][j].isEmpty()) {
+					currY = j; 
+					break;
 				}
-				else {
-					if(y + 1 == GameBoard.SIZE) System.out.println("Cannot move down.");
-					else newTile = tiles[x][y + 1]; 
+			}
+			break;
+		case 3:
+			//Checking for empty square to the left of current position.
+			for(int i = currX - 1; i >= 0; i--) {
+				if(this.tiles[i][currY].isEmpty()) {
+					currX = i;
+					break;
 				}
-				break;
-			
-			case 3: // moving left
-				if(x == 0) System.out.println("Cannot move left.");
-				else newTile = tiles[x - 1][y];
-				break;
-				
-			default: 
-				System.out.println("Illegal direction.");
-				break;
+			}
+			break;
 		}
 		
-		if(newTile != null) {
-			if(g instanceof Fox) {
-				//Foxes need to clear both the back and front tile when moving.
-				tiles[((Fox) g).getBackX()][((Fox) g).getBackY()].setEmpty();
-			}
-			g.move(direction);
-			tiles[x][y].setEmpty();
-			
-			if(!(newTile.isEmpty())) {
-				if(g instanceof Fox) newTile.getOnTop().handleFoxCollision(new MoveEvent(
-						x, y, direction, g));
-				
-				else {
-					boolean foundTile = false;
-					//Trying to find a position for the bunny to land in the given direction.
-					//It will continue moving in the direction until it either finds an unoccupied
-					//tile or it hits a wall.
-					while(!foundTile) {
-						newTile.getOnTop().handleBunnyCollision(new MoveEvent(
-								g.getX(), g.getY(), direction, g));
-						//Checking if the bunny has found a final position.
-						if(tiles[g.getX()][g.getY()].isEmpty()) foundTile = true;
-						
-						//Checking if the bunny is about to collide with a wall.
-						boolean hitWall = false;
-						switch(direction) {
-							case 0:
-								if(g.getY() == 0) hitWall = true;
-								break;
-							case 1:
-								if(g.getX() == GameBoard.SIZE - 1) hitWall = true;
-								break;
-							case 2:
-								if(g.getY() == GameBoard.SIZE - 1) hitWall = true;
-								break;
-							case 3:
-								if(g.getX() == 0) hitWall = true;
-								break;
-						}
-						if(!foundTile && hitWall) {
-							//No spots for the bunny, must return to starting position.
-							g.setX(x);
-							g.setY(y);
-							break;
-						}
-					}
-				}
-			}
-			
-			//The next lines are determining and setting the final positions of the moved piece
-			//and setting that piece on its new tile. 
-			if(g instanceof Fox) {
-				tiles[((Fox) g).getBackX()][((Fox) g).getBackY()].setOnTop(g);
-			}
-			
-			if(g instanceof Bunny) {
-				if(Math.abs(x - g.getX()) < 2 && Math.abs(y - g.getY()) < 2) {
-					g.setX(x);
-					g.setY(y);
-				}
-			}
-			
-			tiles[g.getX()][g.getY()].setOnTop(g);
-			
-		}
+		coord[0] = currX;
+		coord[1] = currY;
+		return coord;
 	}
 	
 	/**

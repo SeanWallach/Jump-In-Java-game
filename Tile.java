@@ -52,7 +52,11 @@ public class Tile {
 	}
 	
 	/**
-     * Method isEmpty checks if tile is empty
+     * This function checks if there is currently a 
+	 * piece on this tile. This method will primarily
+	 * be used for the purpose of testing if a collision
+	 * would occur when moving a piece.
+	 * 
      * @return boolean representing if tile is empty
      */
 	public boolean isEmpty() {

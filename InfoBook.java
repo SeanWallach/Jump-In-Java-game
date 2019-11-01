@@ -53,4 +53,13 @@ public class InfoBook {
 	public int[] getSetup(int index) {
 		return setups.get(index);
 	}
+	
+	/**
+	 * A getter for the size of setup.
+	 * 
+	 * @return the current number of setups created.
+	 */
+	public int getSetupCount() {
+		return this.setups.size();
+	}
 }
