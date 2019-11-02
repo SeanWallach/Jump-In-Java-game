@@ -28,7 +28,6 @@ public class Fox extends MovableGamePiece {
 			backX = x + 1;
 			backY = y;
 		}
-		System.out.println(backX + "" + backY);
 	}
 	
 	/**
@@ -103,8 +102,7 @@ public class Fox extends MovableGamePiece {
 			}
 		}
 		//Place the new fox location on the tiles.
-		tiles[this.x][this.y].setOnTop(this);
-		tiles[this.backX][this.backY].setOnTop(this);
+		this.placeOnTiles(tiles);
 	}
 	
 	/**
@@ -141,5 +139,15 @@ public class Fox extends MovableGamePiece {
 	@Override
 	public char getAcronym() {
 		return 'F';
+	}
+	
+	/**
+	 * This extends the GamePiece placeOnTiles method because a fox needs to place both the
+	 * front and back onto the tiles. 
+	 */
+	@Override
+	public void placeOnTiles(Tile[][] tiles) {
+		super.placeOnTiles(tiles);
+		tiles[this.backX][this.backY].setOnTop(this);
 	}
 }
