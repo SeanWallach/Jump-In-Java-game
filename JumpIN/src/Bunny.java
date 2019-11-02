@@ -43,7 +43,7 @@ public class Bunny extends MovableGamePiece {
 		tiles[this.x][this.y].setEmpty();
 		super.setX(newX);
 		super.setY(newY);
-		tiles[this.x][this.y].setOnTop(this); 
+		placeOnTiles(tiles);
 	}
 	
 	/**
