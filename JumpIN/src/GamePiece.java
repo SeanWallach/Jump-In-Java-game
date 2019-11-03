@@ -66,6 +66,45 @@ public abstract class GamePiece {
 	}
 	
 	/**
+	 * check if GamePiece objects
+	 * are equal
+	 * @param obj
+	 * @return boolean
+	 */
+	@Override 
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		GamePiece o = (GamePiece) obj;
+		
+		if (this.x != o.x) {
+			return false;
+		}
+		
+		if(this.y != o.y) {
+			return false;
+		}
+		
+		if(this.size != o.size) {
+			return false;
+		}
+		
+		if((this.name == null) ? (o.name != null) : !this.name.equals(o.name)) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
 	 * This will be used for printing a String representation of
 	 * the board. The piece will return a character that represents
 	 * it on the board.

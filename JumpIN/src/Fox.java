@@ -143,4 +143,28 @@ public class Fox extends MovableGamePiece {
 	public char getAcronym() {
 		return 'F';
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		Fox o = (Fox) obj;
+		
+		if (super.equals(this) && 
+				(this.upDown == o.upDown) &&
+				(this.backX == o.backX) &&
+				(this.backY == o.backY)) {
+			return true;
+		}
+		
+		return false;
+	}
 }
