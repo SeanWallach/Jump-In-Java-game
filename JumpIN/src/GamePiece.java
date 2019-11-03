@@ -66,6 +66,14 @@ public abstract class GamePiece {
 	}
 	
 	/**
+	 * This method is used to place this piece on the board of tiles.
+	 * @param tiles the current board of tiles.
+	 */
+	public void placeOnTiles(Tile[][] tiles) {
+		tiles[x][y].setOnTop(this);
+	}
+	
+	/**
 	 * This will be used for printing a String representation of
 	 * the board. The piece will return a character that represents
 	 * it on the board.
