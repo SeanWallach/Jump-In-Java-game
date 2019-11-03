@@ -18,10 +18,13 @@ public class Game {
 	 * creating a new game, allowing the player
 	 * to select the puzzle they wish to play.
 	 */
-	public Game() { 
+	public Game(int puzzlenumber) {
+		System.out.println("puzzle selected: "+puzzlenumber);
+		/*
 		input = new Scanner(System.in);  // Create a Scanner object.
 		running = false;
 	    int puzzlenumber = -1;
+	    
 		while(!running) {
 	    	System.out.print("Enter puzzle number you wish to play: ");
 	    	for(int i = 0; i < InfoBook.COUNT_BOARDS - 1; i++) {
@@ -29,54 +32,21 @@ public class Game {
 	    	}
 	    	System.out.println(InfoBook.COUNT_BOARDS - 1);
 	    	
-	    	puzzlenumber = input.nextInt();  // Read user input
+	    	puzzlenumber = input.nextInt();  // Read user input-> NOT for GUI
 	    	System.out.println("Puzzle selected is: " + puzzlenumber);
 	    	if(puzzlenumber >= 0 && puzzlenumber < InfoBook.COUNT_BOARDS) running = true;
-	    }
+	    }*/
 		
 		book = new InfoBook(puzzlenumber);
 		this.pieces = book.getPieces();
-
+		
 		gameboard = new GameBoard(pieces);
 	}
 
 	/**
 	 * Main method to create new game of jumpin
 	 */
-	public static void main(String args[]) {
-		
-		Game jumpin = new Game();
-		
-		while(jumpin.getRunning()) {
-			//The read-eval-print loop for the game.
-			jumpin.gameboard.printBoard();
-		    
-		    for(int i = 0; i < jumpin.pieces.size(); i++) {
-		    	 System.out.print(i);
-		    	 
-		    	 System.out.println(": " + jumpin.pieces.get(i).getName() + " at (" + 
-		    	 jumpin.pieces.get(i).getX() +", "+ jumpin.pieces.get(i).getY() +")");
-		    	 
-		    }
-		    
-		    int move_piece = -1;
-		    while(move_piece < 0 || move_piece >= jumpin.getPieces().size()) {
-		    	System.out.println("Enter the piece you wish to move.");
-		    	move_piece = input.nextInt();  // Read user input
-		    }
-		    
-		    System.out.println("Enter the direction you wish to move.");
-		    System.out.println("0: up \n1: right \n2: down \n3: left");
-		    int direction = input.nextInt(); // Read user input direction
-		    
-		    jumpin.gameboard.movePiece(jumpin.pieces.get(move_piece).getX(), jumpin.pieces.get(move_piece).getY(), direction);
-			
-		    //At the end of each iteration, the game state must be tested.
-		    jumpin.testGameState(jumpin);
-		}	
-		System.out.println("GAME IS WON");
-		input.close();
-	}
+
 	
 	/**
 	 * Method getPieces gets the game pieces

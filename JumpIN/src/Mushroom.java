@@ -26,4 +26,10 @@ public class Mushroom extends GamePiece {
 	public char getAcronym() {
 		return 'M';
 	}
+
+	@Override
+	protected boolean canMove() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
