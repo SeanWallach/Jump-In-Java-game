@@ -43,7 +43,7 @@ public class Bunny extends MovableGamePiece {
 		tiles[this.x][this.y].setEmpty();
 		super.setX(newX);
 		super.setY(newY);
-		placeOnTiles(tiles);
+		tiles[this.x][this.y].setOnTop(this); 
 	}
 	
 	/**
@@ -53,6 +53,7 @@ public class Bunny extends MovableGamePiece {
 	 * @param newY the y value of the new position
 	 * @return if it is a valid move for the bunny
 	 */
+
 	private boolean canMove(int newX, int newY) {
 		//Bunnies cannot move on angles.
 		if(newX != this.x && newY != this.y) return false;
@@ -68,5 +69,17 @@ public class Bunny extends MovableGamePiece {
 	@Override
 	public char getAcronym() {
 		return 'B';
+	}
+
+	@Override
+	protected boolean canMoveFromSpot(int i, int j) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected boolean canMove() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

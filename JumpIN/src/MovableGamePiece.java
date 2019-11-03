@@ -1,4 +1,3 @@
-
 /**
  * A MovableGamePiece is an extension of GamePiece
  * that is able to move. This will include Foxes and

@@ -1,22 +1,26 @@
-
 //Class written by Ashton and Andrew
 
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
 
 /**
  * Class GameBoard
  * @author (of JavaDoc comments) Nicholas
  */
-public class GameBoard {
+public class GameBoard{
+
 	public static final int SIZE = 5;
 	private Tile[][] tiles;
+	private ArrayList<GamePiece> boardpieces;
 	
 	/**
 	 * GameBoard constructor
 	 * create a game board
 	 * @param p Arraylist of game pieces
 	 */
-	public GameBoard(ArrayList<GamePiece> pieces) {
+	public GameBoard(ArrayList<GamePiece> p) {
+		boardpieces = p;
 		tiles = new Tile[SIZE][SIZE];
 		
 		for(int i = 0; i < SIZE; i++) {
@@ -25,11 +29,19 @@ public class GameBoard {
 			}
 		}
 		
-		for(GamePiece g: pieces) {
-			g.placeOnTiles(tiles);
+		for(GamePiece g: boardpieces) {
+			int i = g.getX();
+			int j = g.getY();
+			tiles[i][j].setOnTop(g);
+			if(g instanceof Fox) {
+				if(((Fox) g).getUpDown())
+					tiles[i][j + 1].setOnTop(g);
+				else
+					tiles[i + 1][j].setOnTop(g);
+			}
 		}
 	}
-	
+
 	/**
 	 * Method movePiece moves game piece in specified direction
 	 * @param x X-coordinate to where game piece is moving
@@ -60,7 +72,69 @@ public class GameBoard {
 		
 		m.move(newCoord[0], newCoord[1], this.tiles);
 	}
-	
+/*	
+	public ArrayList<Tile> foxMoveAvailable(boolean updown, int locy, int locx) {
+		ArrayList<Tile> validmoves = new ArrayList<Tile>();
+		//Up and Down Direction Check
+		if(updown) {
+			//Checking Above
+			//top of board Exception
+			if(locy == 0) {
+				 return validmoves;
+			}
+			else {
+				for(int i = 1; i < SIZE; i++) {
+					if(tiles[locy+i][locx].isEmpty()) {
+						validmoves.add(tiles[locy+i][locx]); 
+					}
+					else {
+						i = SIZE;
+					}
+				}
+			}		
+			
+			//Checking Below
+			//Bottom of board Exception
+			if(locy == SIZE) {
+				return validmoves;
+			}
+			for(int i = 1; i < SIZE; i++) {
+				System.out.println("Tile above is Empty: "+tiles[locy-i][locx].isEmpty());
+				if(tiles[locy-i][locx].isEmpty()) {
+					System.out.println("Made it in");
+					validmoves.add(tiles[locy-i][locx]); 
+				}
+				else {
+					i = SIZE;
+				}
+			}
+			return validmoves;
+		}
+		else {
+			//right
+			for(int j = 1; j < SIZE; j++) {
+				if(tiles[locy][locx+j].isEmpty()) {
+					validmoves.add(tiles[locy+j][locx]); 
+				}
+				else {
+					j = SIZE;
+				}
+			}
+			//left
+			for(int j = 1; j < SIZE; j++) {
+				if(tiles[locy][locx-j].isEmpty()) {
+					System.out.println("Empty");
+					validmoves.add(tiles[locy-j][locx]); 
+				}
+				else {
+					System.out.println("Not Empty");
+					j = SIZE;
+				}
+			}
+		}
+		return validmoves;
+		
+	}*/
 	/**
 	 * 
 	 * @param currX
