@@ -19,23 +19,23 @@ public class JumpInGUI extends JFrame implements ActionListener{
 	private JMenuItem puzzle0, puzzle1, puzzle2;
 	private JMenu puzzleMenu;
 	
-	private boolean running = false;
-    private int puzzlenumber = -1;
+	private boolean running;
+    private int puzzlenumber;
     
     private static JButton[][] square;
-    private JButton button1, button2;
     
     private GamePiece selectedpiece;
     private ArrayList<Tile> moveoptions;
 	
 	public JumpInGUI() {		
 		super("JumpIN");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(400, 400);		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(400, 400);		
+		setLocation(400,200);
 		
 		//Menu Items: Related to Info Book and puzzle selection
 		JMenuBar menuBar = new JMenuBar();
-		this.setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		
 		puzzleMenu = new JMenu("Puzzle Selection");
 		menuBar.add(puzzleMenu);
@@ -53,7 +53,7 @@ public class JumpInGUI extends JFrame implements ActionListener{
 		puzzleMenu.add(puzzle1);
 		puzzleMenu.add(puzzle2);
 		
-		this.setVisible(true);
+		setVisible(true);
 		
 		//Waits For a puzzle selection to set up board
 		running = false;
@@ -97,12 +97,15 @@ public class JumpInGUI extends JFrame implements ActionListener{
 		//Puzzle Selection Menu Items
 		if(event.getSource() == puzzle0) {
 			puzzlenumber = 0;
+			puzzleMenu.setEnabled(false);
 		}
 		else if(event.getSource() == puzzle1) {
 			puzzlenumber = 1;
+			puzzleMenu.setEnabled(false);
 		}
 		else if(event.getSource() == puzzle2) {
 			puzzlenumber = 2;
+			puzzleMenu.setEnabled(false);
 		}
 		//Grid Board Buttons
 		else{	

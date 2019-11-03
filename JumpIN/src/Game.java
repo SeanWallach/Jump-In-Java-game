@@ -19,7 +19,7 @@ public class Game {
 	 * to select the puzzle they wish to play.
 	 */
 	public Game(int puzzlenumber) {
-		System.out.println("puzzle selected: "+puzzlenumber);
+		System.out.println("Puzzle selected: "+puzzlenumber);
 		/*
 		input = new Scanner(System.in);  // Create a Scanner object.
 		running = false;
