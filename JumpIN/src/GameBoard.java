@@ -81,8 +81,8 @@ public class GameBoard{
 		// Fox movement rules
 		if (p instanceof Fox) {
 			
-			int x = p.getX();	
-			int y = p.getY();
+			int y = p.getX();	
+			int x = p.getY();
 			int backX = ((Fox) p).getBackX();
 			int backY = ((Fox) p).getBackY();
 			boolean d = ((Fox) p).getUpDown();	// Get Fox orientation (True - horizontal: False - vertical)
@@ -122,33 +122,41 @@ public class GameBoard{
 				
 		// Bunny movement rules
 		} else if (p instanceof Bunny) {
-			int x = p.getX();
-			int y = p.getY();
+			int y = p.getX();
+			int x = p.getY();
 			boolean checkdown, checkup, checkleft, checkright = true;
 			
 			// Checking if on the edge of grid
 			if (x-1 < 0) {
 				checkleft = false;
 				System.out.println("can't move left");
+			} else if (tiles[x-1][y].getOnTop() instanceof Mushroom || tiles[x][y-1].getOnTop() instanceof Fox) {
+				System.out.println("can hop left ");
 			}
+			
 			if (x + 1 > 4) {
 				checkright = false;
 				System.out.println("can't move right");
+			} else if (tiles[x+1][y].getOnTop() instanceof Mushroom || tiles[x][y-1].getOnTop() instanceof Fox) {
+				System.out.println("can hop right ");
 			}
+			
 			if (y - 1 < 0) {
 				checkup = false;
 				System.out.println("can't move up");
+			} else if (tiles[x][y-1].getOnTop() instanceof Mushroom || tiles[x][y-1].getOnTop() instanceof Fox) {
+				System.out.println("can hop up ");
 			}
-			if (y + 1 > 4)
+			
+			if (y + 1 > 4) {
 				checkdown = false;
-			System.out.println("can't move down");
-			}	
-//		
-//			if (tiles[x][y].getOnTop() instanceof Mushroom || tiles[x][y].getOnTop() instanceof Fox) {
-//				
-//			}
-			return null;
+				System.out.println("can't move down");
+			}	 else if (tiles[x][y+1].getOnTop() instanceof Mushroom || tiles[x][y+1].getOnTop() instanceof Fox) {
+				System.out.println("can hop down ");
+			}
 		}
+		return null;
+	}
 
 	/**
 	 * 
