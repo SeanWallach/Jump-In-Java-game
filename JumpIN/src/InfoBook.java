@@ -1,36 +1,37 @@
+
 //Class written by Ashton and Andrew
 
 import java.util.*;
 
 /**
  * Class InfoBook
+ * 
  * @author (of JavaDoc comments) Nicholas
  */
 public class InfoBook {
 	public static final int COUNT_BOARDS = 3;
 	private ArrayList<GamePiece> pieces;
-	
+
 	/**
-     * InfoBook constructor
-     * Creating the pieces based on the gameVersion selected.
-     */
+	 * InfoBook constructor Creating the pieces based on the gameVersion selected.
+	 */
 	public InfoBook(int gameVersion) {
 		pieces = new ArrayList<>();
-		switch(gameVersion) {
-			case 0:
-				createGameZero();
-				break;
-			case 1:
-				createGameOne();
-				break;
-			case 2:
-				createGameTwo();
-				break;
-			default:
-				System.out.println("This is not a valid game selection.");	
+		switch (gameVersion) {
+		case 0:
+			createGameZero();
+			break;
+		case 1:
+			createGameOne();
+			break;
+		case 2:
+			createGameTwo();
+			break;
+		default:
+			System.out.println("This is not a valid game selection.");
 		}
 	}
-	
+
 	/**
 	 * A method to create the new game pieces.
 	 */
@@ -44,7 +45,7 @@ public class InfoBook {
 		pieces.add(new Fox("Fox1", 1, 0, true));
 		pieces.add(new Fox("Fox2", 3, 3, false));
 	}
-	
+
 	/**
 	 * A method to create the new game pieces.
 	 */
@@ -56,7 +57,7 @@ public class InfoBook {
 		pieces.add(new Mushroom("Mushroom3", 3, 0));
 		pieces.add(new Fox("Fox1", 3, 1, false));
 	}
-	
+
 	/**
 	 * A method to create the new game pieces.
 	 */
@@ -68,12 +69,13 @@ public class InfoBook {
 		pieces.add(new Mushroom("Mushroom3", 4, 2));
 		pieces.add(new Fox("Fox1", 1, 1, false));
 	}
-	
+
 	/**
 	 * Return the pieces that have been created in order to fill in the game board.
+	 * 
 	 * @return the pieces created.
 	 */
-	public ArrayList<GamePiece> getPieces(){
+	public ArrayList<GamePiece> getPieces() {
 		return this.pieces;
 	}
 }
