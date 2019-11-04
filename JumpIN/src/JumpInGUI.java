@@ -114,8 +114,8 @@ public class JumpInGUI extends JFrame implements ActionListener{
 					if(event.getSource().equals(square[j][i])) {
 						System.out.println("i: "+ i + ", j: " + j);
 						//If the tile on the Board is occupied by a game piece
-						if(!game.getGameBoard().getTile(i, j).isEmpty()) {
-							selectedpiece = game.getGameBoard().getTile(i, j).getOnTop();
+						if(!game.getGameBoard().getTile(j, i).isEmpty()) {
+							selectedpiece = game.getGameBoard().getTile(j, i).getOnTop();
 							
 							
 							//Bunny
