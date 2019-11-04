@@ -77,39 +77,47 @@ public class GameBoard{
 	public ArrayList<Tile> possibleMoves(GamePiece p) {
 		ArrayList<Tile> moves = new ArrayList<Tile>();
 		
+		
+		// Fox movement rules
 		if (p instanceof Fox) {
-			int x = p.getX();
+			
+			int x = p.getX();	
 			int y = p.getY();
-			boolean d = ((Fox) p).getUpDown();	// Get Fox orientation (horizontal/vertical)
+			int backX = ((Fox) p).getBackX();
+			int backY = ((Fox) p).getBackY();
+			boolean d = ((Fox) p).getUpDown();	// Get Fox orientation (True - horizontal: False - vertical)
+			System.out.println("x: " + x + " y:" + y + " backX: "+ backX+ " backY: "+ backY);
+			//===============================================
 			if (!d) {	// if VERTICAL	
-				if (tiles[x][y+1].isEmpty()) { // If move is possible upwards
-					
-					moves.add(tiles[x][y-1]);
-					System.out.println("can move up");
-				} else { 						// If move is not possible
-					if (tiles[x][y-1].getOnTop() instanceof Fox) {	// Check if tile is a fox
-						System.out.println(tiles[x][y-1].getOnTop());
-						if (tiles[x][y-2].isEmpty()) {		
-							moves.add(tiles[x][y-2]);// If it is a fox, check if tile above is valid move
-							System.out.println("fox is above: can move up");
+				if (y-1 >= 0) {	// check that tile above is in grid range 
+					if (tiles[x][y-1].isEmpty()) { // If move is possible upwards
+						moves.add(tiles[x][y-1]);	// add tile to possible moveset
+						System.out.println("Can move up");
+					} else { 						// If move is not possible upwards
+						if (backY == y-1) {	// Check if tile is a fox
+							if (y-2 >= 0 && tiles[x][y-2].isEmpty()) {		
+								moves.add(tiles[x][y-2]);// If it is a fox, check if tile above is valid move
+								System.out.println("fox is above: can move up");
+							}
+						}
+					}
+				} else if (y+1 < 5) { // check that tile below is in grid range 
+					if (tiles[x][y+1].isEmpty()) { // If move is possible downwards
+						moves.add(tiles[x][y+1]);
+						System.out.println("can move down: grass");
+					} else {
+						if (backY == y+1) {	//Check if tile below is Fox
+							if (tiles[x][y+2].isEmpty()) {
+								moves.add(tiles[x][y+2]);
+								System.out.println("can move down: two below is grass");
+							}
 						}
 					}
 				}
-				
-				if (tiles[x][y+1].isEmpty()) { // If move is possible downwards
-					moves.add(tiles[x][y+1]);
-					System.out.println("can move down: grass");
-				} else {
-					if (tiles[x][y+1].getOnTop() instanceof Fox) {
-						if (tiles[x][y+2].isEmpty()) {
-							moves.add(tiles[x][y+2]);
-							System.out.println("can move down: two below is grass");
-						}
-					}
-				}
-				
 			//================================================
 			} else {	// if horizontal 
+				
+				
 			}
 				
 		} else if (p instanceof Bunny) {
