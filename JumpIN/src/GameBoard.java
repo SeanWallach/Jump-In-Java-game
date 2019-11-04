@@ -72,69 +72,51 @@ public class GameBoard{
 		
 		m.move(newCoord[0], newCoord[1], this.tiles);
 	}
-/*	
-	public ArrayList<Tile> foxMoveAvailable(boolean updown, int locy, int locx) {
-		ArrayList<Tile> validmoves = new ArrayList<Tile>();
-		//Up and Down Direction Check
-		if(updown) {
-			//Checking Above
-			//top of board Exception
-			if(locy == 0) {
-				 return validmoves;
-			}
-			else {
-				for(int i = 1; i < SIZE; i++) {
-					if(tiles[locy+i][locx].isEmpty()) {
-						validmoves.add(tiles[locy+i][locx]); 
-					}
-					else {
-						i = SIZE;
-					}
-				}
-			}		
-			
-			//Checking Below
-			//Bottom of board Exception
-			if(locy == SIZE) {
-				return validmoves;
-			}
-			for(int i = 1; i < SIZE; i++) {
-				System.out.println("Tile above is Empty: "+tiles[locy-i][locx].isEmpty());
-				if(tiles[locy-i][locx].isEmpty()) {
-					System.out.println("Made it in");
-					validmoves.add(tiles[locy-i][locx]); 
-				}
-				else {
-					i = SIZE;
-				}
-			}
-			return validmoves;
-		}
-		else {
-			//right
-			for(int j = 1; j < SIZE; j++) {
-				if(tiles[locy][locx+j].isEmpty()) {
-					validmoves.add(tiles[locy+j][locx]); 
-				}
-				else {
-					j = SIZE;
-				}
-			}
-			//left
-			for(int j = 1; j < SIZE; j++) {
-				if(tiles[locy][locx-j].isEmpty()) {
-					System.out.println("Empty");
-					validmoves.add(tiles[locy-j][locx]); 
-				}
-				else {
-					System.out.println("Not Empty");
-					j = SIZE;
-				}
-			}
-		}
-		return validmoves;
+	
+	// This function calculates the possible moves available to the selected GamePiece
+	public ArrayList<Tile> possibleMoves(GamePiece p) {
+		ArrayList<Tile> moves = new ArrayList<Tile>();
 		
-	}*/
+		if (p instanceof Fox) {
+			int x = p.getX();
+			int y = p.getY();
+			boolean d = ((Fox) p).getUpDown();	// Get Fox orientation (horizontal/vertical)
+			if (!d) {	// if VERTICAL	
+				if (tiles[x][y+1].isEmpty()) { // If move is possible upwards
+					
+					moves.add(tiles[x][y-1]);
+					System.out.println("can move up");
+				} else { 						// If move is not possible
+					if (tiles[x][y-1].getOnTop() instanceof Fox) {	// Check if tile is a fox
+						System.out.println(tiles[x][y-1].getOnTop());
+						if (tiles[x][y-2].isEmpty()) {		
+							moves.add(tiles[x][y-2]);// If it is a fox, check if tile above is valid move
+							System.out.println("fox is above: can move up");
+						}
+					}
+				}
+				
+				if (tiles[x][y+1].isEmpty()) { // If move is possible downwards
+					moves.add(tiles[x][y+1]);
+					System.out.println("can move down: grass");
+				} else {
+					if (tiles[x][y+1].getOnTop() instanceof Fox) {
+						if (tiles[x][y+2].isEmpty()) {
+							moves.add(tiles[x][y+2]);
+							System.out.println("can move down: two below is grass");
+						}
+					}
+				}
+				
+			//================================================
+			} else {	// if horizontal 
+			}
+				
+		} else if (p instanceof Bunny) {
+			
+		}
+		return null;
+	}
 	/**
 	 * 
 	 * @param currX

@@ -25,7 +25,7 @@ public class JumpInGUI extends JFrame implements ActionListener{
     private static JButton[][] square;
     
     private GamePiece selectedpiece;
-    private ArrayList<Tile> moveoptions;
+    private ArrayList<Tile> moveOptions;
 	
 	public JumpInGUI() {		
 		super("JumpIN");
@@ -123,15 +123,19 @@ public class JumpInGUI extends JFrame implements ActionListener{
 								if(selectedpiece.getName() == "Bunny1") {
 									System.out.print(selectedpiece.canMove());
 									System.out.println("Bunny1");
+									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
 								}
 								else if(selectedpiece.getName() == "Bunny2") {
 									System.out.print(selectedpiece.canMove());
 									System.out.println("Bunny2");
+									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
 								}
 								else if(selectedpiece.getName() == "Bunny3") {
 									System.out.print(selectedpiece.canMoveFromSpot(i,j));
 									System.out.println("Bunny3");
+									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
 								}
+								
 							//Mushroom	-> Probably don't need this
 							}
 							else if(selectedpiece instanceof Mushroom) {
@@ -140,9 +144,8 @@ public class JumpInGUI extends JFrame implements ActionListener{
 							//Fox
 							else if(selectedpiece instanceof Fox) {								
 								if(selectedpiece.getName() == "Fox1") {
-									//moveoptions = game.getGameBoard().foxMoveAvailable(false,selectedpiece.getX(),selectedpiece.getY());
 									//updateMoveOptionVisuals();
-									
+									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
 									System.out.println("Fox1");
 									
 									/*if(game.getGameBoard().getTile(i, j).getOnTop().canMove()) {
@@ -150,6 +153,7 @@ public class JumpInGUI extends JFrame implements ActionListener{
 									}*/
 								}
 								else if(selectedpiece.getName() == "Fox2") {
+									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
 									System.out.println("Fox2");
 									//moveoptions = game.getGameBoard().foxMoveAvailable(true,selectedpiece.getX(),selectedpiece.getY());
 									//updateMoveOptionVisuals();
@@ -164,8 +168,8 @@ public class JumpInGUI extends JFrame implements ActionListener{
 	public void updateMoveOptionVisuals() {
 		for(int i = 0; i < game.getGameBoard().SIZE; i++) {
 			for(int j = 0; j < game.getGameBoard().SIZE; j++) {
-				for(int k = 0; k<moveoptions.size(); k++) {
-					if(moveoptions.get(k) == game.getGameBoard().getTile(i, j)) {
+				for(int k = 0; k<moveOptions.size(); k++) {
+					if(moveOptions.get(k) == game.getGameBoard().getTile(i, j)) {
 						square[i][j].setBackground(Color.YELLOW);
 					}
 				}
@@ -189,45 +193,16 @@ public class JumpInGUI extends JFrame implements ActionListener{
 				}
 			}
 		}
-	}
-	
-	/*public void getUserMovement() {
-		
-	}*/
-	
+	}	
 	
 	public static void main(String args[]) {
 		
 		JumpInGUI jumpin = new JumpInGUI();
 		
 		while(jumpin.running) {
-			
 			//Update Board Visuals
 			jumpin.updateBoardVisuals();
 			//jumpin.getUserMovement();
-			
-		    
-		    /*for(int i = 0; i < jumpin.pieces.size(); i++) {
-		    	 System.out.print(i);
-		    	 
-		    	 System.out.println(": " + jumpin.pieces.get(i).getName() + " at (" + 
-		    	 jumpin.pieces.get(i).getX() +", "+ jumpin.pieces.get(i).getY() +")");
-		    	 
-		    }*/
-		    
-		    /*int move_piece = -1;
-		    while(move_piece < 0 || move_piece >= jumpin.getPieces().size()) {
-		    	System.out.println("Enter the piece you wish to move.");
-		    	move_piece = input.nextInt();  // Read user input
-		    }
-		    
-		    System.out.println("Enter the direction you wish to move.");
-		    System.out.println("0: up \n1: right \n2: down \n3: left");
-		    int direction = input.nextInt(); // Read user input direction8*/
-		    
-		    //jumpin.game.getGameBoard().movePiece(jumpin.game.getPieces().get(move_piece).getX(), jumpin.game.getPieces().get(move_piece).getY(), direction);
-			
-		    //At the end of each iteration, the game state must be tested.*/
 		    jumpin.game.testGameState(jumpin.game);
 		}	
 		System.out.println("GAME IS WON");
