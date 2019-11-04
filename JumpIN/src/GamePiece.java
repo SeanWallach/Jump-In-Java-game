@@ -102,6 +102,14 @@ public abstract class GamePiece {
 		}
 		
 		return true;
+  }
+   /**
+	 * This method is used to place this piece on the board of tiles.
+	 * @param tiles the current board of tiles.
+	 */
+	public void placeOnTiles(Tile[][] tiles) {
+		tiles[x][y].setOnTop(this);
+
 	}
 	
 	/**

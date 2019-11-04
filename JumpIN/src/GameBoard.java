@@ -10,15 +10,13 @@ import java.util.ArrayList;
 public class GameBoard {
 	public static final int SIZE = 5;
 	private Tile[][] tiles;
-	private ArrayList<GamePiece> boardpieces;
 	
 	/**
 	 * GameBoard constructor
 	 * create a game board
 	 * @param p Arraylist of game pieces
 	 */
-	public GameBoard(ArrayList<GamePiece> p) {
-		boardpieces = p;
+	public GameBoard(ArrayList<GamePiece> pieces) {
 		tiles = new Tile[SIZE][SIZE];
 		
 		for(int i = 0; i < SIZE; i++) {
@@ -27,16 +25,8 @@ public class GameBoard {
 			}
 		}
 		
-		for(GamePiece g: boardpieces) {
-			int i = g.getX();
-			int j = g.getY();
-			tiles[i][j].setOnTop(g);
-			if(g instanceof Fox) {
-				if(((Fox) g).getUpDown())
-					tiles[i][j + 1].setOnTop(g);
-				else
-					tiles[i + 1][j].setOnTop(g);
-			}
+		for(GamePiece g: pieces) {
+			g.placeOnTiles(tiles);
 		}
 	}
 	
