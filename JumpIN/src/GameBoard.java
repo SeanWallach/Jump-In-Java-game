@@ -120,11 +120,36 @@ public class GameBoard{
 				
 			}
 				
+		// Bunny movement rules
 		} else if (p instanceof Bunny) {
+			int x = p.getX();
+			int y = p.getY();
+			boolean checkdown, checkup, checkleft, checkright = true;
 			
+			// Checking if on the edge of grid
+			if (x-1 < 0) {
+				checkleft = false;
+				System.out.println("can't move left");
+			}
+			if (x + 1 > 4) {
+				checkright = false;
+				System.out.println("can't move right");
+			}
+			if (y - 1 < 0) {
+				checkup = false;
+				System.out.println("can't move up");
+			}
+			if (y + 1 > 4)
+				checkdown = false;
+			System.out.println("can't move down");
+			}	
+//		
+//			if (tiles[x][y].getOnTop() instanceof Mushroom || tiles[x][y].getOnTop() instanceof Fox) {
+//				
+//			}
+			return null;
 		}
-		return null;
-	}
+
 	/**
 	 * 
 	 * @param currX

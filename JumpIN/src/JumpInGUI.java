@@ -111,7 +111,7 @@ public class JumpInGUI extends JFrame implements ActionListener{
 		else{	
 			for (int i = 0; i < 5; i++) {
 				for (int j = 0; j < 5; j++) {
-					if(event.getSource().equals(square[i][j])) {
+					if(event.getSource().equals(square[j][i])) {
 						System.out.println("i: "+ i + ", j: " + j);
 						//If the tile on the Board is occupied by a game piece
 						if(!game.getGameBoard().getTile(i, j).isEmpty()) {
@@ -121,17 +121,17 @@ public class JumpInGUI extends JFrame implements ActionListener{
 							//Bunny
 							if(selectedpiece instanceof Bunny ) {							
 								if(selectedpiece.getName() == "Bunny1") {
-									System.out.print(selectedpiece.canMove());
+									//System.out.print(selectedpiece.canMove());
 									System.out.println("Bunny1");
 									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
 								}
 								else if(selectedpiece.getName() == "Bunny2") {
-									System.out.print(selectedpiece.canMove());
+									//System.out.print(selectedpiece.canMove());
 									System.out.println("Bunny2");
 									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
 								}
 								else if(selectedpiece.getName() == "Bunny3") {
-									System.out.print(selectedpiece.canMoveFromSpot(i,j));
+									//System.out.print(selectedpiece.canMoveFromSpot(i,j));
 									System.out.println("Bunny3");
 									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
 								}
