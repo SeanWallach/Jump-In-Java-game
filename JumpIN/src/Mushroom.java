@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 //Class written by Ashton and Andrew
 
 /**
@@ -25,5 +27,29 @@ public class Mushroom extends GamePiece {
 	@Override
 	public char getAcronym() {
 		return 'M';
+	}
+	
+	/**
+	 * Check if the piece can move to the x and y position
+	 */
+	@Override
+	public boolean canMove(int x, int y) {
+		return false;
+	}
+
+	/**
+	 * Check if the piece is able to move
+	 */
+	@Override
+	public boolean canMove() {
+		return false;
+	}
+	
+	/**
+	 * Place the piece in the GUI.
+	 */
+	@Override
+	public void placePiece(JumpInButton[][] square) {
+		square[this.x][this.y].setBackground(Color.RED);
 	}
 }

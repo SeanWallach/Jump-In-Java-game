@@ -1,4 +1,3 @@
-
 //Class written by Ashton and Andrew
 
 import java.util.ArrayList;
@@ -7,16 +6,19 @@ import java.util.ArrayList;
  * Class GameBoard
  * @author (of JavaDoc comments) Nicholas
  */
-public class GameBoard {
+public class GameBoard{
+
 	public static final int SIZE = 5;
 	private Tile[][] tiles;
+	private ArrayList<GamePiece> boardpieces;
 	
 	/**
 	 * GameBoard constructor
 	 * create a game board
 	 * @param p Arraylist of game pieces
 	 */
-	public GameBoard(ArrayList<GamePiece> pieces) {
+	public GameBoard(ArrayList<GamePiece> p) {
+		boardpieces = p;
 		tiles = new Tile[SIZE][SIZE];
 		
 		for(int i = 0; i < SIZE; i++) {
@@ -25,11 +27,19 @@ public class GameBoard {
 			}
 		}
 		
-		for(GamePiece g: pieces) {
-			g.placeOnTiles(tiles);
+		for(GamePiece g: boardpieces) {
+			int i = g.getX();
+			int j = g.getY();
+			tiles[i][j].setOnTop(g);
+			if(g instanceof Fox) {
+				if(((Fox) g).getUpDown())
+					tiles[i][j + 1].setOnTop(g);
+				else
+					tiles[i + 1][j].setOnTop(g);
+			}
 		}
 	}
-	
+
 	/**
 	 * Method movePiece moves game piece in specified direction
 	 * @param x X-coordinate to where game piece is moving
@@ -61,6 +71,21 @@ public class GameBoard {
 		m.move(newCoord[0], newCoord[1], this.tiles);
 	}
 	
+	// This function calculates the possible moves available to the selected GamePiece
+	public ArrayList<Tile> possibleMoves(GamePiece p) {
+		ArrayList<Tile> moves = new ArrayList<Tile>();
+		
+		if(p.canMove()) {
+			for(int i = 0; i < GameBoard.SIZE; i++) {
+				for(int j = 0; j < GameBoard.SIZE; j++) {
+					if(p.canMove(i, j)) moves.add(this.getTile(i, j));
+				}
+			}
+		}
+		
+		return moves;
+	}
+
 	/**
 	 * 
 	 * @param currX
@@ -137,6 +162,7 @@ public class GameBoard {
 			System.out.println("");
 		}
 	}
+
 	
 	/**
 	 * Check if GameBoard objects are equal
@@ -168,3 +194,6 @@ public class GameBoard {
 		return true;
 	}
 }
+
+}
+
