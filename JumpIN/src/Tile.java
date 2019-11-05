@@ -8,6 +8,7 @@ public class Tile {
 	private boolean empty;
 	private boolean grass;
 	private GamePiece ontop;
+	private int x, y;
 	
 	/**
      * Tile constructor
@@ -22,6 +23,8 @@ public class Tile {
 		//Center Hole
 		else if(x==2 && y == 2) grass = false;
 		else grass = true;
+		this.x = x;
+		this.y = y;
 	}
 	
 	/**
@@ -69,6 +72,22 @@ public class Tile {
      */
 	public boolean getGrass() {
 		return this.grass;
+	}
+	
+	/**
+	 * 
+	 * @return the tile's x position
+	 */
+	public int getX() {
+		return this.x;
+	}
+	
+	/**
+	 * 
+	 * @return the tile's y position
+	 */
+	public int getY() {
+		return this.y;
 	}
 	
 	/**

@@ -1,3 +1,7 @@
+import java.awt.Color;
+
+import javax.swing.JOptionPane;
+
 //Class written by Ashton and Andrew
 
 /**
@@ -5,7 +9,7 @@
  * @author (of JavaDoc comments) Nicholas
  */
 public class Fox extends MovableGamePiece {
-	private boolean upDown;
+	private boolean direction;	//Direction in which fox can slide (up/down, left/right)
 	private int backX, backY;
 	
 	/**
@@ -15,12 +19,12 @@ public class Fox extends MovableGamePiece {
 	 * @param ypos Y-coordinate of Fox
 	 * @param direction Boolean value representing if Fox is vertical or horizontal
 	 */
-	public Fox(String s, int xpos, int ypos, boolean direction) {
+	public Fox(String s, int xpos, int ypos, boolean d) {
 		//The x and y positions that will be stored will be the smaller values (closer to (0, 0))
 		//This means when going from 
 		super(xpos, ypos, 2, s);
-		upDown = direction;
-		if(direction) {
+		direction = d;
+		if(d) {
 			backX = x;
 			backY = y + 1;
 		}
@@ -35,7 +39,7 @@ public class Fox extends MovableGamePiece {
 	 * @return boolean orientation of Fox
 	 */
 	public boolean getUpDown() {
-		return upDown;
+		return direction;
 	}
 	
 	/**
@@ -72,7 +76,7 @@ public class Fox extends MovableGamePiece {
 	@Override
 	public void move(int newX, int newY, Tile[][] tiles) {
 		if(!this.canMove(newX, newY)) {
-			System.out.println("Fox cannot move to the new position.");
+			JOptionPane.showMessageDialog(null, "Fox cannot move to the new position.");
 			return;
 		}
 		
@@ -81,7 +85,7 @@ public class Fox extends MovableGamePiece {
 		tiles[this.backX][this.backY].setEmpty();
 		
 		//Move the fox piece.
-		if(this.upDown) {
+		if(this.direction) {
 			if(this.y > newY) {
 				super.setY(newY);
 				this.backY = newY + 1;
@@ -102,7 +106,8 @@ public class Fox extends MovableGamePiece {
 			}
 		}
 		//Place the new fox location on the tiles.
-		this.placeOnTiles(tiles);
+		tiles[this.x][this.y].setOnTop(this);
+		tiles[this.backX][this.backY].setOnTop(this);
 	}
 	
 	/**
@@ -115,14 +120,14 @@ public class Fox extends MovableGamePiece {
 	 * @param newY the Y position the fox will move to.
 	 * @return if the new position is a valid move.
 	 */
-	private boolean canMove(int newX, int newY) {
+	public boolean canMove(int newX, int newY) {
 		//First testing that the fox is moving in a valid direction.
-		if(upDown && (newX != this.x)) return false;
-		else if(!upDown && (newY != this.y)) return false;
+		if(direction && (newX != this.x)) return false;
+		else if(!direction && (newY != this.y)) return false;
 		
 		//Next, testing that the fox does not jump. Foxes can only
 		//move one square at a time.
-		if(upDown) {
+		if(direction) {
 			if(newY < this.y - 1) return false;
 			else if(newY > this.backY + 1) return false;
 		}
@@ -130,6 +135,7 @@ public class Fox extends MovableGamePiece {
 			if(newX < this.x - 1) return false;
 			else if(newX > this.backX + 1) return false;
 		}
+		//CommentExampleComment
 		return true;
 	}
 	
@@ -140,14 +146,13 @@ public class Fox extends MovableGamePiece {
 	public char getAcronym() {
 		return 'F';
 	}
-	
+
 	/**
-	 * This extends the GamePiece placeOnTiles method because a fox needs to place both the
-	 * front and back onto the tiles. 
+	 * Updates the GUI by placing this piece.
 	 */
 	@Override
-	public void placeOnTiles(Tile[][] tiles) {
-		super.placeOnTiles(tiles);
-		tiles[this.backX][this.backY].setOnTop(this);
+	public void placePiece(JumpInButton[][] square) {
+		square[this.x][this.y].setBackground(Color.ORANGE);
+		square[this.backX][this.backY].setBackground(Color.ORANGE);
 	}
 }

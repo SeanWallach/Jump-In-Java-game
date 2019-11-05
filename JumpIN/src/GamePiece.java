@@ -66,18 +66,30 @@ public abstract class GamePiece {
 	}
 	
 	/**
-	 * This method is used to place this piece on the board of tiles.
-	 * @param tiles the current board of tiles.
-	 */
-	public void placeOnTiles(Tile[][] tiles) {
-		tiles[x][y].setOnTop(this);
-	}
-	
-	/**
 	 * This will be used for printing a String representation of
 	 * the board. The piece will return a character that represents
 	 * it on the board.
 	 * @return a char representation of the piece.
 	 */
 	public abstract char getAcronym();
+
+	/**
+	 * 
+	 * @return if a given piece is able to move.
+	 */
+	public abstract boolean canMove();
+	
+	/**
+	 * 
+	 * @param x the x position the piece is trying to move to.
+	 * @param y the y position the piece is trying to move to.
+	 * @return true if the piece is able to move to this position.
+	 */
+	public abstract boolean canMove(int x, int y);
+
+	/**
+	 * Allows the piece to draw itself on the GUI
+	 * @param square the array of Buttons in the GUI.
+	 */
+	public abstract void placePiece(JumpInButton[][] square);
 }
