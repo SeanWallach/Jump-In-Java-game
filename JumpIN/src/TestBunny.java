@@ -28,7 +28,7 @@ public class TestBunny {
 	// 1: right
 	// 2: down
 	// 3: left
-	
+
 	// Puzzle 2 after Fox1 moved right:
 	// [O][ ][ ][B][O]
 	// [ ][ ][F][F][ ]
@@ -53,7 +53,7 @@ public class TestBunny {
 		gameboard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 2);
 		assertEquals(3, pieces.get(0).getX());
 		assertEquals(2, pieces.get(0).getY());
-		
+
 		// Move left. Case 1 with 2 Gamepiece
 		gameboard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 3);
 		assertEquals(0, pieces.get(0).getX());
@@ -69,19 +69,24 @@ public class TestBunny {
 		gameboard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 3);
 		assertEquals(3, pieces.get(0).getX());
 		assertEquals(0, pieces.get(0).getY());
-		
+
 		// Move downward once
+		// [O][ ][ ][ ][O]
+		// [ ][ ][F][F][ ]
+		// [ ][M][M][B][M]
+		// [ ][ ][ ][ ][ ]
+		// [O][ ][ ][ ][O]
 		gameboard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 2);
-		
+
 		// Move right. Case 3
 		gameboard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 1);
 		assertEquals(3, pieces.get(0).getX());
 		assertEquals(2, pieces.get(0).getY());
-		
+
 		// Move left. Case 2
 		gameboard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 3);
 		assertEquals(0, pieces.get(0).getX());
 		assertEquals(2, pieces.get(0).getY());
-		
+
 	}
 }
