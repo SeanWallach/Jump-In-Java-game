@@ -8,6 +8,14 @@
  */
 public abstract class MovableGamePiece extends GamePiece{
 
+	/**
+	 * MovableGamePiece is an extension of GamePiece that adds move functionality.
+	 * 
+	 * @param x the initial x position
+	 * @param y the initial y position
+	 * @param size the size of the piece (foxes are 2)
+	 * @param name the name of the piece
+	 */
 	protected MovableGamePiece(int x, int y, int size, String name) {
 		super(x, y, size, name);
 	}
@@ -26,6 +34,14 @@ public abstract class MovableGamePiece extends GamePiece{
      */
 	public void setY(int y) {
 		super.y = y;
+	}
+	
+	/**
+	 * Returns true because a bunny is a piece that can move.
+	 */
+	@Override
+	public boolean canMove() {
+		return true;
 	}
 	
 	/**

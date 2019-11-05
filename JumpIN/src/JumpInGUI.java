@@ -3,30 +3,32 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
-public class JumpInGUI extends JFrame implements ActionListener{
+/**
+ * The main GUI creation for the JumpIn game.
+ * @author Ashton + Andrew + Sean
+ *
+ */
+public class JumpInGUI extends JFrame implements ActionListener {
 	private Game game;
 	
 	private JMenuItem puzzle0, puzzle1, puzzle2;
 	private JMenu puzzleMenu;
 	
-	private boolean running;
+	private volatile boolean running;
     private int puzzlenumber;
     
-    private static JButton[][] square;
+    private JumpInButton[][] square;
     
-    private GamePiece selectedpiece;
+    private GamePiece selectedPiece;
     private ArrayList<Tile> moveOptions;
 	
+    /**
+     * Create the new GUI.
+     */
 	public JumpInGUI() {		
 		super("JumpIN");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,13 +43,22 @@ public class JumpInGUI extends JFrame implements ActionListener{
 		menuBar.add(puzzleMenu);
 		
 		puzzle0 = new JMenuItem("puzzle 0");
-		puzzle0.addActionListener(this);
+		puzzle0.addActionListener(e -> {
+			puzzlenumber = 0;
+			puzzleMenu.setEnabled(false);
+		});
 		
 		puzzle1 = new JMenuItem("puzzle 1");
-		puzzle1.addActionListener(this);
+		puzzle1.addActionListener(e -> {
+			puzzlenumber = 1;
+			puzzleMenu.setEnabled(false);
+		});
 		
 		puzzle2 = new JMenuItem("puzzle 2");
-		puzzle2.addActionListener(this);
+		puzzle2.addActionListener(e -> {
+			puzzlenumber = 2;
+			puzzleMenu.setEnabled(false);
+		});
 		
 		puzzleMenu.add(puzzle0);
 		puzzleMenu.add(puzzle1);
@@ -58,143 +69,118 @@ public class JumpInGUI extends JFrame implements ActionListener{
 		//Waits For a puzzle selection to set up board
 		running = false;
 		puzzlenumber = -1;
-						
+		
+		//Note running was declared as volatile because otherwise the program would try to
+		//optimize this and decide that running will never change.
+		//(i.e. determining this is an infinite loop)
 		while(!running) {
-			System.out.print("");
 			if(puzzlenumber >= 0 && puzzlenumber < InfoBook.COUNT_BOARDS) running = true;
 		}
-				
+		
+		game = new Game(puzzlenumber);	
 		
 		//Button board: Related to GameBoard and game 
-		square = new JButton[5][5];
-		JPanel p = new JPanel(new GridLayout(5,5));
-		for(int i = 0; i<5; i++) {
-			for(int j = 0; j<5; j++) {
-				if((i == j && i == 0) || (i == j && i == 4) || (i == j && i == 2) || (i == 0 && j == 4) || (i == 0 && j == 4) || (i == 4 && j == 0)) {
-					square[i][j] = new JButton();
+		square = new JumpInButton[GameBoard.SIZE][GameBoard.SIZE];
+		JPanel panel = new JPanel(new GridLayout(GameBoard.SIZE, GameBoard.SIZE));
+		for(int j = 0; j < GameBoard.SIZE; j++) {
+			for(int i = 0; i < GameBoard.SIZE; i++) {
+				square[i][j] = new JumpInButton(i, j);
+				if(!game.getGameBoard().getTile(i, j).getGrass()) 
 					square[i][j].setBackground(Color.BLACK);
-					square[i][j].addActionListener(this);
-					p.add(square[i][j]);
-				}
-				else {
-					square[i][j] = new JButton();
-					square[i][j].setBackground(Color.GREEN);
-					square[i][j].addActionListener(this);
-					p.add(square[i][j]);
-				}				
+				else square[i][j].setBackground(Color.GREEN);	
+				
+				square[i][j].addActionListener(this);
+				panel.add(square[i][j]);
 			}
 		}
-		add(p, BorderLayout.CENTER);
+		add(panel, BorderLayout.CENTER);
 		
 		this.setVisible(true);
-		
-		game = new Game(puzzlenumber);				
 	}
 	
+	/**
+	 * This deals with when a button is pressed.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		// TODO Auto-generated method stub
-		//Puzzle Selection Menu Items
-		if(event.getSource() == puzzle0) {
-			puzzlenumber = 0;
-			puzzleMenu.setEnabled(false);
-		}
-		else if(event.getSource() == puzzle1) {
-			puzzlenumber = 1;
-			puzzleMenu.setEnabled(false);
-		}
-		else if(event.getSource() == puzzle2) {
-			puzzlenumber = 2;
-			puzzleMenu.setEnabled(false);
-		}
-		//Grid Board Buttons
-		else{	
-			for (int i = 0; i < 5; i++) {
-				for (int j = 0; j < 5; j++) {
-					if(event.getSource().equals(square[j][i])) {
-						System.out.println("i: "+ i + ", j: " + j);
-						//If the tile on the Board is occupied by a game piece
-						if(!game.getGameBoard().getTile(j, i).isEmpty()) {
-							selectedpiece = game.getGameBoard().getTile(j, i).getOnTop();
-							
-							
-							//Bunny
-							if(selectedpiece instanceof Bunny ) {							
-								if(selectedpiece.getName() == "Bunny1") {
-									//System.out.print(selectedpiece.canMove());
-									System.out.println("Bunny1");
-									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
-								}
-								else if(selectedpiece.getName() == "Bunny2") {
-									//System.out.print(selectedpiece.canMove());
-									System.out.println("Bunny2");
-									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
-								}
-								else if(selectedpiece.getName() == "Bunny3") {
-									//System.out.print(selectedpiece.canMoveFromSpot(i,j));
-									System.out.println("Bunny3");
-									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
-								}
-								
-							//Mushroom	-> Probably don't need this
-							}
-							else if(selectedpiece instanceof Mushroom) {
-								System.out.println("Mushroom");
-							}
-							//Fox
-							else if(selectedpiece instanceof Fox) {								
-								if(selectedpiece.getName() == "Fox1") {
-									//updateMoveOptionVisuals();
-									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
-									System.out.println("Fox1");
-									
-									/*if(game.getGameBoard().getTile(i, j).getOnTop().canMove()) {
-										System.out.println("Fox1 Can Move");
-									}*/
-								}
-								else if(selectedpiece.getName() == "Fox2") {
-									moveOptions = game.getGameBoard().possibleMoves(selectedpiece);
-									System.out.println("Fox2");
-									//moveoptions = game.getGameBoard().foxMoveAvailable(true,selectedpiece.getX(),selectedpiece.getY());
-									//updateMoveOptionVisuals();
-								}
+		JumpInButton b = ((JumpInButton) event.getSource());
+		
+		//A tile that is not a GamePiece was pressed.
+		if(game.getGameBoard().getTile(b.getX(), b.getY()).isEmpty()) {
+			if(selectedPiece != null) {
+				if(selectedPiece.canMove(b.getX(), b.getY())) {
+					
+					int direction;
+					//Choose movement direction
+					if(b.getX() == selectedPiece.getX()) {
+						if(b.getY() > selectedPiece.getY()) direction = 2;
+						else direction = 0;
+					}
+					else {
+						if(b.getX() > selectedPiece.getX()) direction = 1;
+						else direction = 3;
+					}
+					
+					//Move in the given direction.
+					game.getGameBoard().movePiece(selectedPiece.getX(), selectedPiece.getY(), direction);
+					updateBoardVisuals();
+					game.testGameState(game);
+					if(game.getRunning() == false) {
+						for(int i = 0; i < GameBoard.SIZE; i++) {
+							for(int j = 0; j < GameBoard.SIZE; j++) {
+								//If game is over, cannot press the pieces anymore.
+								square[i][j].setEnabled(false);
 							}
 						}
+						JOptionPane.showMessageDialog(null, "Congratulations, you have won!");
 					}
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Not a valid move for a " + selectedPiece.getClass().toString());
 				}
 			}
+			selectedPiece = null;
+		}
+		else {
+			//This is for when a GamePiece is pressed.
+			this.selectedPiece = game.getGameBoard().getTile(b.getX(), b.getY()).getOnTop();
+			moveOptions = game.getGameBoard().possibleMoves(selectedPiece);
+			this.updateMoveOptionVisuals();
 		}
 	}
+	
+	/**
+	 * Show the possible moves in yellow. This is not currently working properly, and needs to be updated.
+	 */
 	public void updateMoveOptionVisuals() {
-		for(int i = 0; i < game.getGameBoard().SIZE; i++) {
-			for(int j = 0; j < game.getGameBoard().SIZE; j++) {
-				for(int k = 0; k<moveOptions.size(); k++) {
-					if(moveOptions.get(k) == game.getGameBoard().getTile(i, j)) {
-						square[i][j].setBackground(Color.YELLOW);
-					}
-				}
-			}	
-		}			
+		for(Tile t : moveOptions) {
+			this.square[t.getX()][t.getY()].setBackground(Color.YELLOW);
+		}
 	}
 	
+	/**
+	 * Update all the tiles with the piece placements.
+	 */
 	public void updateBoardVisuals() {
-		for(int i = 0; i < game.getGameBoard().SIZE; i++) {
-			for(int j = 0; j < game.getGameBoard().SIZE; j++) {
+		for(int i = 0; i < GameBoard.SIZE; i++) {
+			for(int j = 0; j < GameBoard.SIZE; j++) {
 				if(!game.getGameBoard().getTile(i, j).isEmpty()) {
-					if(game.getGameBoard().getTile(i, j).getOnTop() instanceof Bunny) {							
-						square[i][j].setBackground(Color.GRAY);
-					}
-					else if(game.getGameBoard().getTile(i, j).getOnTop() instanceof Mushroom) {
-						square[i][j].setBackground(Color.RED);
-					}
-					else if(game.getGameBoard().getTile(i, j).getOnTop() instanceof Fox) {
-						square[i][j].setBackground(Color.ORANGE);
-					}
+					game.getGameBoard().getTile(i, j).getOnTop().placePiece(square);
+				}
+				else {
+					if(!game.getGameBoard().getTile(i, j).getGrass()) 
+						square[i][j].setBackground(Color.BLACK);
+					else square[i][j].setBackground(Color.GREEN);
 				}
 			}
 		}
 	}	
 	
+	/**
+	 * Main method for the GUI.
+	 * 
+	 * @param args runtime arguments
+	 */
 	public static void main(String args[]) {
 		
 		JumpInGUI jumpin = new JumpInGUI();
@@ -204,10 +190,8 @@ public class JumpInGUI extends JFrame implements ActionListener{
 			jumpin.updateBoardVisuals();
 			//jumpin.getUserMovement();
 		    jumpin.game.testGameState(jumpin.game);
-		}	
+		}
 		System.out.println("GAME IS WON");
-		//game.input.close();
 	}
-	
 
 }

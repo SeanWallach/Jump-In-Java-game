@@ -73,10 +73,23 @@ public abstract class GamePiece {
 	 */
 	public abstract char getAcronym();
 
-	protected abstract boolean canMove();
+	/**
+	 * 
+	 * @return if a given piece is able to move.
+	 */
+	public abstract boolean canMove();
+	
+	/**
+	 * 
+	 * @param x the x position the piece is trying to move to.
+	 * @param y the y position the piece is trying to move to.
+	 * @return true if the piece is able to move to this position.
+	 */
+	public abstract boolean canMove(int x, int y);
 
-	protected boolean canMoveFromSpot(int i, int j) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	/**
+	 * Allows the piece to draw itself on the GUI
+	 * @param square the array of Buttons in the GUI.
+	 */
+	public abstract void placePiece(JumpInButton[][] square);
 }

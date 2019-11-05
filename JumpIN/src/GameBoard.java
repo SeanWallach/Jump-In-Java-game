@@ -2,8 +2,6 @@
 
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-
 /**
  * Class GameBoard
  * @author (of JavaDoc comments) Nicholas
@@ -77,85 +75,15 @@ public class GameBoard{
 	public ArrayList<Tile> possibleMoves(GamePiece p) {
 		ArrayList<Tile> moves = new ArrayList<Tile>();
 		
-		
-		// Fox movement rules
-		if (p instanceof Fox) {
-			
-			int y = p.getX();	
-			int x = p.getY();
-			int backX = ((Fox) p).getBackX();
-			int backY = ((Fox) p).getBackY();
-			boolean d = ((Fox) p).getUpDown();	// Get Fox orientation (True - horizontal: False - vertical)
-			System.out.println("x: " + x + " y:" + y + " backX: "+ backX+ " backY: "+ backY);
-			//===============================================
-			if (!d) {	// if VERTICAL	
-				if (y-1 >= 0) {	// check that tile above is in grid range 
-					if (tiles[x][y-1].isEmpty()) { // If move is possible upwards
-						moves.add(tiles[x][y-1]);	// add tile to possible moveset
-						System.out.println("Can move up");
-					} else { 						// If move is not possible upwards
-						if (backY == y-1) {	// Check if tile is a fox
-							if (y-2 >= 0 && tiles[x][y-2].isEmpty()) {		
-								moves.add(tiles[x][y-2]);// If it is a fox, check if tile above is valid move
-								System.out.println("fox is above: can move up");
-							}
-						}
-					}
-				} else if (y+1 < 5) { // check that tile below is in grid range 
-					if (tiles[x][y+1].isEmpty()) { // If move is possible downwards
-						moves.add(tiles[x][y+1]);
-						System.out.println("can move down: grass");
-					} else {
-						if (backY == y+1) {	//Check if tile below is Fox
-							if (tiles[x][y+2].isEmpty()) {
-								moves.add(tiles[x][y+2]);
-								System.out.println("can move down: two below is grass");
-							}
-						}
-					}
+		if(p.canMove()) {
+			for(int i = 0; i < GameBoard.SIZE; i++) {
+				for(int j = 0; j < GameBoard.SIZE; j++) {
+					if(p.canMove(i, j)) moves.add(this.getTile(i, j));
 				}
-			//================================================
-			} else {	// if horizontal 
-				
-				
-			}
-				
-		// Bunny movement rules
-		} else if (p instanceof Bunny) {
-			int y = p.getX();
-			int x = p.getY();
-			boolean checkdown, checkup, checkleft, checkright = true;
-			
-			// Checking if on the edge of grid
-			if (x-1 < 0) {
-				checkleft = false;
-				System.out.println("can't move left");
-			} else if (tiles[x-1][y].getOnTop() instanceof Mushroom || tiles[x][y-1].getOnTop() instanceof Fox) {
-				System.out.println("can hop left ");
-			}
-			
-			if (x + 1 > 4) {
-				checkright = false;
-				System.out.println("can't move right");
-			} else if (tiles[x+1][y].getOnTop() instanceof Mushroom || tiles[x][y-1].getOnTop() instanceof Fox) {
-				System.out.println("can hop right ");
-			}
-			
-			if (y - 1 < 0) {
-				checkup = false;
-				System.out.println("can't move up");
-			} else if (tiles[x][y-1].getOnTop() instanceof Mushroom || tiles[x][y-1].getOnTop() instanceof Fox) {
-				System.out.println("can hop up ");
-			}
-			
-			if (y + 1 > 4) {
-				checkdown = false;
-				System.out.println("can't move down");
-			}	 else if (tiles[x][y+1].getOnTop() instanceof Mushroom || tiles[x][y+1].getOnTop() instanceof Fox) {
-				System.out.println("can hop down ");
 			}
 		}
-		return null;
+		
+		return moves;
 	}
 
 	/**

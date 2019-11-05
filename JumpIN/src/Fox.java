@@ -1,3 +1,7 @@
+import java.awt.Color;
+
+import javax.swing.JOptionPane;
+
 //Class written by Ashton and Andrew
 
 /**
@@ -72,7 +76,7 @@ public class Fox extends MovableGamePiece {
 	@Override
 	public void move(int newX, int newY, Tile[][] tiles) {
 		if(!this.canMove(newX, newY)) {
-			System.out.println("Fox cannot move to the new position.");
+			JOptionPane.showMessageDialog(null, "Fox cannot move to the new position.");
 			return;
 		}
 		
@@ -116,7 +120,7 @@ public class Fox extends MovableGamePiece {
 	 * @param newY the Y position the fox will move to.
 	 * @return if the new position is a valid move.
 	 */
-	private boolean canMove(int newX, int newY) {
+	public boolean canMove(int newX, int newY) {
 		//First testing that the fox is moving in a valid direction.
 		if(direction && (newX != this.x)) return false;
 		else if(!direction && (newY != this.y)) return false;
@@ -143,9 +147,12 @@ public class Fox extends MovableGamePiece {
 		return 'F';
 	}
 
+	/**
+	 * Updates the GUI by placing this piece.
+	 */
 	@Override
-	protected boolean canMove() {
-		// TODO Auto-generated method stub
-		return false;
+	public void placePiece(JumpInButton[][] square) {
+		square[this.x][this.y].setBackground(Color.ORANGE);
+		square[this.backX][this.backY].setBackground(Color.ORANGE);
 	}
 }

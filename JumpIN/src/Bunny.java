@@ -1,3 +1,7 @@
+import java.awt.Color;
+
+import javax.swing.JOptionPane;
+
 //Class written by Ashton and Andrew
 
 /**
@@ -35,7 +39,7 @@ public class Bunny extends MovableGamePiece {
 	@Override
 	public void move(int newX, int newY, Tile[][] tiles) {
 		if(!this.canMove(newX, newY)){
-			System.out.println("This is not a valid move for a bunny.");
+			JOptionPane.showMessageDialog(null, "This is not a valid move for a bunny.");
 			return;
 		}
 		
@@ -53,8 +57,8 @@ public class Bunny extends MovableGamePiece {
 	 * @param newY the y value of the new position
 	 * @return if it is a valid move for the bunny
 	 */
-
-	private boolean canMove(int newX, int newY) {
+	@Override
+	public boolean canMove(int newX, int newY) {
 		//Bunnies cannot move on angles.
 		if(newX != this.x && newY != this.y) return false;
 		//Bunnies must hop another piece.
@@ -70,16 +74,13 @@ public class Bunny extends MovableGamePiece {
 	public char getAcronym() {
 		return 'B';
 	}
-
+	
+	/**
+	 * Update the GUI by placing this piece on the GUI.
+	 */
 	@Override
-	protected boolean canMoveFromSpot(int i, int j) {
-		// TODO Auto-generated method stub
-		return false;
+	public void placePiece(JumpInButton[][] square) {
+		square[this.x][this.y].setBackground(Color.GRAY);
 	}
-
-	@Override
-	protected boolean canMove() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 }
