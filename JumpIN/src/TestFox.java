@@ -30,7 +30,6 @@ public class TestFox {
 	// 1: right
 	// 2: down
 	// 3: left
-
 	@Before
 	public void setUp() throws Exception {
 		book = new InfoBook(0);
@@ -42,7 +41,6 @@ public class TestFox {
 	// Case 1: No gamepiece in path
 	// Case 2: A gamepiece block the path
 	// Case 3: Hit the wall
-
 	@Test
 	public void testFoxLegalVerticalMove() {
 		// Move downward once . Case 1.
@@ -54,6 +52,16 @@ public class TestFox {
 
 	@Test
 	public void testFoxIllegalVerticalMove() {
+		// Move left
+		gameboard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 3);
+		assertEquals(1, pieces.get(5).getX());
+		assertEquals(0, pieces.get(5).getY());
+
+		// Move right
+		gameboard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 1);
+		assertEquals(1, pieces.get(5).getX());
+		assertEquals(0, pieces.get(5).getY());
+
 		// Move upward once. Case 3
 		gameboard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 0);
 		assertEquals(1, pieces.get(5).getX());
@@ -72,7 +80,6 @@ public class TestFox {
 	// Case 1: No gamepiece in path
 	// Case 2: A gamepiece block the path
 	// Case 3: Hit the wall
-
 	@Test
 	public void testFoxLegalHorizontalMove() {
 		// Move left once. Case 1
@@ -82,6 +89,7 @@ public class TestFox {
 
 	}
 
+	// Move fox 1 downward twice.
 	// [O][ ][ ][B][O]
 	// [ ][ ][ ][M][ ]
 	// [ ][F][O][ ][B]
@@ -89,12 +97,22 @@ public class TestFox {
 	// [O][B][M][ ][O]
 	@Test
 	public void testFoxIllegalHorizontalMove() {
+		// Move upward.
+		gameboard.movePiece(pieces.get(6).getX(), pieces.get(6).getY(), 0);
+		assertEquals(3, pieces.get(6).getX());
+		assertEquals(3, pieces.get(6).getY());
+
+		// Move downward.
+		gameboard.movePiece(pieces.get(6).getX(), pieces.get(6).getY(), 2);
+		assertEquals(3, pieces.get(6).getX());
+		assertEquals(3, pieces.get(6).getY());
+
 		// Move right. Case 3
 		gameboard.movePiece(pieces.get(6).getX(), pieces.get(6).getY(), 1);
 		assertEquals(3, pieces.get(6).getX());
 		assertEquals(3, pieces.get(6).getY());
 
-		// Move fox 1 downward to block fox 2
+		// Move Fox1 downward to block Fox2
 		gameboard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 2);
 		gameboard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 2);
 
