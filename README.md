@@ -33,13 +33,13 @@ Andrew Foster:
   Game Board Setup plus GUI design
 
 Ashton Mohns:
-  Fixing bugs, Updating movement code
+  Fixing bugs, Updating movement code, Additional work on GUI
 
 Nicholas Porter:
   JUnit Testing-> Frontend/Backend
 
 Sean Wallach:
-  GUI and controller
+  GUI and controller, GUI UML diagram
 
 Lyndon Lo:
   JUnit Testing->Frontend/Backend
