@@ -36,6 +36,8 @@ Lyndon Lo
 
 #Milestone 2
 ---------------------------------
+Group tasks: 
+
 Andrew Foster:
   Game Board Setup plus GUI design
 
@@ -46,15 +48,10 @@ Nicholas Porter:
   JUnit Testing-> Frontend/Backend
 
 Sean Wallach:
-  GUI and controller, GUI UML diagram
+  GUI and bug fixes, GUI UML diagram
 
 Lyndon Lo:
   JUnit Testing->Frontend/Backend
-
-Group decided Due dates:
-  Ashton to email about branches
-  Sean email about diagrams
-  Friday-> Reasonable: something to share with the group on progress.
 
 #Milestone 3
 ---------------------------------
