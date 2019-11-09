@@ -118,4 +118,39 @@ public class Tile {
 			return ("[" + ontop.getAcronym() + "]");
 		}
 	}
+	
+	/**
+	 * Check if tile objects are 
+	 * equal
+	 * @param obj
+	 * @return boolean
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		Tile o = (Tile) obj;
+		
+		if (this.empty != o.empty) {
+			return false;
+		}
+		
+		if (!(this.grass != o.grass)) {
+			return false;
+		}
+		
+		if (!(this.ontop.equals(o.ontop))) {
+			return false;
+		}
+		
+		return true;
+	}
 }

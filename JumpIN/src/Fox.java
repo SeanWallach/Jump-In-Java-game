@@ -155,4 +155,28 @@ public class Fox extends MovableGamePiece {
 		square[this.x][this.y].setBackground(Color.ORANGE);
 		square[this.backX][this.backY].setBackground(Color.ORANGE);
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		Fox o = (Fox) obj;
+		
+		if (super.equals(this) && 
+				(this.direction == o.direction) &&
+				(this.backX == o.backX) &&
+				(this.backY == o.backY)) {
+			return true;
+		}
+		
+		return false;
+	}
 }
