@@ -162,38 +162,4 @@ public class GameBoard{
 			System.out.println("");
 		}
 	}
-
-	
-	/**
-	 * Check if GameBoard objects are equal
-	 * @param obj
-	 * @return boolean
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		
-		GameBoard o = (GameBoard) obj;
-		
-		for (int i = 0; i < SIZE; i++) {
-			for (int j = 0; j < SIZE; j++) {
-				if (!(this.getTile(i, j).equals(o.getTile(i, j)))) {
-					return false;
-				}
-			}
-		}
-		
-		return true;
-	}
 }
-
-}
-

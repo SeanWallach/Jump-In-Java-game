@@ -76,33 +76,4 @@ public class InfoBook {
 	public ArrayList<GamePiece> getPieces(){
 		return this.pieces;
 	}
-	
-	/**
-	 * Check if InfoBook objects
-	 * are equal
-	 * @param obj
-	 * @return boolean
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		
-		InfoBook o = (InfoBook) obj;
-		
-		for (int i = 0; i < this.pieces.size(); i++) {
-			if (!(this.pieces.get(i).equals(o.pieces.get(i)))) {
-				return false;
-			}
-		}
-		
-		return true;
-	}
 }
