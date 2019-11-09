@@ -162,7 +162,6 @@ public class GameBoard{
 			System.out.println("");
 		}
 	}
-
 	
 	/**
 	 * Check if GameBoard objects are equal
@@ -194,6 +193,3 @@ public class GameBoard{
 		return true;
 	}
 }
-
-}
-

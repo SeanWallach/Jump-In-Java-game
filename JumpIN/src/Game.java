@@ -84,4 +84,3 @@ public class Game {
 		if(allBunniesInHoles) jumpin.setRunning(false);
 	}
 }
-

@@ -156,7 +156,6 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		for(Tile t : moveOptions) {
 			this.square[t.getX()][t.getY()].setBackground(Color.YELLOW);
 		}
-		this.setVisible(true);
 	}
 	
 	/**

@@ -171,7 +171,7 @@ public class Fox extends MovableGamePiece {
 		Fox o = (Fox) obj;
 		
 		if (super.equals(this) && 
-				(this.upDown == o.upDown) &&
+				(this.direction == o.direction) &&
 				(this.backX == o.backX) &&
 				(this.backY == o.backY)) {
 			return true;
@@ -179,5 +179,4 @@ public class Fox extends MovableGamePiece {
 		
 		return false;
 	}
-
 }
