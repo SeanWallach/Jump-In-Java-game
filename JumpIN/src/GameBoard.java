@@ -192,4 +192,11 @@ public class GameBoard{
 		
 		return true;
 	}
+	
+	/*
+	 * Reset the gameboard to the initial puzzle setup
+	 */
+	public void reset(int puzzleNumber) {
+		
+	}
 }

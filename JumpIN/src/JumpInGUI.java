@@ -41,6 +41,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		
 		puzzleMenu = new JMenu("Puzzle Selection");
 		options = new JMenu("Options");
+		options.setEnabled(false);
 		
 		menuBar.add(puzzleMenu);
 		menuBar.add(options);
@@ -49,42 +50,26 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		puzzle0.addActionListener(e -> {
 			puzzlenumber = 0;
 			puzzleMenu.setEnabled(false);
+			options.setEnabled(true);
 		});
 		
 		puzzle1 = new JMenuItem("puzzle 1");
 		puzzle1.addActionListener(e -> {
 			puzzlenumber = 1;
 			puzzleMenu.setEnabled(false);
+			options.setEnabled(true);
 		});
 		
 		puzzle2 = new JMenuItem("puzzle 2");
 		puzzle2.addActionListener(e -> {
 			puzzlenumber = 2;
 			puzzleMenu.setEnabled(false);
+			options.setEnabled(true);
 		});
 		
 		puzzleMenu.add(puzzle0);
 		puzzleMenu.add(puzzle1);
 		puzzleMenu.add(puzzle2);
-		
-		reset = new JMenuItem("Reset board");
-		reset.addActionListener(e -> {
-			// TODO reset board
-		});
-		
-		back = new JMenuItem("Back");
-		back.addActionListener(e -> {
-			// TODO revert move
-		});
-		
-		revert = new JMenuItem("Revert");
-		revert.addActionListener(e -> {
-			// TODO revert move
-		});
-		
-		options.add(reset);
-		options.add(back);
-		options.add(revert);
 		
 		setVisible(true);
 		
@@ -100,6 +85,25 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		}
 		
 		game = new Game(puzzlenumber);	
+		
+		reset = new JMenuItem("Reset board");
+		reset.addActionListener(e -> {
+			game.reset(puzzlenumber);
+		});
+		
+		back = new JMenuItem("Back");
+		back.addActionListener(e -> {
+			// TODO revert move
+		});
+		
+		revert = new JMenuItem("Revert");
+		revert.addActionListener(e -> {
+			// TODO revert move
+		});
+		
+		options.add(reset);
+		options.add(back);
+		options.add(revert);
 		
 		//Button board: Related to GameBoard and game 
 		square = new JumpInButton[GameBoard.SIZE][GameBoard.SIZE];
