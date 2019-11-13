@@ -15,7 +15,7 @@ import javax.swing.*;
 public class JumpInGUI extends JFrame implements ActionListener {
 	private Game game;
 	
-	private JMenuItem puzzle0, puzzle1, puzzle2, reset, back, revert;
+	private JMenuItem puzzle0, puzzle1, puzzle2, hint, undo, redo;
 	private JMenu puzzleMenu, options;
 	
 	private volatile boolean running;
@@ -86,24 +86,24 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		
 		game = new Game(puzzlenumber);	
 		
-		reset = new JMenuItem("Reset board");
-		reset.addActionListener(e -> {
-			game.reset(puzzlenumber);
+		hint = new JMenuItem("Hint");
+		hint.addActionListener(e -> {
+		
 		});
 		
-		back = new JMenuItem("Back");
-		back.addActionListener(e -> {
-			// TODO revert move
+		undo = new JMenuItem("Undo");
+		undo.addActionListener(e -> {
+			// TODO back method
 		});
 		
-		revert = new JMenuItem("Revert");
-		revert.addActionListener(e -> {
-			// TODO revert move
+		redo = new JMenuItem("Redo");
+		redo.addActionListener(e -> {
+			// TODO revert method
 		});
 		
-		options.add(reset);
-		options.add(back);
-		options.add(revert);
+		options.add(hint);
+		options.add(undo);
+		options.add(redo);
 		
 		//Button board: Related to GameBoard and game 
 		square = new JumpInButton[GameBoard.SIZE][GameBoard.SIZE];

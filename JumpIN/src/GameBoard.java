@@ -161,6 +161,7 @@ public class GameBoard{
 			}
 			System.out.println("");
 		}
+		System.out.println("");
 	}
 	
 	/**
@@ -191,12 +192,5 @@ public class GameBoard{
 		}
 		
 		return true;
-	}
-	
-	/*
-	 * Reset the gameboard to the initial puzzle setup
-	 */
-	public void reset(int puzzleNumber) {
-		
 	}
 }

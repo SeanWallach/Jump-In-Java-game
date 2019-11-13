@@ -58,12 +58,6 @@ public class Game {
 		return this.running;
 	}
 	
-	/**
-	 * Method reset resets the gameboard to the initial puzzle setup
-	 */
-	public void reset(int puzzleNumber) {
-		gameboard.reset(puzzleNumber);
-	}
 	
 	/**
 	 * Method set running sets if game is running or not

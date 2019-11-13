@@ -36,7 +36,6 @@ public class GameBoardZeroTest {
 	}
 	
 	
-	
 	/**
 	 * Testing that the proper puzzle
 	 * has been selected by comparing 
