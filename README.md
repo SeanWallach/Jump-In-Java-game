@@ -55,5 +55,22 @@ Lyndon Lo:
 
 #Milestone 3
 ---------------------------------
+Group tasks:
+
+Andrew Foster:
+  
+
+Ashton Mohns:
+  Fixing bugs, making stack class
+
+Nicholas Porter:
+  
+
+Sean Wallach:
+  Fixing bugs, making gameboard resetable
+
+Lyndon Lo:
+
+
 #Milestone 4
 ---------------------------------
