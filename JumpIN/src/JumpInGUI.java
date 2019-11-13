@@ -15,8 +15,8 @@ import javax.swing.*;
 public class JumpInGUI extends JFrame implements ActionListener {
 	private Game game;
 	
-	private JMenuItem puzzle0, puzzle1, puzzle2;
-	private JMenu puzzleMenu;
+	private JMenuItem puzzle0, puzzle1, puzzle2, reset, back, revert;
+	private JMenu puzzleMenu, options;
 	
 	private volatile boolean running;
     private int puzzlenumber;
@@ -40,7 +40,10 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		setJMenuBar(menuBar);
 		
 		puzzleMenu = new JMenu("Puzzle Selection");
+		options = new JMenu("Options");
+		
 		menuBar.add(puzzleMenu);
+		menuBar.add(options);
 		
 		puzzle0 = new JMenuItem("puzzle 0");
 		puzzle0.addActionListener(e -> {
@@ -63,6 +66,25 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		puzzleMenu.add(puzzle0);
 		puzzleMenu.add(puzzle1);
 		puzzleMenu.add(puzzle2);
+		
+		reset = new JMenuItem("Reset board");
+		reset.addActionListener(e -> {
+			// TODO reset board
+		});
+		
+		back = new JMenuItem("Back");
+		back.addActionListener(e -> {
+			// TODO revert move
+		});
+		
+		revert = new JMenuItem("Revert");
+		revert.addActionListener(e -> {
+			// TODO revert move
+		});
+		
+		options.add(reset);
+		options.add(back);
+		options.add(revert);
 		
 		setVisible(true);
 		
