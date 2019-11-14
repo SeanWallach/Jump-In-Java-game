@@ -143,9 +143,11 @@ public class Tile {
 			return false;
 		}
 		
-		if (!(this.grass != o.grass)) {
+		if (this.grass != o.grass) {
 			return false;
 		}
+		
+		if(this.ontop == null && o.ontop == null) return true;
 		
 		if (!(this.ontop.equals(o.ontop))) {
 			return false;

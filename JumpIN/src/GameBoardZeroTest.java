@@ -17,6 +17,7 @@ public class GameBoardZeroTest {
 	private final PrintStream originalOut = System.out;
 	private Game jumpin = null;
 	private InfoBook testBookZero = null;
+	private GameBoard testGameBoard = null;
 	
 	@Rule
 	public final TextFromStandardInputStream input
@@ -52,6 +53,17 @@ public class GameBoardZeroTest {
 	@Test
 	public void testGetRunning() {
 		assertEquals(true, jumpin.getRunning());
+	}
+	
+	/**
+	 * Test the gameboard has been 
+	 * correctly set up by comparing
+	 * to expected gameboard
+	 */
+	@Test
+	public void TestGetGameBoard() {
+		testGameBoard = new GameBoard(testBookZero.getPieces());
+		assertEquals(true, jumpin.getGameBoard().equals(testGameBoard));
 	}
 
 }
