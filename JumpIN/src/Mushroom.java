@@ -33,7 +33,7 @@ public class Mushroom extends GamePiece {
 	 * Check if the piece can move to the x and y position
 	 */
 	@Override
-	public boolean canMove(int x, int y) {
+	public boolean canMove(int x, int y, Tile[][] tiles) {
 		return false;
 	}
 

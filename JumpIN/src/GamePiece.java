@@ -85,7 +85,7 @@ public abstract class GamePiece {
 	 * @param y the y position the piece is trying to move to.
 	 * @return true if the piece is able to move to this position.
 	 */
-	public abstract boolean canMove(int x, int y);
+	public abstract boolean canMove(int x, int y, Tile[][] tiles);
 
 	/**
 	 * Allows the piece to draw itself on the GUI
