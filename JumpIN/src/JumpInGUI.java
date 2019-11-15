@@ -83,7 +83,6 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		while(!running) {
 			if(puzzlenumber >= 0 && puzzlenumber < InfoBook.COUNT_BOARDS) running = true;
 		}
-		
 		game = new Game(puzzlenumber);	
 		
 		hint = new JMenuItem("Hint");
@@ -93,12 +92,16 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		
 		undo = new JMenuItem("Undo");
 		undo.addActionListener(e -> {
-			// TODO back method
+			this.selectedPiece = null;
+			game.undo();
+			this.updateBoardVisuals();
 		});
 		
 		redo = new JMenuItem("Redo");
 		redo.addActionListener(e -> {
-			// TODO revert method
+			this.selectedPiece = null;
+			game.redo();
+			this.updateBoardVisuals();
 		});
 		
 		options.add(hint);
@@ -120,7 +123,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 			}
 		}
 		add(panel, BorderLayout.CENTER);
-		
+		this.updateBoardVisuals();
 		this.setVisible(true);
 	}
 	
@@ -134,7 +137,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		//A tile that is not a GamePiece was pressed.
 		if(game.getGameBoard().getTile(b.getX(), b.getY()).isEmpty()) {
 			if(selectedPiece != null) {
-				if(selectedPiece.canMove(b.getX(), b.getY())) {
+				if(selectedPiece.canMove(b.getX(), b.getY(), game.getGameBoard().getTiles())) {
 					
 					int direction;
 					//Choose movement direction
@@ -149,7 +152,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 					
 					//Move in the given direction.
 					game.getGameBoard().movePiece(selectedPiece.getX(), selectedPiece.getY(), direction);
-					updateBoardVisuals();
+					
 					game.testGameState(game);
 					if(game.getRunning() == false) {
 						for(int i = 0; i < GameBoard.SIZE; i++) {
@@ -158,7 +161,9 @@ public class JumpInGUI extends JFrame implements ActionListener {
 								square[i][j].setEnabled(false);
 							}
 						}
-						JOptionPane.showMessageDialog(null, "Congratulations, you have won!");
+						this.undo.setEnabled(false);
+						this.redo.setEnabled(false);
+						this.running = false;
 					}
 				}
 				else {
@@ -166,6 +171,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 				}
 			}
 			selectedPiece = null;
+			this.updateBoardVisuals();
 		}
 		else {
 			//This is for when a GamePiece is pressed.
@@ -179,6 +185,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 	 * Show the possible moves in yellow. This is not currently working properly, and needs to be updated.
 	 */
 	public void updateMoveOptionVisuals() {
+		this.updateBoardVisuals();
 		for(Tile t : moveOptions) {
 			this.square[t.getX()][t.getY()].setBackground(Color.YELLOW);
 		}
@@ -212,12 +219,9 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		JumpInGUI jumpin = new JumpInGUI();
 		
 		while(jumpin.running) {
-			//Update Board Visuals
-			jumpin.updateBoardVisuals();
-			//jumpin.getUserMovement();
-		    jumpin.game.testGameState(jumpin.game);
+			//Waiting for game to end.
 		}
-		System.out.println("GAME IS WON");
+		JOptionPane.showMessageDialog(null, "Congratulations, you have won!");
 	}
 
 }

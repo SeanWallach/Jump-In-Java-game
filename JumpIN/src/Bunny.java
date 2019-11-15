@@ -37,10 +37,10 @@ public class Bunny extends MovableGamePiece {
 	 * @param tiles 
 	 */
 	@Override
-	public void move(int newX, int newY, Tile[][] tiles) {
-		if(!this.canMove(newX, newY)){
+	public boolean move(int newX, int newY, Tile[][] tiles) {
+		if(!this.canMove(newX, newY, tiles)){
 			JOptionPane.showMessageDialog(null, "This is not a valid move for a bunny.");
-			return;
+			return false;
 		}
 		
 		//Have the tiles remove the bunny piece then replace it in its new position.
@@ -48,6 +48,7 @@ public class Bunny extends MovableGamePiece {
 		super.setX(newX);
 		super.setY(newY);
 		tiles[this.x][this.y].setOnTop(this); 
+		return true;
 	}
 	
 	/**
@@ -58,11 +59,33 @@ public class Bunny extends MovableGamePiece {
 	 * @return if it is a valid move for the bunny
 	 */
 	@Override
-	public boolean canMove(int newX, int newY) {
+	public boolean canMove(int newX, int newY, Tile[][] tiles) {
+		if(!tiles[newX][newY].isEmpty()) return false;
 		//Bunnies cannot move on angles.
 		if(newX != this.x && newY != this.y) return false;
 		//Bunnies must hop another piece.
 		if(Math.abs(newX - this.x) < 2 && Math.abs(newY - this.y) < 2) return false;
+		
+		if(newY < y) {
+			for(int i = y; i > newY; i--) {
+				if(tiles[x][i].isEmpty()) return false;
+			}
+		}
+		else if(newY > y) {
+			for(int i = y; i < newY; i++) {
+				if(tiles[x][i].isEmpty()) return false;
+			}
+		}
+		else if(newX > x) {
+			for(int i = x; i < newX; i++) {
+				if(tiles[i][y].isEmpty()) return false;
+			}
+		}
+		else {
+			for(int i = x; i > newX; i--) {
+				if(tiles[i][y].isEmpty()) return false;
+			}
+		}
 		
 		return true;
 	}

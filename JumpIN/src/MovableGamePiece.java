@@ -51,5 +51,5 @@ public abstract class MovableGamePiece extends GamePiece{
 	 * @param newY the y it will move to.
 	 * @param tiles the board that the piece will place itself on.
 	 */
-	public abstract void move(int newX, int newY, Tile[][] tiles);
+	public abstract boolean move(int newX, int newY, Tile[][] tiles);
 }

@@ -83,4 +83,12 @@ public class Game {
 		}
 		if(allBunniesInHoles) jumpin.setRunning(false);
 	}
+	
+	public void undo() {
+		this.gameboard.undo();
+	}
+	
+	public void redo() {
+		this.gameboard.redo();
+	}
 }

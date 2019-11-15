@@ -1,6 +1,8 @@
 //Class written by Ashton and Andrew
 
-import java.util.ArrayList;
+import java.util.*;
+
+import javax.swing.JOptionPane;
 
 /**
  * Class GameBoard
@@ -11,6 +13,8 @@ public class GameBoard{
 	public static final int SIZE = 5;
 	private Tile[][] tiles;
 	private ArrayList<GamePiece> boardpieces;
+	private Deque<Integer[]> movesMade;
+	private Deque<Integer[]> undoCalls;
 	
 	/**
 	 * GameBoard constructor
@@ -18,6 +22,8 @@ public class GameBoard{
 	 * @param p Arraylist of game pieces
 	 */
 	public GameBoard(ArrayList<GamePiece> p) {
+		movesMade = new ArrayDeque<>();
+		undoCalls = new ArrayDeque<>();
 		boardpieces = p;
 		tiles = new Tile[SIZE][SIZE];
 		
@@ -47,7 +53,11 @@ public class GameBoard{
 	 * @param direction Direction game piece is moving
 	 */
 	public void movePiece(int x, int y, int direction) {
-		
+		undoCalls.clear();
+		move(x, y, direction);
+	}
+	
+	private void move(int x, int y, int direction) {
 		//Since the GamePieces don't know which other pieces are around them, this
 		//class finds the empty position, then tells the piece to move to that
 		//new position.
@@ -57,18 +67,19 @@ public class GameBoard{
 			System.out.println("Cannot move in that direction.");
 			return;
 		}
-		
+				
 		GamePiece g = tiles[x][y].getOnTop();
 		
 		if(!(g instanceof MovableGamePiece)) {
 			System.out.println(g.toString() + " cannot move.");
 			return;
 		}
-		
+				
 		//This downcasting is safe because of the previous if statement.
 		MovableGamePiece m = (MovableGamePiece) g;
-		
-		m.move(newCoord[0], newCoord[1], this.tiles);
+				
+		boolean successfulMove = m.move(newCoord[0], newCoord[1], this.tiles);
+		if(successfulMove) this.movesMade.push(new Integer[] {newCoord[0], newCoord[1], direction});
 	}
 	
 	// This function calculates the possible moves available to the selected GamePiece
@@ -78,7 +89,7 @@ public class GameBoard{
 		if(p.canMove()) {
 			for(int i = 0; i < GameBoard.SIZE; i++) {
 				for(int j = 0; j < GameBoard.SIZE; j++) {
-					if(p.canMove(i, j)) moves.add(this.getTile(i, j));
+					if(p.canMove(i, j, tiles)) moves.add(this.getTile(i, j));
 				}
 			}
 		}
@@ -151,6 +162,10 @@ public class GameBoard{
 		return this.tiles[x][y];
 	}
 	
+	public Tile[][] getTiles(){
+		return this.tiles;
+	}
+	
 	/**
 	 * Method printBoard prints the game board
 	 */
@@ -192,5 +207,31 @@ public class GameBoard{
 		}
 		
 		return true;
+	}
+	
+	public void undo() {
+		if(movesMade.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Cannot undo.");
+			return;
+		}
+		Integer[] lastMove = movesMade.pop();
+		GamePiece g = this.tiles[lastMove[0]][lastMove[1]].getOnTop();
+		
+		//To undo a move, it must move in the opposite direction.
+		this.move(lastMove[0], lastMove[1], (lastMove[2] + 2) % 4);
+		
+		//Ensuring that the undo move is not able to be undone without the redo function.
+		this.undoCalls.push(new Integer[] {g.getX(), g.getY(), lastMove[2]});
+		this.movesMade.pop();
+	}
+	
+	public void redo() {
+		if(undoCalls.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Cannot redo.");
+			return;
+		}
+		Integer[] lastMove = undoCalls.pop();
+		
+		this.move(lastMove[0], lastMove[1], lastMove[2]);
 	}
 }
