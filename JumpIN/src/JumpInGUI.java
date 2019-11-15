@@ -1,10 +1,8 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.*;
 
 /**
@@ -15,8 +13,8 @@ import javax.swing.*;
 public class JumpInGUI extends JFrame implements ActionListener {
 	private Game game;
 	
-	private JMenuItem puzzle0, puzzle1, puzzle2, hint, undo, redo;
-	private JMenu puzzleMenu, options;
+	private JMenuItem puzzle0, puzzle1, puzzle2, hint, undo, redo, reset;
+	private JMenu puzzleMenu, options, helpMenu;
 	
 	private volatile boolean running;
     private int puzzlenumber;
@@ -42,53 +40,30 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		puzzleMenu = new JMenu("Puzzle Selection");
 		options = new JMenu("Options");
 		options.setEnabled(false);
+		helpMenu = new JMenu("Help");
 		
 		menuBar.add(puzzleMenu);
 		menuBar.add(options);
+		menuBar.add(helpMenu);
 		
 		puzzle0 = new JMenuItem("puzzle 0");
 		puzzle0.addActionListener(e -> {
 			puzzlenumber = 0;
-			puzzleMenu.setEnabled(false);
-			options.setEnabled(true);
 		});
 		
 		puzzle1 = new JMenuItem("puzzle 1");
 		puzzle1.addActionListener(e -> {
 			puzzlenumber = 1;
-			puzzleMenu.setEnabled(false);
-			options.setEnabled(true);
 		});
 		
 		puzzle2 = new JMenuItem("puzzle 2");
 		puzzle2.addActionListener(e -> {
 			puzzlenumber = 2;
-			puzzleMenu.setEnabled(false);
-			options.setEnabled(true);
 		});
 		
 		puzzleMenu.add(puzzle0);
 		puzzleMenu.add(puzzle1);
 		puzzleMenu.add(puzzle2);
-		
-		setVisible(true);
-		
-		//Waits For a puzzle selection to set up board
-		running = false;
-		puzzlenumber = -1;
-		
-		//Note running was declared as volatile because otherwise the program would try to
-		//optimize this and decide that running will never change.
-		//(i.e. determining this is an infinite loop)
-		while(!running) {
-			if(puzzlenumber >= 0 && puzzlenumber < InfoBook.COUNT_BOARDS) running = true;
-		}
-		game = new Game(puzzlenumber);	
-		
-		hint = new JMenuItem("Hint");
-		hint.addActionListener(e -> {
-		
-		});
 		
 		undo = new JMenuItem("Undo");
 		undo.addActionListener(e -> {
@@ -104,9 +79,46 @@ public class JumpInGUI extends JFrame implements ActionListener {
 			this.updateBoardVisuals();
 		});
 		
-		options.add(hint);
+		reset = new JMenuItem("Reset");
+		redo.addActionListener(e -> {
+			
+		});
+		
 		options.add(undo);
 		options.add(redo);
+		options.add(reset);
+		
+		hint = new JMenuItem("Hint");
+		hint.addActionListener(e -> {
+			if(puzzlenumber == -1) JOptionPane.showMessageDialog(null, "Select a puzzle from the Puzzle Selection menu.");
+			else {
+				//need to implement
+			}
+		});
+		
+		JMenuItem instructions = new JMenuItem("Intructions");
+		instructions.addActionListener(e -> JOptionPane.showMessageDialog(null, getInstructions(), "JumpIN Instructions", -1));
+		
+		helpMenu.add(instructions);
+		helpMenu.add(hint);
+		
+		//Waits For a puzzle selection to set up board
+		running = false;
+		puzzlenumber = -1;
+		
+		setVisible(true);
+		
+		//Note running was declared as volatile because otherwise the program would try to
+		//optimize this and decide that running will never change.
+		//(i.e. determining this is an infinite loop)
+		while(!running) {
+			if(puzzlenumber >= 0 && puzzlenumber < InfoBook.COUNT_BOARDS) running = true;
+		}
+		
+		puzzleMenu.setEnabled(false);
+		options.setEnabled(true);
+		
+		game = new Game(puzzlenumber);	
 		
 		//Button board: Related to GameBoard and game 
 		square = new JumpInButton[GameBoard.SIZE][GameBoard.SIZE];
@@ -182,7 +194,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 	}
 	
 	/**
-	 * Show the possible moves in yellow. This is not currently working properly, and needs to be updated.
+	 * Show the possible moves in yellow.
 	 */
 	public void updateMoveOptionVisuals() {
 		this.updateBoardVisuals();
@@ -208,6 +220,28 @@ public class JumpInGUI extends JFrame implements ActionListener {
 			}
 		}
 	}	
+	
+	/**
+	 * Create a String of instructions.
+	 * @return a String containing the instructions on how to play JumpIN.
+	 */
+	public String getInstructions() {
+		String s = "1. To start the game, select a puzzle from the Puzzle Selection menu.\n";
+		s += "2. Once you have selected a game, the board will be visible.\n";
+		s += "   Foxes are orange, mushrooms are red and bunnies are grey.\n";
+		s += "   Empty squares are green and holes are black.\n";
+		s += "3. When you click on a piece, the game will highlight in yellow\n";
+		s += "   all the possible moves for this piece.\n";
+		s += "   Bunnies must jump another piece, foxes move based on their alignment,\n";
+		s += "   mushrooms cannot move.\n";
+		s += "4. You can select one of those squares to move the piece or select\n";
+		s += "   another piece to see the possible moves for that piece.\n";
+		s += "5. The game is won when all bunnies are in one of the holes.\n";
+		s += "6. In the menus, you can also find undo, redo, reset and help\n";
+		s += "   functions to help you win.\n";
+		s += "Good Luck!";
+		return s;
+	}
 	
 	/**
 	 * Main method for the GUI.
