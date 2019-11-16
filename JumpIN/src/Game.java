@@ -84,6 +84,10 @@ public class Game {
 		if(allBunniesInHoles) jumpin.setRunning(false);
 	}
 	
+	public void reset() {
+		this.gameboard.reset(pieces);
+	}
+	
 	public void undo() {
 		this.gameboard.undo();
 	}

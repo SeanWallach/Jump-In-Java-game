@@ -209,6 +209,28 @@ public class GameBoard{
 		return true;
 	}
 	
+	public void reset(ArrayList<GamePiece> p) {		
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++) {
+				tiles[i][j].setEmpty();
+			}	
+		}
+		
+		for(GamePiece g: p) {
+			int i = g.getX();
+			int j = g.getY();
+			tiles[i][j].setOnTop(g);
+			if(g instanceof Fox) {
+				if(((Fox) g).getUpDown())
+					tiles[i][j + 1].setOnTop(g);
+				else
+					tiles[i + 1][j].setOnTop(g);
+			}
+		}
+
+		printBoard();
+	}
+	
 	public void undo() {
 		if(movesMade.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Cannot undo.");
