@@ -47,7 +47,7 @@ public class GameBoard{
 	}
 
 	/**
-	 * Method movePiece moves game piece in specified direction
+	 * Method prepares for moving a piece, then moves the piece.
 	 * @param x X-coordinate to where game piece is moving
 	 * @param y Y-coordinate to where game piece is moving
 	 * @param direction Direction game piece is moving
@@ -57,6 +57,12 @@ public class GameBoard{
 		move(x, y, direction);
 	}
 	
+	/**
+	 * Method move moves game piece in specified direction
+	 * @param x X-coordinate to where game piece is moving
+	 * @param y Y-coordinate to where game piece is moving
+	 * @param direction Direction game piece is moving
+	 */
 	private void move(int x, int y, int direction) {
 		//Since the GamePieces don't know which other pieces are around them, this
 		//class finds the empty position, then tells the piece to move to that
@@ -162,6 +168,10 @@ public class GameBoard{
 		return this.tiles[x][y];
 	}
 	
+	/**
+	 * 
+	 * @return the current tiles representing the gameboard.
+	 */
 	public Tile[][] getTiles(){
 		return this.tiles;
 	}
@@ -209,6 +219,9 @@ public class GameBoard{
 		return true;
 	}
 	
+	/**
+	 * Undoes the last move made by the player.
+	 */
 	public void undo() {
 		if(movesMade.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Cannot undo.");
@@ -225,6 +238,9 @@ public class GameBoard{
 		this.movesMade.pop();
 	}
 	
+	/**
+	 * Redoes the last move made by a player (assuming that an undo has just occurred)
+	 */
 	public void redo() {
 		if(undoCalls.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Cannot redo.");
