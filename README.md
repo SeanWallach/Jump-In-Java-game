@@ -58,19 +58,19 @@ Lyndon Lo:
 Group tasks:
 
 Andrew Foster:
-  
+  Creating solver and hint functions.
 
 Ashton Mohns:
-  Fixing bugs, making stack class
+  Fixing bugs, creating stacks and implementing undo and redo.
 
 Nicholas Porter:
-  
+  Adding unit tests.
 
 Sean Wallach:
   Fixing bugs, making gameboard resetable
 
 Lyndon Lo:
-
+  Helping with solver and hint functionality.
 
 #Milestone 4
 ---------------------------------
