@@ -85,6 +85,16 @@ public class Game {
 	}
 	
 	/**
+	 * Method reset takes in a puzzle number, gets the appropriate pieces from a new infobook, and 
+	 * sets the board according to the puzzlenumber.
+	 * @param puzzlenumber int puzzle number for infobook's reference
+	 */
+	public void reset(int puzzlenumber) {
+		ArrayList<GamePiece> p = new InfoBook(puzzlenumber).getPieces();
+		this.gameboard.reset(p);
+	}
+	
+  /**
 	 * Undo function, delegates task to the gameboard.
 	 */
 	public void undo() {

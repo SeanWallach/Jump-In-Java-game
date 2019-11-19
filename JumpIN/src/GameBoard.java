@@ -220,6 +220,36 @@ public class GameBoard{
 	}
 	
 	/**
+	 * Method reset resets the board to its original setup according to its puzzlenumber
+	 * @param p gamepieces from infobook
+	 */
+	public void reset(ArrayList<GamePiece> p) {		
+		boardpieces = p;
+		
+		// Cycle through the board and set all tiles to empty
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++) {
+				tiles[i][j].setEmpty();
+			}	
+		}
+		
+		// Cycle through all gamepieces and set them on the appropriate board
+		for(GamePiece g: p) {
+			int i = g.getX();
+			int j = g.getY();
+			tiles[i][j].setOnTop(g);
+			if(g instanceof Fox) {
+				if(((Fox) g).getUpDown())
+					tiles[i][j + 1].setOnTop(g);
+				else
+					tiles[i + 1][j].setOnTop(g);
+			}
+		}
+
+		printBoard();
+	}
+	
+  /**
 	 * Undoes the last move made by the player.
 	 */
 	public void undo() {
