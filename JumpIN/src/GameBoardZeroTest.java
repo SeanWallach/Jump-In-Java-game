@@ -81,6 +81,14 @@ public class GameBoardZeroTest {
 		
 	}
 	
+	/* solve is not yet implemented 
+	@Test
+	public void testSolve() {
+		testGameBoard.solve();
+		assertEquals(false, jumpin.getRunning());
+	}
+	*/
+	
 	/**
 	 * Testing that the proper puzzle
 	 * has been selected by comparing 
