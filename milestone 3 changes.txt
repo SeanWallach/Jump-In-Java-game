@@ -14,4 +14,6 @@ Implementing Solver (Andrew and Lyndon):
 moveSolve, solve, getTarget, repetitionCheck, printInformationMove, getMovablePieces and findDirection
 
 Adding Tests (Nicholas):
+- added tests for undo, redo, solve, and getGameBoard
+- fixed bug in Tile equals method
 
