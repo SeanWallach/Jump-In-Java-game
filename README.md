@@ -67,7 +67,7 @@ Nicholas Porter:
   Adding unit tests.
 
 Sean Wallach:
-  Fixing bugs, making gameboard resetable
+  Fixing bugs, making gameboard resetable, bug fixes
 
 Lyndon Lo:
   Helping with solver and hint functionality.
