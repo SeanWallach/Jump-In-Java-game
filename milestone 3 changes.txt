@@ -1,0 +1,15 @@
+Milestone 3 Changes
+Implementing Undo and Redo (Ashton):
+-Adding undo and redo functions to the Game class.
+-Adding undo and redo functions to GameBoard class, changing the movePiece function to clear the redo stack, and create a private move function that moves the piece (called by all three previously mentioned functions).
+-Added two stacks to keep track of moves that can be undone and redone. Stacks were chosen due to the first in last off structure that is essential for undo and redo functionality.
+
+Implementing Reset (Sean):
+
+
+Implementing Solver (Andrew and Lyndon):
+-Added the following methods to the code to allow a proper use of the solver:
+moveSolve, solve, getTarget, repetitionCheck, printInformationMove, getMovablePieces and findDirection
+
+Adding Tests (Nicholas):
+
