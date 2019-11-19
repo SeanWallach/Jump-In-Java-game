@@ -210,6 +210,8 @@ public class GameBoard{
 	}
 	
 	public void reset(ArrayList<GamePiece> p) {		
+		boardpieces = p;
+		
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
 				tiles[i][j].setEmpty();

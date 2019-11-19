@@ -85,6 +85,7 @@ public class Game {
 	}
 	
 	public void reset() {
+		this.pieces = book.getPieces();
 		this.gameboard.reset(pieces);
 	}
 	
