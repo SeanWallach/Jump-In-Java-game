@@ -64,7 +64,14 @@ Ashton Mohns:
   Fixing bugs, creating stacks and implementing undo and redo.
 
 Nicholas Porter:
-  Adding unit tests.
+  Fixed bug in Tile equals method.
+  Adding unit tests:
+    - testUndoInvalid()
+    - testUndo()
+    - testRedo()
+    - testSolve()
+    - testGetGameBoard()
+    
 
 Sean Wallach:
   Fixing bugs, making gameboard resetable, bug fixes
