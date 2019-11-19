@@ -84,10 +84,16 @@ public class Game {
 		if(allBunniesInHoles) jumpin.setRunning(false);
 	}
 	
+	/**
+	 * Undo function, delegates task to the gameboard.
+	 */
 	public void undo() {
 		this.gameboard.undo();
 	}
 	
+	/**
+	 * Redo function, delegates task to the gameboard.
+	 */
 	public void redo() {
 		this.gameboard.redo();
 	}
