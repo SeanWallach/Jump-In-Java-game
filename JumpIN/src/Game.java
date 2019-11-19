@@ -84,9 +84,14 @@ public class Game {
 		if(allBunniesInHoles) jumpin.setRunning(false);
 	}
 	
-	public void reset() {
-		this.pieces = book.getPieces();
-		this.gameboard.reset(pieces);
+	/**
+	 * Method reset takes in a puzzle number, gets the appropriate pieces from a new infobook, and 
+	 * sets the board according to the puzzlenumber.
+	 * @param puzzlenumber int puzzle number for infobook's reference
+	 */
+	public void reset(int puzzlenumber) {
+		ArrayList<GamePiece> p = new InfoBook(puzzlenumber).getPieces();
+		this.gameboard.reset(p);
 	}
 	
 	public void undo() {

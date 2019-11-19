@@ -82,7 +82,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		reset = new JMenuItem("Reset");
 		reset.addActionListener(e -> {
 			this.selectedPiece = null;
-			game.reset();
+			game.reset(puzzlenumber);
 			this.updateBoardVisuals();
 		});
 		
