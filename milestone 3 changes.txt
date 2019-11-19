@@ -5,7 +5,9 @@ Implementing Undo and Redo (Ashton):
 -Added two stacks to keep track of moves that can be undone and redone. Stacks were chosen due to the first in last off structure that is essential for undo and redo functionality.
 
 Implementing Reset (Sean):
-
+-Adding reset function to Game class
+-Adding reset function to GameBoard class
+-bug fixes
 
 Implementing Solver (Andrew and Lyndon):
 -Added the following methods to the code to allow a proper use of the solver:
