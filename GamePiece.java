@@ -12,7 +12,7 @@ public abstract class GamePiece {
 	protected int y;
 	private int size;
 	private String name;
-	private ArrayList<Integer[]> memory;
+	private ArrayList<Tile> memory;
 	
 	/**
      *      GamePiece constructor
@@ -26,19 +26,22 @@ public abstract class GamePiece {
 		this.y = y;
 		this.size = size;
 		this.name = name;
-		this.memory = new ArrayList<Integer[]>();
+		this.memory = new ArrayList<Tile>();
 	}
-	public ArrayList<Integer[]> getMemory(){
+	public ArrayList<Tile> getMemory(){
 		return memory;
 	}
-	public void setMemory(Tile to, GamePiece p, int direction) {
-		Integer[] mem = {to.getX(), to.getY(), p.getX(), p.getY(), direction};
-		this.memory.add(mem);
+	public void addToMemory(Tile lastTile) {
+		memory.add(lastTile);
+	}
+	public void clearMemory() {
+		for(int i = 0; i< memory.size(); i++) {
+			memory.remove(0);
+		}
 	}
 	public void printMemory() {
-		System.out.println("Memory:");
-		for(int i = 0; i < memory.size(); i++) {
-			System.out.println("toX:"+memory.get(i)[0]+" toY: "+memory.get(i)[1]+" pX: "+memory.get(i)[2]+" pY: "+memory.get(i)[3]+" dir: "+ memory.get(i)[4]);
+		if(memory.size()>0) {
+			System.out.println("Last Tile: "+ memory.get(0).getX() + ", " + memory.get(0).getY());
 		}
 	}
 	/**

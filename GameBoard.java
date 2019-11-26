@@ -15,6 +15,7 @@ public class GameBoard{
 	private ArrayList<GamePiece> boardpieces;
 	private Deque<Integer[]> movesMade;
 	private Deque<Integer[]> undoCalls;
+	private GamePiece lastPieceMoved;
 	
 	/**
 	 * GameBoard constructor
@@ -98,13 +99,16 @@ public class GameBoard{
 		MovableGamePiece m = (MovableGamePiece) g;
 				
 		boolean successfulMove = m.move(newCoord[0], newCoord[1], this.tiles);
-		if(successfulMove) this.movesMade.push(new Integer[] {newCoord[0], newCoord[1], direction});
+		if(successfulMove) {
+			this.movesMade.push(new Integer[] {newCoord[0], newCoord[1], direction});
+			lastPieceMoved = g;
+			g.addToMemory(getTile(g.getX(),g.getY()));
+		}
 		
 		//System.out.println(this.movesMade.peek()[0]+""+ this.movesMade.peek()[1]+""+ this.movesMade.peek()[2] );
 		//System.out.println("successfulMove = "+ successfulMove);
 
 		//System.out.println("After moveSolve"+g.getName() +": new X:"+newCoord[0] + " new Y:"+newCoord[1]);
-		printBoard();
 	}
 	
 	// This function calculates the possible moves available to the selected GamePiece
@@ -237,106 +241,161 @@ public class GameBoard{
 	
 	
 	public void solve() {
-		ArrayList<GamePiece> movingpieces = getMovablePieces();		
+		
+		//Sets the pieces initial tile to memory
+		for(int i = 0; i<boardpieces.size(); i++) {
+			int x = boardpieces.get(i).getX();
+			int y = boardpieces.get(i).getY();
+			boardpieces.get(i).addToMemory(getTile(x,y));
+		}
+		ArrayList<GamePiece> movingPieces = getMovablePieces();		
+		ArrayList<Tile> moveOptions = new ArrayList<Tile>();
+		
 		Tile from;
 		Tile to;
-		
+		 
 		int target = getTarget();
 		int bunniesInHole = 0;
 		int direction;
 		int count = 0;
-		
-		boolean reusedMove = false;
-		boolean backTracking = false;
+
+		boolean backTracking;
+		boolean solved = false;
 		
 		//looping the algorithm enough to be able to solve all problems
-		while(count < 3) {
-			System.out.println("-----------------Round "+ count+"----------------------");							
-			for(int i = 0; i < movingpieces.size(); i++) {
-				//Get all of the pieces that can move
-				movingpieces = getMovablePieces();
-				ArrayList<Tile> moveoptions = new ArrayList<>();
+		while(count < 100000000) {
+			System.out.println("-----------------Round "+ count+"----------------------");
+			System.out.println("Board Before round");
+			printBoard();
+			//Get all of the pieces that can move this round
+			movingPieces = getMovablePieces();
+			
+			//For all Pieces that can move on the game board
+			for(int i = 0; i < movingPieces.size(); i++) {
 				
-				if(movingpieces.size() <= i) {
-					this.undo();
-				}
-				else {
-					//Get all movement options of the pieces that can move
-					moveoptions = possibleMoves(movingpieces.get(i));
-
-				}
-				//Capture the current tile being stood on, so that if my piece ever moves back to this spot I know I have exhausted the depth of the branch
-				 
 				
-				//For the Objects moves
-				for(int j = 0; j< moveoptions.size(); j++) {
-					System.out.println("----Piece "+ i+"----------------------");			
+				//Get all of the movement options for the current piece being looked at 
+				moveOptions = possibleMoves(movingPieces.get(i));
+				
+				
+				//For the all of the possible moves of the piece
+				for(int j = 0; j< moveOptions.size(); j++) {
 					
-					moveoptions = possibleMoves(movingpieces.get(i));
-					printMoveInformation(movingpieces);
-	
-					//Moving The Object to its positions-> always take first option until no more left
-					direction = findDirection(moveoptions.get(0), movingpieces.get(i));
-										
-					reusedMove = repetitionCheck(movingpieces.get(i), moveoptions.get(0).getX(), moveoptions.get(0).getY(), direction);	
-					from = getTile(movingpieces.get(i).getX(), movingpieces.get(i).getY());
-					to = getTile(moveoptions.get(0).getX(), moveoptions.get(0).getY());
-					backTracking = inPieceMemory(movingpieces.get(i), moveoptions.get(0).getX(),moveoptions.get(0).getY());
+					System.out.println("----Active Piece = "+ movingPieces.get(i).getName()+"----------------------");
+					System.out.println("Board Before piece Options");
+					printBoard();
 					
-					movingpieces.get(i).printMemory();
-					//check madeMoves: only allows non repetitive moves to move
-					if(!backTracking ) {
-						System.out.println("X; "+ moveoptions.get(0).getX() + "Y: "+ moveoptions.get(0).getY() + "Dir"+ direction);				
-						moveSolve(movingpieces.get(i), moveoptions.get(0).getX(), moveoptions.get(0).getY(), direction);
-						movingpieces.get(i).setMemory(to, movingpieces.get(i), direction);
+					//Prints the last Piece to be moved
+					if(lastPieceMoved != null) {
+						System.out.println("lastPieceMoved = " + lastPieceMoved.getName());
 					}
-					//
 					else {
-						System.out.println("Move has already been made");
-						printMoveInformation(movingpieces);
-						moveoptions.remove(moveoptions.get(0));
-						moveSolve(movingpieces.get(i), moveoptions.get(0).getX(), moveoptions.get(0).getY(), direction);
-
+						System.out.println("First move of Solver");
 					}
+					
+	
+					//Movement Logic of piece: checks to see if the piece can move and if it can it goes through the movement logic
+					if(moveOptions.size() > 0) {
+						
+						//finds the the values required for the movement to function: direction, the starting tile, the ending tile
+						direction = findDirection(moveOptions.get(0), movingPieces.get(i));					
+						from = getTile(movingPieces.get(i).getX(), movingPieces.get(i).getY());
+						to = getTile(moveOptions.get(0).getX(), moveOptions.get(0).getY());
+						
+						//checks to see if the tile the piece is going is the tile it moved from previously
+						backTracking = checkPieceMemory(movingPieces.get(i), to);
+						
+						//Checks for backtracking with the pieces, if it is not backtracking the piece just moves normally
+						if(lastPieceMoved == null) {
+							System.out.println("First move of Solver");
+							moveSolve(movingPieces.get(i), moveOptions.get(0).getX(), moveOptions.get(0).getY(), direction);
+							printBoard();
+						}
+						else {
+							if(!backTracking) {			
+								moveSolve(movingPieces.get(i), moveOptions.get(0).getX(), moveOptions.get(0).getY(), direction);
+								
+								
+							}
+							//if the piece does back track
+							else {
+								
+								System.out.println("Move has already been made");
+								System.out.println("Piece has "+moveOptions.size()+ " possible moves");
+								System.out.println("Game has "+movingPieces.size()+ " movable pieces");
+								
+								//exception case for when there is only one possible move to be made in the entire game and it is the piece backtracking back to where it came from
+								if(moveOptions.size()<= 1 && movingPieces.size() <=1) {
+									if(lastPieceMoved == movingPieces.get(i)) {
+										System.out.println("Same Piece As last round is moving");
+
+									}
+									System.out.println("the piece must go back there is only one possible move it can make and it is backtracking");
+									
+									//moves the piece back
+									moveSolve(movingPieces.get(i), moveOptions.get(0).getX(), moveOptions.get(0).getY(), direction);
+									
+								}
+								//if the move is backtracking, and there is other options in the game
+								else {
+									
+									//if there is more than one option the piece can make remove the first move which would make it backtrack and do the next possible move it can make
+									if(moveOptions.size() > 1 ) {
+										moveOptions.remove(0);
+										moveSolve(movingPieces.get(i), moveOptions.get(0).getX(), moveOptions.get(0).getY(), direction);
+									}
+									//
+									else {
+										System.out.println("Do the other moves of the pieces");
+									}
+									
+								}
+							}
+						}
+						System.out.println("Board After Piece:");
+						printBoard();
+						
+					}
+					
+					//Updates the movement options of the piece after it finishes its movement logic
+					moveOptions = possibleMoves(movingPieces.get(i));
+					
 					//Check Winning Conditions after having made a move
-					for(int winCheck = 0; winCheck < movingpieces.size(); winCheck++) {
-						if((movingpieces.get(winCheck) instanceof Bunny) && !getTile(movingpieces.get(winCheck).getX(), movingpieces.get(winCheck).getY()).getGrass()){
+					for(int winCheck = 0; winCheck < movingPieces.size(); winCheck++) {
+						if((movingPieces.get(winCheck) instanceof Bunny) && !getTile(movingPieces.get(winCheck).getX(), movingPieces.get(winCheck).getY()).getGrass()){
 							bunniesInHole++;
 						}
 					}
 					if(target == bunniesInHole) {
+						System.out.println("Solved");
+						solved = true;
+						count = 100000000;
 						j=1000;
 						i=1000;
-						count=1000;
 					}
 					bunniesInHole = 0;
-
+					
 				}
-				
-				
+				if(!solved) {
+					if(movingPieces.size()>=1) {
+						movingPieces.get(i).clearMemory();
+					}
+				}	
 			}
 			count++;
 			System.out.println("Final Count = "+count);
 			
 		}
 	}
-	public boolean inPieceMemory(GamePiece p, int x, int y) {
-		Tile to = getTile(x,y);
-		int direction = findDirection(to, p);
-		Integer[] mem = {to.getX(), to.getY(), p.getX(), p.getY(), direction};
-		int count = 0;
-		
+	public boolean checkPieceMemory(GamePiece p, Tile to) {
+		System.out.println("Entered checkPieceMemory of" + p.getName());
+		p.printMemory();
 		if(p.getMemory().size()> 0) {
-			System.out.println(p.getName() + p.getX() +"" +p.getY()+""+p.getMemory().size());
 			for(int i = 0; i < p.getMemory().size(); i++) {
-				for(int j = 0; j < p.getMemory().size(); j++ ) {
-					if(mem[0] == p.getMemory().get(j)[0] && mem[1] == p.getMemory().get(j)[1] && mem[2] == p.getMemory().get(j)[2] && mem[3] == p.getMemory().get(j)[3] && mem[4] == p.getMemory().get(j)[4]) {
-						return true;
-					}
+				System.out.println(to.getX() +""+ p.getMemory().get(i).getX() +" " +to.getY() +""+ p.getMemory().get(i).getY() );
+				if(to.getX() == p.getMemory().get(i).getX() && to.getY() == p.getMemory().get(i).getY()) {
+					return true;
 				}
-			}	
-			if(count == 5) {
-				return true;
 			}
 		}
 		return false;
@@ -351,47 +410,8 @@ public class GameBoard{
 		return target;
 		
 	}
-	public boolean repetitionCheck(GamePiece g, int x, int y, int direction) {
-		Deque<Integer[]> tempStack = movesMade;
-		System.out.println("Stack Accessed");
-			
-		if(tempStack.size() >= 2) {
 
-			
-			Integer[] poping = tempStack.pop();
-			System.out.println("poping:      :x = "+poping[0]+", y = "+poping[1]+" direction = "+poping[2]);
 
-			
-			Integer[] duplicateMove = tempStack.pop();
-			System.out.println("duplicateMove:x = "+duplicateMove[0]+", y = "+duplicateMove[1]+" direction = "+duplicateMove[2]);
-			
-			System.out.println("given        :x = "+x+", y = "+y+" direction = "+direction);
-			if( duplicateMove[0]== x && duplicateMove[1] == y && duplicateMove[2] == direction ) {
-				
-				System.out.println("MADE IT HERE");
-				return true;
-			}
-		}
-		
-		return false;	
-	}
-	
-	public void printMoveInformation(ArrayList<GamePiece> movingpieces) {
-		//System.out.println("PIECES THAT CAN MOVE");
-		//System.out.println("movingpieces.size() = "+movingpieces.size());
-		for(int i = 0; i< movingpieces.size(); i++) {
-			
-
-			ArrayList<Tile> moveoptions = possibleMoves(movingpieces.get(i));// move options for pieces you're looking at
-			
-			System.out.println(movingpieces.get(i).getName());
-			for(int j = 0; j< moveoptions.size(); j++) {
-				System.out.println("	MOVE OPTIONS "+ j);
-				System.out.println("	X: "+moveoptions.get(j).getX() +" Y:"+ moveoptions.get(j).getY());
-			}
-		}
-		printBoard();
-	}
 	
 	public ArrayList<GamePiece> getMovablePieces(){
 		ArrayList<GamePiece> simpieces = boardpieces;
@@ -408,18 +428,10 @@ public class GameBoard{
 				//System.out.println(simpiece.getName()+": added to movable pieces");
 			}
 		}
-		System.out.println("Movable Pieces:");
-		for(int i = 0; i< movablepieces.size(); i++) {
-			System.out.println(movablepieces.get(i).getName());
-			System.out.println(movablepieces.get(i).getX()+""+ movablepieces.get(i).getY());
-		}
 		return movablepieces;
 	}
 	
-	public int findDirection(Tile to, GamePiece from) {
-		System.out.println("from = X: "+ from.getX()+ ", Y: "+ from.getY());
-		System.out.println("To   = X: "+ to.getX()+ ", Y: "+ to.getY());
-		
+	public int findDirection(Tile to, GamePiece from) {	
 		//check if the tile you're moving to is up or down from you
 		if(to.getX() == from.getX()) {
 			if(to.getY() > from.getY()) {
