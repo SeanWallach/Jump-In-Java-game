@@ -13,8 +13,8 @@ import javax.swing.*;
 public class PuzzleBuilder extends JFrame implements ActionListener {
 	private Game game;
 	
-	private JMenuItem addFoxPiece,addBunnyPiece ,addMushroomPiece;
-	private JMenu addPieceMenu, removePiece, savePuzzle;
+	private JMenuItem addFoxPieceV, addFoxPieceH,addBunnyPiece ,addMushroomPiece,removePiece;
+	private JMenu addPieceMenu, removePieceMenu, savePuzzle;
 	
 	private int remainingBunnyPieces;
 	private int remainingFoxPieces;
@@ -36,44 +36,58 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 		setSize(400, 400);		
 		setLocation(400,200);
 		
-		//Menu Items: Related to Info Book and puzzle selection
+		//Menu Items
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
 		addPieceMenu = new JMenu("Add Piece");
-		removePiece = new JMenu("Remove Piece");
-		removePiece.addActionListener(e -> {
-			currentPieceAdding = 0;
-			System.out.println(currentPieceAdding);
-		});
-
+		removePieceMenu = new JMenu("Remove Piece");
 		savePuzzle = new JMenu("Save Puzzle");
 		
 		menuBar.add(addPieceMenu);
-		menuBar.add(removePiece);
+		menuBar.add(removePieceMenu);
 		menuBar.add(savePuzzle);
 		
-		addBunnyPiece = new JMenuItem("Bunny");
+		//Add Piece JMenu
+		addBunnyPiece = new JMenuItem("Standard Bunny");
 		addBunnyPiece.addActionListener(e -> {
 			currentPieceAdding = 1;
 			System.out.println(currentPieceAdding);
 		});
 		
-		addFoxPiece = new JMenuItem("Fox");
-		addFoxPiece.addActionListener(e -> {
+		addFoxPieceH = new JMenuItem("Horizontal Fox");
+		addFoxPieceH.addActionListener(e -> {
 			currentPieceAdding = 2;
 			System.out.println(currentPieceAdding);
 		});
 		
-		addMushroomPiece = new JMenuItem("Mushroom");
-		addMushroomPiece.addActionListener(e -> {
+		addFoxPieceV = new JMenuItem("Vertical Fox");
+		addFoxPieceV.addActionListener(e -> {
 			currentPieceAdding = 3;
 			System.out.println(currentPieceAdding);
 		});
 		
+		addMushroomPiece = new JMenuItem("Standard Mushroom");
+		addMushroomPiece.addActionListener(e -> {
+			currentPieceAdding = 4;
+			System.out.println(currentPieceAdding);
+		});
+		
 		addPieceMenu.add(addBunnyPiece);
-		addPieceMenu.add(addFoxPiece);
+		addPieceMenu.add(addFoxPieceH);
+		addPieceMenu.add(addFoxPieceV);
 		addPieceMenu.add(addMushroomPiece);
+		
+		//Remove Piece JMenu
+		removePiece = new JMenuItem("Remove");
+		removePiece.addActionListener(e -> {
+			currentPieceAdding = 0;
+			System.out.println(currentPieceAdding);
+		});
+		
+		removePieceMenu.add(removePiece);
+		
+		//Save Menu
 		
 		game = new Game();
 		//Button board: Related to GameBoard and game 
@@ -126,10 +140,13 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 			}
 			//adding a Fox
 			else if(currentPieceAdding == 2) {
+				/*if(remainingFoxPieces >0) {
+					game.getGameBoard().placePiece(new Fox("Fox",b.getX(), b.getY(), boolean d));
+				}*/
 				System.out.println("Add Fox to be made");
 			}
 			//adding a Mushroom
-			else if(currentPieceAdding == 3) {
+			else if(currentPieceAdding == 4) {
 				if(remainingMushroomPieces > 0) {
 					game.getGameBoard().placePiece(new Mushroom("Mushroom",b.getX(), b.getY()));
 					remainingMushroomPieces -= 1;
@@ -142,27 +159,25 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 		else {
 			//This is for when a GamePiece is pressed.
 			if(currentPieceAdding == 0) {
+				if(game.getGameBoard().getTile(b.getX(), b.getY()).getOnTop() instanceof Bunny) {
+					remainingBunnyPieces +=1;
+				}
+				else if(game.getGameBoard().getTile(b.getX(), b.getY()).getOnTop() instanceof Mushroom) {
+					remainingMushroomPieces +=1;
+				}
+				else if(game.getGameBoard().getTile(b.getX(), b.getY()).getOnTop() instanceof Mushroom) {
+					remainingFoxPieces += 1;
+				}
+				
 				game.getGameBoard().removePiece(b.getX(), b.getY());
 				System.out.println("Piece Should be removed");
-
 			}
 				
 			this.selectedPiece = game.getGameBoard().getTile(b.getX(), b.getY()).getOnTop();
-			moveOptions = game.getGameBoard().possibleMoves(selectedPiece);
-			this.updateMoveOptionVisuals();
 		}
 		updateBoardVisuals();
 	}
-	
-	/**
-	 * Show the possible moves in yellow.
-	 */
-	public void updateMoveOptionVisuals() {
-		this.updateBoardVisuals();
-		for(Tile t : moveOptions) {
-			this.square[t.getX()][t.getY()].setBackground(Color.YELLOW);
-		}
-	}
+
 	
 	/**
 	 * Update all the tiles with the piece placements.
@@ -181,34 +196,5 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 			}
 		}
 	}	
-
-	/**
-	 * Create a String of instructions.
-	 * @return a String containing the instructions on how to play JumpIN.
-	 */
-	public String getInstructions() {
-		String s = "1. To start the game, select a puzzle from the Puzzle Selection menu.\n";
-		s += "2. Once you have selected a game, the board will be visible.\n";
-		s += "   Foxes are orange, mushrooms are red and bunnies are grey.\n";
-		s += "   Empty squares are green and holes are black.\n";
-		s += "3. When you click on a piece, the game will highlight in yellow\n";
-		s += "   all the possible moves for this piece.\n";
-		s += "   Bunnies must jump another piece, foxes move based on their alignment,\n";
-		s += "   mushrooms cannot move.\n";
-		s += "4. You can select one of those squares to move the piece or select\n";
-		s += "   another piece to see the possible moves for that piece.\n";
-		s += "5. The game is won when all bunnies are in one of the holes.\n";
-		s += "6. In the menus, you can also find undo, redo, reset and help\n";
-		s += "   functions to help you win.\n";
-		s += "Good Luck!";
-		return s;
-	}
-	
-	/**
-	 * Main method for the GUI.
-	 * 
-	 * @param args runtime arguments
-	 */
-
 
 }

@@ -284,7 +284,7 @@ public class GameBoard{
 		boolean solved = false;
 		
 		//looping the algorithm enough to be able to solve all problems
-		while(count < 4) {
+		while(count < 100000) {
 			System.out.println("-----------------Round "+ count+"----------------------");
 			System.out.println("Board Before round");
 			printBoard();
