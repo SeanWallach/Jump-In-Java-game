@@ -25,6 +25,9 @@ public class Game {
 		
 		gameboard = new GameBoard(pieces);
 	}
+	public Game() {
+		gameboard = new GameBoard(null);
+	}
 	
 	/**
 	 * Method getPieces gets the game pieces

@@ -16,6 +16,9 @@ public class GameBoard{
 	private Deque<Integer[]> movesMade;
 	private Deque<Integer[]> undoCalls;
 	private GamePiece lastPieceMoved;
+	private boolean showSolverMoves;
+	
+	
 	
 	/**
 	 * GameBoard constructor
@@ -28,23 +31,38 @@ public class GameBoard{
 		boardpieces = p;
 		tiles = new Tile[SIZE][SIZE];
 		
+		showSolverMoves = false;
+		
 		for(int i = 0; i < SIZE; i++) {
 			for(int j = 0; j < SIZE; j++) {
 				tiles[i][j] = new Tile(i, j);				
 			}
 		}
 		
-		for(GamePiece g: boardpieces) {
-			int i = g.getX();
-			int j = g.getY();
-			tiles[i][j].setOnTop(g);
-			if(g instanceof Fox) {
-				if(((Fox) g).getUpDown())
-					tiles[i][j + 1].setOnTop(g);
-				else
-					tiles[i + 1][j].setOnTop(g);
+		if(boardpieces != null) {
+			for(GamePiece g: boardpieces) {
+				int i = g.getX();
+				int j = g.getY();
+				tiles[i][j].setOnTop(g);
+				if(g instanceof Fox) {
+					if(((Fox) g).getUpDown())
+						tiles[i][j + 1].setOnTop(g);
+					else
+						tiles[i + 1][j].setOnTop(g);
+				}
 			}
 		}
+		
+	}
+	
+	public void placePiece(GamePiece g) {
+		int i = g.getX();
+		int j = g.getY();
+		tiles[i][j].setOnTop(g);
+	}
+	public void removePiece(int x, int y) {
+		getTile(x, y).setEmpty();
+		
 	}
 
 	/**
@@ -239,7 +257,9 @@ public class GameBoard{
 		return true;
 	}
 	
-	
+	public boolean showSolverMoves() {
+		return showSolverMoves;
+	}
 	public void solve() {
 		
 		//Sets the pieces initial tile to memory
@@ -258,12 +278,13 @@ public class GameBoard{
 		int bunniesInHole = 0;
 		int direction;
 		int count = 0;
-
+		
+		
 		boolean backTracking;
 		boolean solved = false;
 		
 		//looping the algorithm enough to be able to solve all problems
-		while(count < 100000000) {
+		while(count < 4) {
 			System.out.println("-----------------Round "+ count+"----------------------");
 			System.out.println("Board Before round");
 			printBoard();
@@ -382,6 +403,7 @@ public class GameBoard{
 					}
 				}	
 			}
+			showSolverMoves = true;
 			count++;
 			System.out.println("Final Count = "+count);
 			

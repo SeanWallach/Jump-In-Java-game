@@ -13,7 +13,7 @@ import javax.swing.*;
 public class JumpInGUI extends JFrame implements ActionListener {
 	private Game game;
 	
-	private JMenuItem puzzle0, puzzle1, puzzle2, hint, undo, redo, reset;
+	private JMenuItem puzzle0, puzzle1, puzzle2, hint, undo, redo, reset, puzzleCreate;
 	private JMenu puzzleMenu, options, helpMenu;
 	
 	private volatile boolean running;
@@ -42,9 +42,15 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		options.setEnabled(false);
 		helpMenu = new JMenu("Help");
 		
+		
 		menuBar.add(puzzleMenu);
 		menuBar.add(options);
 		menuBar.add(helpMenu);
+
+		puzzleCreate = new JMenuItem("puzzle creation");
+		puzzleCreate.addActionListener(e-> {
+			new PuzzleBuilder();
+		});
 		
 		puzzle0 = new JMenuItem("puzzle 0");
 		puzzle0.addActionListener(e -> {
@@ -61,6 +67,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 			puzzlenumber = 2;
 		});
 		
+		puzzleMenu.add(puzzleCreate);
 		puzzleMenu.add(puzzle0);
 		puzzleMenu.add(puzzle1);
 		puzzleMenu.add(puzzle2);
@@ -83,6 +90,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		redo.addActionListener(e -> {
 			
 		});
+		
 		
 		options.add(undo);
 		options.add(redo);
@@ -230,7 +238,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 			}
 		}
 	}	
-	
+
 	/**
 	 * Create a String of instructions.
 	 * @return a String containing the instructions on how to play JumpIN.
@@ -264,6 +272,9 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		
 		while(jumpin.running) {
 			//Waiting for game to end.
+			if(jumpin.game.getGameBoard().showSolverMoves()) {
+				jumpin.updateBoardVisuals();
+			}
 		}
 		JOptionPane.showMessageDialog(null, "Congratulations, you have won!");
 	}
