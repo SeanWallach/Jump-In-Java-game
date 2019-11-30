@@ -245,8 +245,9 @@ public class GameBoard{
 					tiles[i + 1][j].setOnTop(g);
 			}
 		}
-
-		printBoard();
+		
+		movesMade.clear();
+		undoCalls.clear();
 	}
 	
   /**
