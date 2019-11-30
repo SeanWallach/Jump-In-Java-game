@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -64,10 +65,34 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		puzzle2.addActionListener(e -> {
 			puzzlenumber = 2;
 		});
+				
+		save = new JMenuItem("Save");
+		save.addActionListener(e -> {
+			this.selectedPiece = null;
+			String filename = JOptionPane.showInputDialog("Enter save name (don't put extension)"); 
+			game.save(filename);
+		});
+		
+		load = new JMenuItem("Load");
+		load.addActionListener(e -> {
+			this.selectedPiece = null;
+			JFileChooser chooser = new JFileChooser();
+			chooser.setCurrentDirectory(new File("src/saves"));
+			File filename = null;
+			int result = chooser.showOpenDialog(new JFrame());
+			if (result == JFileChooser.APPROVE_OPTION) {
+	            filename = chooser.getSelectedFile();
+	        }
+			//String filename = JOptionPane.showInputDialog("Enter name of your save (don't put extension)"); 
+			game.load(filename.getName());
+			this.updateBoardVisuals();
+		});
 		
 		puzzleMenu.add(puzzle0);
 		puzzleMenu.add(puzzle1);
 		puzzleMenu.add(puzzle2);
+		puzzleMenu.add(save);
+		puzzleMenu.add(load);
 		
 		undo = new JMenuItem("Undo");
 		undo.addActionListener(e -> {
@@ -90,27 +115,9 @@ public class JumpInGUI extends JFrame implements ActionListener {
 			this.updateBoardVisuals();
 		});
 		
-		save = new JMenuItem("Save");
-		save.addActionListener(e -> {
-			this.selectedPiece = null;
-			String filename = JOptionPane.showInputDialog("Enter save name (don't put extension)"); 
-			game.save(filename);
-		});
-		
-		load = new JMenuItem("Load");
-		load.addActionListener(e -> {
-			this.selectedPiece = null;
-			JFileChooser chooser = new JFileChooser();		
-			String filename = JOptionPane.showInputDialog("Enter name of your save (don't put extension)"); 
-			game.load(filename);
-			this.updateBoardVisuals();
-		});
-		
 		options.add(undo);
 		options.add(redo);
 		options.add(reset);
-		options.add(save);
-		options.add(load);
 		
 		hint = new JMenuItem("Hint");
 		hint.addActionListener(e -> {
@@ -139,7 +146,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 			if(puzzlenumber >= 0 && puzzlenumber < InfoBook.COUNT_BOARDS) running = true;
 		}
 		
-		puzzleMenu.setEnabled(false);
+		//puzzleMenu.setEnabled(false);
 		options.setEnabled(true);
 		
 		game = new Game(puzzlenumber);	
