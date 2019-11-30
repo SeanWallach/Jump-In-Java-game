@@ -1,10 +1,12 @@
+import java.io.Serializable;
+
 //Class written by Ashton and Andrew
 
 /**
  * Class for Tile
  * @author (of JavaDoc comments) Nicholas
  */
-public class Tile {
+public class Tile implements Serializable {
 	private boolean empty;
 	private boolean grass;
 	private GamePiece ontop;

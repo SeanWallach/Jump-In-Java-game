@@ -1,5 +1,6 @@
 //Class written by Ashton and Andrew
 
+import java.io.Serializable;
 import java.util.*;
 
 import javax.swing.JOptionPane;
@@ -8,7 +9,7 @@ import javax.swing.JOptionPane;
  * Class GameBoard
  * @author (of JavaDoc comments) Nicholas
  */
-public class GameBoard{
+public class GameBoard implements Serializable{
 
 	public static final int SIZE = 5;
 	private Tile[][] tiles;

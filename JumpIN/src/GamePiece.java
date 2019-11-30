@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 //Class written by Ashton and Andrew
 
 /**
@@ -5,7 +7,7 @@
  * @author (of JavaDoc comments) Nicholas 
  * 
  */
-public abstract class GamePiece {
+public abstract class GamePiece implements Serializable {
 	protected int x;
 	protected int y;
 	private int size;
