@@ -1,11 +1,11 @@
 # SYSC-3110
 
 Instructions to run:
-Import the project, run JumpInGUI as Java application.
+Run Jar file (:
 
 
 How to play:
-Select the piece that you want to move and then select the tile you want to move it to. If it is an invalid move then you will have to try again. Foxes can only move 1 tile at a time.
+Instructions are included in Game Manual.md 
 
 #Milestone 1
 ---------------------------------
@@ -81,3 +81,8 @@ Lyndon Lo:
 
 #Milestone 4
 ---------------------------------
+Fix game solver
+Implement save/load feature 
+Implement level builder with save/load feature using JSON
+Documentation
+Adding more tests
