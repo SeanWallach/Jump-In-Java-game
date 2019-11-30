@@ -52,25 +52,25 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 		addBunnyPiece = new JMenuItem("Standard Bunny");
 		addBunnyPiece.addActionListener(e -> {
 			currentPieceAdding = 1;
-			System.out.println(currentPieceAdding);
+			//System.out.println(currentPieceAdding);
 		});
 		
 		addFoxPieceH = new JMenuItem("Horizontal Fox");
 		addFoxPieceH.addActionListener(e -> {
 			currentPieceAdding = 2;
-			System.out.println(currentPieceAdding);
+			//System.out.println(currentPieceAdding);
 		});
 		
 		addFoxPieceV = new JMenuItem("Vertical Fox");
 		addFoxPieceV.addActionListener(e -> {
 			currentPieceAdding = 3;
-			System.out.println(currentPieceAdding);
+			//System.out.println(currentPieceAdding);
 		});
 		
 		addMushroomPiece = new JMenuItem("Standard Mushroom");
 		addMushroomPiece.addActionListener(e -> {
 			currentPieceAdding = 4;
-			System.out.println(currentPieceAdding);
+			//System.out.println(currentPieceAdding);
 		});
 		
 		addPieceMenu.add(addBunnyPiece);
@@ -82,7 +82,7 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 		removePiece = new JMenuItem("Remove");
 		removePiece.addActionListener(e -> {
 			currentPieceAdding = 0;
-			System.out.println(currentPieceAdding);
+			//System.out.println(currentPieceAdding);
 		});
 		
 		removePieceMenu.add(removePiece);
@@ -133,44 +133,159 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 				if(remainingBunnyPieces > 0) {
 					game.getGameBoard().placePiece(new Bunny("Bunny",b.getX(), b.getY()));
 					remainingBunnyPieces -= 1;
-					System.out.println("Bunny should be added");
+					//System.out.println("Bunny should be added");
 				}
-				else { System.out.println("Bunny should not be added, to full"); }
+				//else { //System.out.println("Bunny should not be added, to full"); }
 				
 			}
-			//adding a Fox
+			//adding a Horizontal Moving Fox
 			else if(currentPieceAdding == 2) {
-				/*if(remainingFoxPieces >0) {
-					game.getGameBoard().placePiece(new Fox("Fox",b.getX(), b.getY(), boolean d));
-				}*/
-				System.out.println("Add Fox to be made");
+				if(remainingFoxPieces > 0) {
+					if(b.getX() < 4 && game.getGameBoard().getTile(b.getX(), b.getY()).getGrass() && game.getGameBoard().getTile(b.getX()+1, b.getY()).getGrass() && game.getGameBoard().getTile(b.getX()+1, b.getY()).isEmpty()) {
+						game.getGameBoard().placePiece(new Fox("Fox",b.getX(), b.getY(), false));
+						//game.getGameBoard().placePiece(new Fox("F",b.getX()+1, b.getY(), false));
+						remainingFoxPieces -=1;
+						//System.out.println("Horizontal Fox to be made");
+						
+					}
+					//else {//System.out.println("A fox cannot go there");}
+				}
+				//else { //System.out.println("Fox should not be added, to full"); }
+				
+			}
+			//adding a Vertical Moving Fox
+			else if(currentPieceAdding == 3) {
+				if(remainingFoxPieces > 0) {
+					if(b.getY() < 4 && game.getGameBoard().getTile(b.getX(), b.getY()).getGrass() && game.getGameBoard().getTile(b.getX(), b.getY()+1).getGrass() && game.getGameBoard().getTile(b.getX(), b.getY()+1).isEmpty()) {
+						//game.getGameBoard().placePiece();
+						game.getGameBoard().placePiece(new Fox("Fox",b.getX(), b.getY(), true));
+						//updateBoardVisuals();
+						//game.getGameBoard().placePiece(new Fox("Fox",b.getX(), b.getY()+1, true));
+						remainingFoxPieces -=1;
+						//System.out.println("Vertical Moving Fox to be made");
+						
+					}
+					//else {//System.out.println("A fox cannot go there");}
+				}
+				//else { //System.out.println("Fox should not be added, to full"); }
+				
 			}
 			//adding a Mushroom
 			else if(currentPieceAdding == 4) {
 				if(remainingMushroomPieces > 0) {
 					game.getGameBoard().placePiece(new Mushroom("Mushroom",b.getX(), b.getY()));
 					remainingMushroomPieces -= 1;
-					System.out.println("Mushroom should be added");
+					//System.out.println("Mushroom should be added");
 				}
-				else { System.out.println("Mushroom should not be added, to full"); }
+				//else { //System.out.println("Mushroom should not be added, to full"); }
 			}
 			
 		}
+		//This is for when a GamePiece is pressed.
 		else {
-			//This is for when a GamePiece is pressed.
+			//Remove
 			if(currentPieceAdding == 0) {
+				//Removing Bunnies
 				if(game.getGameBoard().getTile(b.getX(), b.getY()).getOnTop() instanceof Bunny) {
+					game.getGameBoard().removePiece(b.getX(), b.getY());
 					remainingBunnyPieces +=1;
 				}
-				else if(game.getGameBoard().getTile(b.getX(), b.getY()).getOnTop() instanceof Mushroom) {
-					remainingMushroomPieces +=1;
+				//Removing Foxes
+				else if(game.getGameBoard().getTile(b.getX(), b.getY()).getOnTop() instanceof Fox) {
+					GamePiece p = game.getGameBoard().getTile(b.getX(), b.getY()).getOnTop();
+					
+					game.getGameBoard().removePiece(b.getX(), b.getY());
+					//Removing A vertical Fox
+					if(((Fox) p).getUpDown()) {
+						//Top Row
+						if(b.getY() == 0) {
+							if(game.getGameBoard().getTile(b.getX(), b.getY()+1).getOnTop() instanceof Fox) {
+								game.getGameBoard().removePiece(b.getX(), b.getY()+1);
+							}
+						}
+						else if(b.getY() == 1) {
+							if(game.getGameBoard().getTile(b.getX(), b.getY()-1).getOnTop() instanceof Fox) {
+								game.getGameBoard().removePiece(b.getX(), b.getY()-1);
+							}
+							else if(game.getGameBoard().getTile(b.getX(), b.getY()+1).getOnTop() instanceof Fox) {
+								game.getGameBoard().removePiece(b.getX(), b.getY()+1);
+							}
+						}
+						//Middle Row
+						else if(b.getY() == 2) {
+							if(game.getGameBoard().getTile(b.getX(), b.getY()+1).getOnTop() instanceof Fox && !(game.getGameBoard().getTile(b.getX(), b.getY()+2).getOnTop() instanceof Fox)) {
+								game.getGameBoard().removePiece(b.getX(), b.getY()+1);
+							}
+							else if(game.getGameBoard().getTile(b.getX(), b.getY()-1).getOnTop() instanceof Fox && !(game.getGameBoard().getTile(b.getX(), b.getY()-2).getOnTop() instanceof Fox)) {
+								game.getGameBoard().removePiece(b.getX(), b.getY()-1);
+							}
+						}
+						else if(b.getY() == 3) {
+							if(game.getGameBoard().getTile(b.getX(), b.getY()+1).getOnTop() instanceof Fox) {
+								game.getGameBoard().removePiece(b.getX(), b.getY()+1);
+							}
+							else if(game.getGameBoard().getTile(b.getX(), b.getY()-1).getOnTop() instanceof Fox) {
+								game.getGameBoard().removePiece(b.getX(), b.getY()-1);
+							}
+						}
+						//Bottom Row
+						else if(b.getY() == 4) {
+							if(game.getGameBoard().getTile(b.getX(), b.getY()-1).getOnTop() instanceof Fox) {
+								game.getGameBoard().removePiece(b.getX(), b.getY()-1);
+							}
+						}
+					}	
+					//Removing a horizontal Fox
+					else {
+						
+						game.getGameBoard().removePiece(b.getX(), b.getY());
+						//Left Row
+						if(b.getX() == 0) {
+							if(game.getGameBoard().getTile(b.getX()+1, b.getY()).getOnTop() instanceof Fox) {
+								game.getGameBoard().removePiece(b.getX()+1, b.getY());
+							}
+						}
+						else if(b.getX() == 1) {
+							if(game.getGameBoard().getTile(b.getX()-1, b.getY()).getOnTop() instanceof Fox) {
+								game.getGameBoard().removePiece(b.getX()-1, b.getY());
+							}
+							else if(game.getGameBoard().getTile(b.getX()+1, b.getY()).getOnTop() instanceof Fox) {
+								game.getGameBoard().removePiece(b.getX()+1, b.getY());
+							}
+						}
+						//Middle Row
+						else if(b.getX() == 2) {
+							if(game.getGameBoard().getTile(b.getX()+1, b.getY()).getOnTop() instanceof Fox && !(game.getGameBoard().getTile(b.getX()+2, b.getY()).getOnTop() instanceof Fox)) {
+								game.getGameBoard().removePiece(b.getX()+1, b.getY());
+							}
+							else if(game.getGameBoard().getTile(b.getX()-1, b.getY()).getOnTop() instanceof Fox && !(game.getGameBoard().getTile(b.getX()-2, b.getY()).getOnTop() instanceof Fox)) {
+								game.getGameBoard().removePiece(b.getX()-1, b.getY());
+							}
+						}
+						else if(b.getX() == 3) {
+							if(game.getGameBoard().getTile(b.getX()+1, b.getY()).getOnTop() instanceof Fox) {
+								game.getGameBoard().removePiece(b.getX()+1, b.getY());
+							}
+							else if(game.getGameBoard().getTile(b.getX()-1, b.getY()).getOnTop() instanceof Fox) {
+								game.getGameBoard().removePiece(b.getX()-1, b.getY());
+							}
+						}
+						//Right Row
+						else if(b.getX() == 4) {
+							if(game.getGameBoard().getTile(b.getX()-1, b.getY()).getOnTop() instanceof Fox) {
+								game.getGameBoard().removePiece(b.getX()-1, b.getY());
+							}
+						}					
+					}
+					
+					remainingFoxPieces +=1;
 				}
+				//Removing Mushrooms
 				else if(game.getGameBoard().getTile(b.getX(), b.getY()).getOnTop() instanceof Mushroom) {
-					remainingFoxPieces += 1;
+					game.getGameBoard().removePiece(b.getX(), b.getY());
+					remainingMushroomPieces += 1;
 				}
-				
-				game.getGameBoard().removePiece(b.getX(), b.getY());
-				System.out.println("Piece Should be removed");
+				//System.out.println("Piece Should be removed");
 			}
 				
 			this.selectedPiece = game.getGameBoard().getTile(b.getX(), b.getY()).getOnTop();

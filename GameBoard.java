@@ -41,15 +41,7 @@ public class GameBoard{
 		
 		if(boardpieces != null) {
 			for(GamePiece g: boardpieces) {
-				int i = g.getX();
-				int j = g.getY();
-				tiles[i][j].setOnTop(g);
-				if(g instanceof Fox) {
-					if(((Fox) g).getUpDown())
-						tiles[i][j + 1].setOnTop(g);
-					else
-						tiles[i + 1][j].setOnTop(g);
-				}
+				placePiece(g);
 			}
 		}
 		
@@ -59,10 +51,15 @@ public class GameBoard{
 		int i = g.getX();
 		int j = g.getY();
 		tiles[i][j].setOnTop(g);
+		if(g instanceof Fox) {
+			if(((Fox) g).getUpDown())
+				tiles[i][j + 1].setOnTop(g);
+			else
+				tiles[i + 1][j].setOnTop(g);
+		}
 	}
-	public void removePiece(int x, int y) {
-		getTile(x, y).setEmpty();
-		
+	public void removePiece(int x, int y/*, GamePiece g*/) {
+		getTile(x, y).setEmpty();	
 	}
 
 	/**
