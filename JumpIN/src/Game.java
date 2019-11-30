@@ -140,7 +140,7 @@ public class Game implements Serializable {
 	 */
 	public void load(String filename) {
 		try {
-	         FileInputStream fileIn = new FileInputStream("src/saves/" + filename + ".ser");
+	         FileInputStream fileIn = new FileInputStream("src/saves/" + filename);
 	         ObjectInputStream in = new ObjectInputStream(fileIn);
 	         gameboard = (GameBoard) in.readObject();	// cast object that was read from the filesystem, replaces the current gameboard
 	         in.close();
