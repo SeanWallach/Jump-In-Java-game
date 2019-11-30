@@ -13,7 +13,7 @@ import javax.swing.*;
 public class JumpInGUI extends JFrame implements ActionListener {
 	private Game game;
 	
-	private JMenuItem puzzle0, puzzle1, puzzle2, hint, undo, redo, reset;
+	private JMenuItem puzzle0, puzzle1, puzzle2, hint, undo, redo, reset, save, load;
 	private JMenu puzzleMenu, options, helpMenu;
 	
 	private volatile boolean running;
@@ -32,10 +32,14 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(400, 400);		
 		setLocation(400,200);
+		setResizable(false);
 		
 		//Menu Items: Related to Info Book and puzzle selection
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
+		
+		ImageIcon img = new ImageIcon("src/images/JumpINicon.png");
+		setIconImage(img.getImage());
 		
 		puzzleMenu = new JMenu("Puzzle Selection");
 		options = new JMenu("Options");
@@ -86,9 +90,21 @@ public class JumpInGUI extends JFrame implements ActionListener {
 			this.updateBoardVisuals();
 		});
 		
+		save = new JMenuItem("Save");
+		save.addActionListener(e -> {
+			game.save();
+		});
+		
+		load = new JMenuItem("Load");
+		save.addActionListener(e -> {
+			game.load();
+		});
+		
 		options.add(undo);
 		options.add(redo);
 		options.add(reset);
+		options.add(save);
+		options.add(load);
 		
 		hint = new JMenuItem("Hint");
 		hint.addActionListener(e -> {

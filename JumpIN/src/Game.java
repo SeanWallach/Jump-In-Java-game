@@ -107,4 +107,18 @@ public class Game {
 	public void redo() {
 		this.gameboard.redo();
 	}
+	
+	/**
+	 * Saves the state of the game using serialization 
+	 */
+	public void save() {
+		
+	}
+	
+	/**
+	 * Loads the state of the game that was saved using the save method
+	 */
+	public void load() {
+		
+	}
 }
