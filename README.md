@@ -82,7 +82,11 @@ Lyndon Lo:
 #Milestone 4
 ---------------------------------
 Fix game solver
+
 Implement save/load feature 
+
 Implement level builder with save/load feature using JSON
+
 Documentation
+
 Adding more tests
