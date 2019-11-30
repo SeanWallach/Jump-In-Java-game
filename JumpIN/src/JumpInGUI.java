@@ -92,12 +92,18 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		
 		save = new JMenuItem("Save");
 		save.addActionListener(e -> {
-			game.save();
+			this.selectedPiece = null;
+			String filename = JOptionPane.showInputDialog("Enter save name (don't put extension)"); 
+			game.save(filename);
 		});
 		
 		load = new JMenuItem("Load");
-		save.addActionListener(e -> {
-			game.load();
+		load.addActionListener(e -> {
+			this.selectedPiece = null;
+			JFileChooser chooser = new JFileChooser();		
+			String filename = JOptionPane.showInputDialog("Enter name of your save (don't put extension)"); 
+			game.load(filename);
+			this.updateBoardVisuals();
 		});
 		
 		options.add(undo);
@@ -257,6 +263,8 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		s += "5. The game is won when all bunnies are in one of the holes.\n";
 		s += "6. In the menus, you can also find undo, redo, reset and help\n";
 		s += "   functions to help you win.\n";
+		s += "   Also included are save and load features, so you can pick up your \n";
+		s += "   progress from where you left off. \n\n";
 		s += "Good Luck!";
 		return s;
 	}
