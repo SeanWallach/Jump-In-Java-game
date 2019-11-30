@@ -1,0 +1,12 @@
+Sean and Lyndon: Added save and load feature to GameBoard, Game, and JumpINGui using Java Serialization
+                 GamePiece, Tile, GameBoard all implement Serialization now
+                 
+Sean: Updated game instructions 
+      Added game icon
+                
+Ashton: Refactored code
+        Updated UML class diagrams
+
+Andrew: 
+
+Nicholas:
