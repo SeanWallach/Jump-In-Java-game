@@ -128,7 +128,6 @@ public class Game implements Serializable {
 	         out.writeObject(gameboard);
 	         out.close();
 	         fileOut.close();
-	         System.out.printf("Serialized data is saved in /src/saves/" + filename + ".ser");
 	      } catch (IOException i) {
 	         i.printStackTrace();
 	      }
@@ -144,7 +143,6 @@ public class Game implements Serializable {
 	         FileInputStream fileIn = new FileInputStream("src/saves/" + filename + ".ser");
 	         ObjectInputStream in = new ObjectInputStream(fileIn);
 	         gameboard = (GameBoard) in.readObject();	// cast object that was read from the filesystem, replaces the current gameboard
-	         System.out.printf("Load serialized data from /src/saves/" + filename + ".ser");
 	         in.close();
 	         fileIn.close();
 	      } catch (IOException i) {
