@@ -8,6 +8,7 @@ public class Tile {
 	private boolean empty;
 	private boolean grass;
 	private GamePiece ontop;
+	private int x, y;
 	
 	/**
      * Tile constructor
@@ -22,6 +23,8 @@ public class Tile {
 		//Center Hole
 		else if(x==2 && y == 2) grass = false;
 		else grass = true;
+		this.x = x;
+		this.y = y;
 	}
 	
 	/**
@@ -72,6 +75,22 @@ public class Tile {
 	}
 	
 	/**
+	 * 
+	 * @return the tile's x position
+	 */
+	public int getX() {
+		return this.x;
+	}
+	
+	/**
+	 * 
+	 * @return the tile's y position
+	 */
+	public int getY() {
+		return this.y;
+	}
+	
+	/**
      * Method printTile prints a text representation of tiles
      * by showing if the tile is a hole, grass, or game piece.
      */
@@ -98,5 +117,42 @@ public class Tile {
 		else {
 			return ("[" + ontop.getAcronym() + "]");
 		}
+	}
+	
+	/**
+	 * Check if tile objects are 
+	 * equal
+	 * @param obj
+	 * @return boolean
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		Tile o = (Tile) obj;
+		
+		if (this.empty != o.empty) {
+			return false;
+		}
+		
+		if (this.grass != o.grass) {
+			return false;
+		}
+		
+		if(this.ontop == null && o.ontop == null) return true;
+		
+		if (!(this.ontop.equals(o.ontop))) {
+			return false;
+		}
+		
+		return true;
 	}
 }

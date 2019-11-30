@@ -1,3 +1,7 @@
+import java.awt.Color;
+
+import javax.swing.JOptionPane;
+
 //Class written by Ashton and Andrew
 
 /**
@@ -33,10 +37,10 @@ public class Bunny extends MovableGamePiece {
 	 * @param tiles 
 	 */
 	@Override
-	public void move(int newX, int newY, Tile[][] tiles) {
-		if(!this.canMove(newX, newY)){
-			System.out.println("This is not a valid move for a bunny.");
-			return;
+	public boolean move(int newX, int newY, Tile[][] tiles) {
+		if(!this.canMove(newX, newY, tiles)){
+			JOptionPane.showMessageDialog(null, "This is not a valid move for a bunny.");
+			return false;
 		}
 		
 		//Have the tiles remove the bunny piece then replace it in its new position.
@@ -44,6 +48,7 @@ public class Bunny extends MovableGamePiece {
 		super.setX(newX);
 		super.setY(newY);
 		tiles[this.x][this.y].setOnTop(this); 
+		return true;
 	}
 	
 	/**
@@ -53,12 +58,34 @@ public class Bunny extends MovableGamePiece {
 	 * @param newY the y value of the new position
 	 * @return if it is a valid move for the bunny
 	 */
-
-	private boolean canMove(int newX, int newY) {
+	@Override
+	public boolean canMove(int newX, int newY, Tile[][] tiles) {
+		if(!tiles[newX][newY].isEmpty()) return false;
 		//Bunnies cannot move on angles.
 		if(newX != this.x && newY != this.y) return false;
 		//Bunnies must hop another piece.
 		if(Math.abs(newX - this.x) < 2 && Math.abs(newY - this.y) < 2) return false;
+		
+		if(newY < y) {
+			for(int i = y; i > newY; i--) {
+				if(tiles[x][i].isEmpty()) return false;
+			}
+		}
+		else if(newY > y) {
+			for(int i = y; i < newY; i++) {
+				if(tiles[x][i].isEmpty()) return false;
+			}
+		}
+		else if(newX > x) {
+			for(int i = x; i < newX; i++) {
+				if(tiles[i][y].isEmpty()) return false;
+			}
+		}
+		else {
+			for(int i = x; i > newX; i--) {
+				if(tiles[i][y].isEmpty()) return false;
+			}
+		}
 		
 		return true;
 	}
@@ -70,16 +97,13 @@ public class Bunny extends MovableGamePiece {
 	public char getAcronym() {
 		return 'B';
 	}
-
+	
+	/**
+	 * Update the GUI by placing this piece on the GUI.
+	 */
 	@Override
-	protected boolean canMoveFromSpot(int i, int j) {
-		// TODO Auto-generated method stub
-		return false;
+	public void placePiece(JumpInButton[][] square) {
+		square[this.x][this.y].setBackground(Color.GRAY);
 	}
-
-	@Override
-	protected boolean canMove() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 }

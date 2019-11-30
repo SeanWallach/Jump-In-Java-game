@@ -11,7 +11,6 @@ public class Game {
 	private ArrayList<GamePiece> pieces;
 	private InfoBook book;
 	private boolean running;
-	private static Scanner input;
 	
 	/**
 	 * Game constructor
@@ -19,34 +18,16 @@ public class Game {
 	 * to select the puzzle they wish to play.
 	 */
 	public Game(int puzzlenumber) {
-		System.out.println("puzzle selected: "+puzzlenumber);
-		/*
-		input = new Scanner(System.in);  // Create a Scanner object.
-		running = false;
-	    int puzzlenumber = -1;
-	    
-		while(!running) {
-	    	System.out.print("Enter puzzle number you wish to play: ");
-	    	for(int i = 0; i < InfoBook.COUNT_BOARDS - 1; i++) {
-	    		System.out.print(i + ", ");
-	    	}
-	    	System.out.println(InfoBook.COUNT_BOARDS - 1);
-	    	
-	    	puzzlenumber = input.nextInt();  // Read user input-> NOT for GUI
-	    	System.out.println("Puzzle selected is: " + puzzlenumber);
-	    	if(puzzlenumber >= 0 && puzzlenumber < InfoBook.COUNT_BOARDS) running = true;
-	    }*/
 		
 		book = new InfoBook(puzzlenumber);
 		this.pieces = book.getPieces();
+		this.running = true;
 		
 		gameboard = new GameBoard(pieces);
 	}
-
-	/**
-	 * Main method to create new game of jumpin
-	 */
-
+	public Game() {
+		gameboard = new GameBoard(null);
+	}
 	
 	/**
 	 * Method getPieces gets the game pieces
@@ -56,6 +37,10 @@ public class Game {
 		return this.pieces;
 	}
 	
+	/**
+	 * Set the pieces needed for this game.
+	 * @param pieces to add to the Game.
+	 */
 	public void setGamePieces(Collection<GamePiece> pieces) {
 		this.pieces.addAll(pieces);
 	}
@@ -76,7 +61,7 @@ public class Game {
 		return this.running;
 	}
 	
-
+	
 	/**
 	 * Method set running sets if game is running or not
 	 * @param running Boolean value representing if game is running
@@ -100,5 +85,15 @@ public class Game {
 			}
 		}
 		if(allBunniesInHoles) jumpin.setRunning(false);
+	}
+	public void solve() {
+		this.gameboard.solve();
+	}
+	public void undo() {
+		this.gameboard.undo();
+	}
+	
+	public void redo() {
+		this.gameboard.redo();
 	}
 }

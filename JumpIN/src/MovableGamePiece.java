@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /**
  * A MovableGamePiece is an extension of GamePiece
  * that is able to move. This will include Foxes and
@@ -8,6 +10,14 @@
  */
 public abstract class MovableGamePiece extends GamePiece{
 
+	/**
+	 * MovableGamePiece is an extension of GamePiece that adds move functionality.
+	 * 
+	 * @param x the initial x position
+	 * @param y the initial y position
+	 * @param size the size of the piece (foxes are 2)
+	 * @param name the name of the piece
+	 */
 	protected MovableGamePiece(int x, int y, int size, String name) {
 		super(x, y, size, name);
 	}
@@ -29,11 +39,20 @@ public abstract class MovableGamePiece extends GamePiece{
 	}
 	
 	/**
+	 * Returns true because a bunny is a piece that can move.
+	 */
+	@Override
+	public boolean canMove() {
+		return true;
+	}
+	
+	
+	/**
 	 * A requirement that all classes extending this class will create a move method.
 	 * 
 	 * @param newX the x it will move to.
 	 * @param newY the y it will move to.
 	 * @param tiles the board that the piece will place itself on.
 	 */
-	public abstract void move(int newX, int newY, Tile[][] tiles);
+	public abstract boolean move(int newX, int newY, Tile[][] tiles);
 }
