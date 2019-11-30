@@ -9,6 +9,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 /**
  * Class Game
  * @author (of JavaDoc comments) Nicholas
@@ -128,9 +130,10 @@ public class Game implements Serializable {
 	         out.writeObject(gameboard);
 	         out.close();
 	         fileOut.close();
-	      } catch (IOException i) {
-	         i.printStackTrace();
-	      }
+	     } 
+		 catch (IOException i) {
+	         JOptionPane.showMessageDialog(null, "I/O Exception occurred.", "Error", JOptionPane.ERROR_MESSAGE);
+	     }
 	}
 	
 	/**
@@ -146,11 +149,10 @@ public class Game implements Serializable {
 	         in.close();
 	         fileIn.close();
 	      } catch (IOException i) {
-	         i.printStackTrace();
+	    	  JOptionPane.showMessageDialog(null, "Save file not found.", "Error", JOptionPane.ERROR_MESSAGE);
 	         return;
 	      } catch (ClassNotFoundException c) {
-	         System.out.println("Gameboard class not found");
-	         c.printStackTrace();
+	         JOptionPane.showMessageDialog(null, "Class not found", "Error", JOptionPane.ERROR_MESSAGE);
 	         return;
 	      }
 	}
