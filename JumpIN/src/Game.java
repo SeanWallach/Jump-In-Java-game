@@ -1,6 +1,7 @@
 //Class written by Ashton and Andrew
 // Milestone 4: written by Sean and Lyndon 
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,6 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Class Game
@@ -153,5 +156,51 @@ public class Game implements Serializable {
 	         c.printStackTrace();
 	         return;
 	      }
+	}
+	
+	/**
+	 * Saves the level of the game using JSON 
+	 * 
+	 * @param filename specifies the filename you want to use to save as
+	 */
+	public void saveLevel(String filename) {
+		 ObjectMapper mapper = new ObjectMapper();
+		 
+		 try {
+	            // Java objects to JSON file
+	            mapper.writeValue(new File("src/saves/" + filename + ".json"), gameboard);
+
+	            // Java objects to JSON string
+	            String jsonInString2 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(gameboard);
+
+	            System.out.println(jsonInString2);
+
+	        } catch (IOException e) {
+	            e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Loads the level of the game that was saved from above
+	 * 
+	 * @param filename specifies the file that you want to load 
+	 */
+	public void loadLevel(String filename) {
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+
+            // JSON file to Java object
+           gameboard = mapper.readValue(new File("src/saves/" + filename + ".json"), GameBoard.class);
+
+            // pretty print
+            String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(gameboard);
+
+			System.out.println(jsonString);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

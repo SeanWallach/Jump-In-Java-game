@@ -8,5 +8,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="src/system-rules-1.19.0.jar"/>
+	<classpathentry kind="lib" path="src/jackson-core-2.9.8.jar"/>
+	<classpathentry kind="lib" path="src/jackson-databind-2.9.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
