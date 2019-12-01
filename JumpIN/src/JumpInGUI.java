@@ -14,13 +14,13 @@ import javax.swing.*;
 public class JumpInGUI extends JFrame implements ActionListener {
 	private Game game;
 	
-	private JMenuItem puzzle0, puzzle1, puzzle2, hint, undo, redo, reset, save, load;
+	private JMenuItem hint, undo, redo, reset, save, load, puzzleCreate;
 	private JMenu puzzleMenu, options, helpMenu;
 	
 	private volatile boolean running;
     private int puzzlenumber;
     
-    private JumpInButton[][] square;
+    private JumpInButton[][] squares;
     
     private GamePiece selectedPiece;
     private ArrayList<Tile> moveOptions;
@@ -51,19 +51,9 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		menuBar.add(options);
 		menuBar.add(helpMenu);
 		
-		puzzle0 = new JMenuItem("puzzle 0");
-		puzzle0.addActionListener(e -> {
-			puzzlenumber = 0;
-		});
-		
-		puzzle1 = new JMenuItem("puzzle 1");
-		puzzle1.addActionListener(e -> {
-			puzzlenumber = 1;
-		});
-		
-		puzzle2 = new JMenuItem("puzzle 2");
-		puzzle2.addActionListener(e -> {
-			puzzlenumber = 2;
+		puzzleCreate = new JMenuItem("puzzleCreate");
+		puzzleCreate.addActionListener(e -> {
+			new PuzzleBuilder();
 		});
 				
 		save = new JMenuItem("Save");
@@ -75,6 +65,8 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		
 		load = new JMenuItem("Load");
 		load.addActionListener(e -> {
+			game = new Game();
+			
 			this.selectedPiece = null;
 			JFileChooser chooser = new JFileChooser();
 			chooser.setCurrentDirectory(new File("src/saves"));
@@ -84,13 +76,21 @@ public class JumpInGUI extends JFrame implements ActionListener {
 	            filename = chooser.getSelectedFile();
 	        }
 			//String filename = JOptionPane.showInputDialog("Enter name of your save (don't put extension)"); 
-			game.load(filename.getName());
-			this.updateBoardVisuals();
+			if(filename != null) {
+				game.load(filename.getName());
+				this.undo.setEnabled(true);
+				this.redo.setEnabled(true);
+				running = true;
+				if(squares != null) {
+					this.updateBoardVisuals();
+				}
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Please select a puzzle name.");
+			}
 		});
 		
-		puzzleMenu.add(puzzle0);
-		puzzleMenu.add(puzzle1);
-		puzzleMenu.add(puzzle2);
+		puzzleMenu.add(puzzleCreate);
 		puzzleMenu.add(save);
 		puzzleMenu.add(load);
 		
@@ -111,8 +111,15 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		reset = new JMenuItem("Reset");
 		reset.addActionListener(e -> {
 			this.selectedPiece = null;
-			game.reset(puzzlenumber);
+			while(game.canUndo()) {
+				game.undo();
+			}
+			game.clearUndoStack();
 			this.updateBoardVisuals();
+			this.undo.setEnabled(true);
+			this.redo.setEnabled(true);
+			game.setRunning(true);
+			this.running = true;
 		});
 		
 		options.add(undo);
@@ -121,9 +128,9 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		
 		hint = new JMenuItem("Hint");
 		hint.addActionListener(e -> {
-			if(puzzlenumber == -1) JOptionPane.showMessageDialog(null, "Select a puzzle from the Puzzle Selection menu.");
+			if(game == null) JOptionPane.showMessageDialog(null, "Select a puzzle from the Puzzle Selection menu.");
 			else {
-				//need to implement
+				game.solve();
 			}
 		});
 		
@@ -143,26 +150,23 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		//optimize this and decide that running will never change.
 		//(i.e. determining this is an infinite loop)
 		while(!running) {
-			if(puzzlenumber >= 0 && puzzlenumber < InfoBook.COUNT_BOARDS) running = true;
 		}
 		
 		//puzzleMenu.setEnabled(false);
 		options.setEnabled(true);
 		
-		game = new Game(puzzlenumber);	
-		
 		//Button board: Related to GameBoard and game 
-		square = new JumpInButton[GameBoard.SIZE][GameBoard.SIZE];
+		squares = new JumpInButton[GameBoard.SIZE][GameBoard.SIZE];
 		JPanel panel = new JPanel(new GridLayout(GameBoard.SIZE, GameBoard.SIZE));
 		for(int j = 0; j < GameBoard.SIZE; j++) {
 			for(int i = 0; i < GameBoard.SIZE; i++) {
-				square[i][j] = new JumpInButton(i, j);
+				squares[i][j] = new JumpInButton(i, j);
 				if(!game.getGameBoard().getTile(i, j).getGrass()) 
-					square[i][j].setBackground(Color.BLACK);
-				else square[i][j].setBackground(Color.GREEN);	
+					squares[i][j].setBackground(Color.BLACK);
+				else squares[i][j].setBackground(Color.GREEN);	
 				
-				square[i][j].addActionListener(this);
-				panel.add(square[i][j]);
+				squares[i][j].addActionListener(this);
+				panel.add(squares[i][j]);
 			}
 		}
 		add(panel, BorderLayout.CENTER);
@@ -201,7 +205,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 						for(int i = 0; i < GameBoard.SIZE; i++) {
 							for(int j = 0; j < GameBoard.SIZE; j++) {
 								//If game is over, cannot press the pieces anymore.
-								square[i][j].setEnabled(false);
+								squares[i][j].setEnabled(false);
 							}
 						}
 						this.undo.setEnabled(false);
@@ -224,13 +228,22 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		}
 	}
 	
+	private void enablePieces() {
+		for(int i = 0; i < GameBoard.SIZE; i++) {
+			for(int j = 0; j < GameBoard.SIZE; j++) {
+				//If game is over, cannot press the pieces anymore.
+				squares[i][j].setEnabled(true);
+			}
+		}
+	}
+	
 	/**
 	 * Show the possible moves in yellow.
 	 */
 	public void updateMoveOptionVisuals() {
 		this.updateBoardVisuals();
 		for(Tile t : moveOptions) {
-			this.square[t.getX()][t.getY()].setBackground(Color.YELLOW);
+			this.squares[t.getX()][t.getY()].setBackground(Color.YELLOW);
 		}
 	}
 	
@@ -241,12 +254,12 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		for(int i = 0; i < GameBoard.SIZE; i++) {
 			for(int j = 0; j < GameBoard.SIZE; j++) {
 				if(!game.getGameBoard().getTile(i, j).isEmpty()) {
-					game.getGameBoard().getTile(i, j).getOnTop().placePiece(square);
+					game.getGameBoard().getTile(i, j).getOnTop().placePiece(squares);
 				}
 				else {
 					if(!game.getGameBoard().getTile(i, j).getGrass()) 
-						square[i][j].setBackground(Color.BLACK);
-					else square[i][j].setBackground(Color.GREEN);
+						squares[i][j].setBackground(Color.BLACK);
+					else squares[i][j].setBackground(Color.GREEN);
 				}
 			}
 		}
@@ -285,10 +298,17 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		
 		JumpInGUI jumpin = new JumpInGUI();
 		
-		while(jumpin.running) {
-			//Waiting for game to end.
+		while(true) {
+			while(jumpin.running) {
+				//Waiting for game to end.
+			}
+			JOptionPane.showMessageDialog(null, "Congratulations, you have won!");
+			while(!jumpin.running) {
+				//Waiting for game to restart.
+			}
+			jumpin.enablePieces();
+			jumpin.updateBoardVisuals();
 		}
-		JOptionPane.showMessageDialog(null, "Congratulations, you have won!");
 	}
 
 }
