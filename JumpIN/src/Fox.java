@@ -155,8 +155,6 @@ public class Fox extends MovableGamePiece {
 	 */
 	@Override
 	public void placePiece(JumpInButton[][] square) {
-		//System.out.println("this.x: "+this.x+" this.y: "+this.y);
-		//System.out.println("this.backX: "+this.backX+" this.backY: "+this.backY);	
 		square[this.x][this.y].setBackground(Color.ORANGE);
 		square[this.backX][this.backY].setBackground(Color.ORANGE);
 	}

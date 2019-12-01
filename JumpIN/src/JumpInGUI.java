@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -13,7 +14,7 @@ import javax.swing.*;
 public class JumpInGUI extends JFrame implements ActionListener {
 	private Game game;
 	
-	private JMenuItem puzzle0, puzzle1, puzzle2, hint, undo, redo, reset, puzzleCreate;
+	private JMenuItem puzzle0, puzzle1, puzzle2, hint, undo, redo, reset, save, load;
 	private JMenu puzzleMenu, options, helpMenu;
 	
 	private volatile boolean running;
@@ -32,25 +33,23 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(400, 400);		
 		setLocation(400,200);
+		setResizable(false);
 		
 		//Menu Items: Related to Info Book and puzzle selection
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
+		
+		ImageIcon img = new ImageIcon("src/images/JumpINicon.png");
+		setIconImage(img.getImage());
 		
 		puzzleMenu = new JMenu("Puzzle Selection");
 		options = new JMenu("Options");
 		options.setEnabled(false);
 		helpMenu = new JMenu("Help");
 		
-		
 		menuBar.add(puzzleMenu);
 		menuBar.add(options);
 		menuBar.add(helpMenu);
-
-		puzzleCreate = new JMenuItem("puzzle creation");
-		puzzleCreate.addActionListener(e-> {
-			new PuzzleBuilder();
-		});
 		
 		puzzle0 = new JMenuItem("puzzle 0");
 		puzzle0.addActionListener(e -> {
@@ -66,11 +65,34 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		puzzle2.addActionListener(e -> {
 			puzzlenumber = 2;
 		});
+				
+		save = new JMenuItem("Save");
+		save.addActionListener(e -> {
+			this.selectedPiece = null;
+			String filename = JOptionPane.showInputDialog("Enter save name (don't put extension)"); 
+			game.save(filename);
+		});
 		
-		puzzleMenu.add(puzzleCreate);
+		load = new JMenuItem("Load");
+		load.addActionListener(e -> {
+			this.selectedPiece = null;
+			JFileChooser chooser = new JFileChooser();
+			chooser.setCurrentDirectory(new File("src/saves"));
+			File filename = null;
+			int result = chooser.showOpenDialog(new JFrame());
+			if (result == JFileChooser.APPROVE_OPTION) {
+	            filename = chooser.getSelectedFile();
+	        }
+			//String filename = JOptionPane.showInputDialog("Enter name of your save (don't put extension)"); 
+			game.load(filename.getName());
+			this.updateBoardVisuals();
+		});
+		
 		puzzleMenu.add(puzzle0);
 		puzzleMenu.add(puzzle1);
 		puzzleMenu.add(puzzle2);
+		puzzleMenu.add(save);
+		puzzleMenu.add(load);
 		
 		undo = new JMenuItem("Undo");
 		undo.addActionListener(e -> {
@@ -87,10 +109,11 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		});
 		
 		reset = new JMenuItem("Reset");
-		redo.addActionListener(e -> {
-			
+		reset.addActionListener(e -> {
+			this.selectedPiece = null;
+			game.reset(puzzlenumber);
+			this.updateBoardVisuals();
 		});
-		
 		
 		options.add(undo);
 		options.add(redo);
@@ -101,8 +124,6 @@ public class JumpInGUI extends JFrame implements ActionListener {
 			if(puzzlenumber == -1) JOptionPane.showMessageDialog(null, "Select a puzzle from the Puzzle Selection menu.");
 			else {
 				//need to implement
-				game.solve();
-				
 			}
 		});
 		
@@ -125,7 +146,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 			if(puzzlenumber >= 0 && puzzlenumber < InfoBook.COUNT_BOARDS) running = true;
 		}
 		
-		puzzleMenu.setEnabled(false);
+		//puzzleMenu.setEnabled(false);
 		options.setEnabled(true);
 		
 		game = new Game(puzzlenumber);	
@@ -164,20 +185,12 @@ public class JumpInGUI extends JFrame implements ActionListener {
 					int direction;
 					//Choose movement direction
 					if(b.getX() == selectedPiece.getX()) {
-						if(b.getY() > selectedPiece.getY()) {//down
-							direction = 2;
-						}
-						else {// up
-							direction = 0;
-						}
+						if(b.getY() > selectedPiece.getY()) direction = 2;
+						else direction = 0;
 					}
 					else {
-						if(b.getX() > selectedPiece.getX()) {
-							direction = 1;
-						}
-						else {
-							direction = 3;
-						}
+						if(b.getX() > selectedPiece.getX()) direction = 1;
+						else direction = 3;
 					}
 					
 					//Move in the given direction.
@@ -238,7 +251,7 @@ public class JumpInGUI extends JFrame implements ActionListener {
 			}
 		}
 	}	
-
+	
 	/**
 	 * Create a String of instructions.
 	 * @return a String containing the instructions on how to play JumpIN.
@@ -257,6 +270,8 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		s += "5. The game is won when all bunnies are in one of the holes.\n";
 		s += "6. In the menus, you can also find undo, redo, reset and help\n";
 		s += "   functions to help you win.\n";
+		s += "   Also included are save and load features, so you can pick up your \n";
+		s += "   progress from where you left off. \n\n";
 		s += "Good Luck!";
 		return s;
 	}
@@ -272,9 +287,6 @@ public class JumpInGUI extends JFrame implements ActionListener {
 		
 		while(jumpin.running) {
 			//Waiting for game to end.
-			if(jumpin.game.getGameBoard().showSolverMoves()) {
-				jumpin.updateBoardVisuals();
-			}
 		}
 		JOptionPane.showMessageDialog(null, "Congratulations, you have won!");
 	}

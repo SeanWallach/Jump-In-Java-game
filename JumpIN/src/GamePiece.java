@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.io.Serializable;
 
 //Class written by Ashton and Andrew
 
@@ -7,12 +7,11 @@ import java.util.ArrayList;
  * @author (of JavaDoc comments) Nicholas 
  * 
  */
-public abstract class GamePiece {
+public abstract class GamePiece implements Serializable {
 	protected int x;
 	protected int y;
 	private int size;
 	private String name;
-	private ArrayList<Tile> memory;
 	
 	/**
      *      GamePiece constructor
@@ -26,24 +25,8 @@ public abstract class GamePiece {
 		this.y = y;
 		this.size = size;
 		this.name = name;
-		this.memory = new ArrayList<Tile>();
 	}
-	public ArrayList<Tile> getMemory(){
-		return memory;
-	}
-	public void addToMemory(Tile lastTile) {
-		memory.add(lastTile);
-	}
-	public void clearMemory() {
-		for(int i = 0; i< memory.size(); i++) {
-			memory.remove(0);
-		}
-	}
-	public void printMemory() {
-		if(memory.size()>0) {
-			System.out.println("Last Tile: "+ memory.get(0).getX() + ", " + memory.get(0).getY());
-		}
-	}
+
 	/**
      * Get game piece x-coordinate
      * @return int value representing x-coordinate 
@@ -151,4 +134,3 @@ public abstract class GamePiece {
 		return true;
   }
 }
-

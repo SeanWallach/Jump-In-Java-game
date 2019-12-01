@@ -1,5 +1,3 @@
-import java.util.Stack;
-
 /**
  * A MovableGamePiece is an extension of GamePiece
  * that is able to move. This will include Foxes and
@@ -45,7 +43,6 @@ public abstract class MovableGamePiece extends GamePiece{
 	public boolean canMove() {
 		return true;
 	}
-	
 	
 	/**
 	 * A requirement that all classes extending this class will create a move method.
