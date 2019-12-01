@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 
 //Class written by Ashton and Andrew
 
@@ -12,6 +13,7 @@ public abstract class GamePiece implements Serializable {
 	protected int y;
 	private int size;
 	private String name;
+	private ArrayList<Tile> memory;
 	
 	/**
      *      GamePiece constructor
@@ -25,6 +27,18 @@ public abstract class GamePiece implements Serializable {
 		this.y = y;
 		this.size = size;
 		this.name = name;
+		this.memory = new ArrayList<Tile>();
+	}
+	public ArrayList<Tile> getMemory(){
+		return memory;
+	}
+	public void addToMemory(Tile lastTile) {
+		memory.add(lastTile);
+	}
+	public void clearMemory() {
+		for(int i = 0; i< memory.size(); i++) {
+			memory.remove(0);
+		}
 	}
 
 	/**

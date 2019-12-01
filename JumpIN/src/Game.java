@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 public class Game implements Serializable {
 	private GameBoard gameboard;
 	private ArrayList<GamePiece> pieces;
-	private InfoBook book;
+	//private InfoBook book;
 	private boolean running;
 	
 	/**
@@ -26,13 +26,17 @@ public class Game implements Serializable {
 	 * creating a new game, allowing the player
 	 * to select the puzzle they wish to play.
 	 */
-	public Game(int puzzlenumber) {
+	/*public Game(int puzzlenumber) {
 		
 		book = new InfoBook(puzzlenumber);
 		this.pieces = book.getPieces();
 		this.running = true;
 		
 		gameboard = new GameBoard(pieces);
+	}*/
+	
+	public Game() {
+		gameboard = new GameBoard(new ArrayList<GamePiece>());
 	}
 	
 	/**
@@ -98,16 +102,25 @@ public class Game implements Serializable {
 	 * sets the board according to the puzzlenumber.
 	 * @param puzzlenumber int puzzle number for infobook's reference
 	 */
-	public void reset(int puzzlenumber) {
+	/*public void reset(int puzzlenumber) {
 		ArrayList<GamePiece> p = new InfoBook(puzzlenumber).getPieces();
+		this.running = true;
 		this.gameboard.reset(p);
-	}
+	}*/
 	
   /**
 	 * Undo function, delegates task to the gameboard.
 	 */
 	public void undo() {
 		this.gameboard.undo();
+	}
+	
+	public boolean canUndo() {
+		return gameboard.canUndo();
+	}
+	
+	public void clearUndoStack() {
+		gameboard.clearUndoStack();
 	}
 	
 	/**
@@ -117,6 +130,9 @@ public class Game implements Serializable {
 		this.gameboard.redo();
 	}
 	
+	public boolean solve() {
+		return gameboard.solve();
+	}
 	/**
 	 * Saves the state of the game using serialization 
 	 * 
@@ -143,9 +159,12 @@ public class Game implements Serializable {
 	 */
 	public void load(String filename) {
 		try {
+			
 	         FileInputStream fileIn = new FileInputStream("src/saves/" + filename);
 	         ObjectInputStream in = new ObjectInputStream(fileIn);
 	         gameboard = (GameBoard) in.readObject();	// cast object that was read from the filesystem, replaces the current gameboard
+	         this.pieces = gameboard.getPieces();
+	         running = true;
 	         in.close();
 	         fileIn.close();
 	      } catch (IOException i) {
