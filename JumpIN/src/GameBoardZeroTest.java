@@ -2,6 +2,11 @@ import static org.junit.Assert.*;
 import static org.junit.contrib.java.lang.system.TextFromStandardInputStream.*;
 
 import java.io.*;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import org.junit.*;
 import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 
@@ -16,7 +21,6 @@ public class GameBoardZeroTest {
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	private final PrintStream originalOut = System.out;
 	private Game jumpin = null;
-	private InfoBook testBookZero = null;
 	private GameBoard testGameBoard = null;
 	private GamePiece testPiece = null;
 	
@@ -26,11 +30,15 @@ public class GameBoardZeroTest {
 	
 	@Before
 	public void setUp() {
-		System.setOut(new PrintStream(outContent));
-		testBookZero = new InfoBook(0);
-		input.provideLines("0");
-		jumpin = new Game(0);
-		testGameBoard = new GameBoard(testBookZero.getPieces());
+		jumpin = new Game();
+		
+
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new File("src/saves"));
+		String file = "test1.ser";
+		jumpin.load(file);
+		testGameBoard = new GameBoard(jumpin.getGameBoard().getPieces());
+		//String filename = JOptionPane.showInputDialog("Enter name of your save (don't put extension)"); 
 	}
 	
 	@After
@@ -46,8 +54,8 @@ public class GameBoardZeroTest {
 	 */
 	@Test
 	public void testUndoInvalid() {
+		testGameBoard = new GameBoard(jumpin.getGameBoard().getPieces());
 		testGameBoard.undo();
-		testGameBoard = new GameBoard(testBookZero.getPieces());
 		assertEquals(true, jumpin.getGameBoard().equals(testGameBoard));
 	}
 	
@@ -58,7 +66,7 @@ public class GameBoardZeroTest {
 	 */
 	@Test
 	public void testUndo() {
-		testGameBoard.movePiece(testBookZero.getPieces().get(0).getX(), testBookZero.getPieces().get(0).getY(), 2);
+		testGameBoard.movePiece(jumpin.getGameBoard().getPieces().get(0).getX(), jumpin.getGameBoard().getPieces().get(0).getY(), 2);
 		assertEquals(false, jumpin.getGameBoard().equals(testGameBoard)); // check that piece was moved from original position
 		testGameBoard.undo();
 		assertEquals(true, jumpin.getGameBoard().equals(testGameBoard));
@@ -72,12 +80,12 @@ public class GameBoardZeroTest {
 	 */
 	@Test
 	public void testRedo() {
-		testGameBoard.movePiece(testBookZero.getPieces().get(0).getX(), testBookZero.getPieces().get(0).getY(), 2);
+		testGameBoard.movePiece(jumpin.getGameBoard().getPieces().get(0).getX(), jumpin.getGameBoard().getPieces().get(0).getY(), 2);
 		testGameBoard.undo();
 		assertEquals(true, jumpin.getGameBoard().equals(testGameBoard)); // check that undo was performed (piece should be back in original position)
 		testGameBoard.redo();
-		assertEquals(3, testBookZero.getPieces().get(0).getX());
-		assertEquals(2, testBookZero.getPieces().get(0).getY());
+		assertEquals(3, jumpin.getGameBoard().getPieces().get(0).getX());
+		assertEquals(2, jumpin.getGameBoard().getPieces().get(0).getY());
 		
 	}
 	
@@ -96,7 +104,7 @@ public class GameBoardZeroTest {
 	 */
 	@Test
 	public void testGetPieces() {
-		assertEquals(true, testBookZero.getPieces().equals(jumpin.getPieces()));
+		assertEquals(true, jumpin.getGameBoard().getPieces().equals(jumpin.getPieces()));
 	}
 	
 	/**
