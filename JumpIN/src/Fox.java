@@ -182,4 +182,19 @@ public class Fox extends MovableGamePiece {
 		
 		return false;
 	}
+	
+	@Override
+	public boolean solverVisited(int x, int y) {
+		for(int[] i : solverPositions) {
+			if(i[0] == x && i[1] == y) return true;
+			if(this.direction) {
+				//Up/down fox
+				if(i[0] == x && i[1] == y + 1) return true;
+			}
+			else {
+				if(i[0] == x + 1 && i[1] == y) return true;
+			}
+		}
+		return false;
+	}
 }

@@ -106,4 +106,12 @@ public class Bunny extends MovableGamePiece {
 		square[this.x][this.y].setBackground(Color.GRAY);
 	}
 	
+	@Override
+	public boolean solverVisited(int x, int y) {
+		for(int[] i : solverPositions) {
+			if(i[0] == x && i[1] == y) return true;
+		}
+		return false;
+	}
+	
 }

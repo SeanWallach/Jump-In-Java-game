@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * A MovableGamePiece is an extension of GamePiece
  * that is able to move. This will include Foxes and
@@ -7,7 +9,9 @@
  *
  */
 public abstract class MovableGamePiece extends GamePiece{
-
+	protected int solverStartingX, solverStartingY;
+	protected ArrayList<int[]> solverPositions;
+	
 	/**
 	 * MovableGamePiece is an extension of GamePiece that adds move functionality.
 	 * 
@@ -18,6 +22,9 @@ public abstract class MovableGamePiece extends GamePiece{
 	 */
 	protected MovableGamePiece(int x, int y, int size, String name) {
 		super(x, y, size, name);
+		solverStartingX = -1;
+		solverStartingY = -1;
+		solverPositions = new ArrayList<>();
 	}
 	
 	/**
@@ -52,4 +59,32 @@ public abstract class MovableGamePiece extends GamePiece{
 	 * @param tiles the board that the piece will place itself on.
 	 */
 	public abstract boolean move(int newX, int newY, Tile[][] tiles);
+	
+	public boolean solverMove(int x, int y, Tile[][] tiles) {
+		boolean moved = false;
+		
+		if(!solverPositions.contains(new int[] {x, y})) {
+			moved = move(x, y, tiles);
+			if(moved) solverPositions.add(new int[] {x, y});
+		}
+
+		return moved;
+	}
+	
+	public void resetSolver() {
+		this.solverPositions.clear();
+		this.solverStartingX = x;
+		this.solverStartingY = y;
+		solverPositions.add(new int[] {x, y});
+	}
+	
+	public abstract boolean solverVisited(int x, int y);
+	
+	public int getSolverStartingX() {
+		return this.solverStartingX;
+	}
+	
+	public int getSolverStartingY() {
+		return this.solverStartingY;
+	}
 }

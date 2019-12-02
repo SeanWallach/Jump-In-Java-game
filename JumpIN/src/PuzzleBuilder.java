@@ -33,7 +33,7 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 	 */
 	public PuzzleBuilder() {
 		super("Puzzle Builder");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setSize(400, 400);
 		setLocation(400, 200);
 
@@ -115,6 +115,12 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 				}
 				game.clearUndoStack();
 				JOptionPane.showMessageDialog(null, "Invalid Puzzle: No Solution");
+				int buttonPressed = JOptionPane.showConfirmDialog(null, "We realize there is still a problem with our solver."
+						+ "\nWould you like to save anyway?");
+				if(buttonPressed == JOptionPane.YES_OPTION) {
+					String filename = JOptionPane.showInputDialog("Enter save name (don't put extension)"); 
+					game.save(filename);
+				}
 			}
 		});
 		
