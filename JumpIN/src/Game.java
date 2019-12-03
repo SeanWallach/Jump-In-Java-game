@@ -18,7 +18,6 @@ import javax.swing.JOptionPane;
 public class Game implements Serializable {
 	private GameBoard gameboard;
 	private ArrayList<GamePiece> pieces;
-	//private InfoBook book;
 	private boolean running;
 	
 	/**
@@ -96,17 +95,6 @@ public class Game implements Serializable {
 		}
 		if(allBunniesInHoles) jumpin.setRunning(false);
 	}
-	
-	/**
-	 * Method reset takes in a puzzle number, gets the appropriate pieces from a new infobook, and 
-	 * sets the board according to the puzzlenumber.
-	 * @param puzzlenumber int puzzle number for infobook's reference
-	 */
-	/*public void reset(int puzzlenumber) {
-		ArrayList<GamePiece> p = new InfoBook(puzzlenumber).getPieces();
-		this.running = true;
-		this.gameboard.reset(p);
-	}*/
 	
   /**
 	 * Undo function, delegates task to the gameboard.

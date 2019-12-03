@@ -52,7 +52,6 @@ public class GameBoard implements Serializable{
 		for(GamePiece piece: boardpieces) {
 			if(piece.equals(g)) {
 				boardpieces.remove(piece);
-				//getTile(piece.getX(),piece.getY()).setEmpty();
 				break;
 			}
 		}
