@@ -3,10 +3,10 @@ Sean and Lyndon: Added save and load feature to GameBoard, Game, and JumpINGui u
                  
 Sean: Updated game instructions 
       Added game icon
+      Updated UML class diagrams
                 
-Ashton: Refactored code
-        Updated UML class diagrams
+Ashton: Helped with the saving features. Debugging. Updated UML Sequence diagrams.
 
-Andrew: 
+Andrew: Working on puzzle builder and saving features.
 
-Nicholas:
+Nicholas: Updating tests for the new save and load features.
