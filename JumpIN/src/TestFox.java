@@ -43,7 +43,7 @@ public class TestFox {
 		String file = "test0.ser";
 		jumpin.load(file);
 		pieces = jumpin.getGameBoard().getPieces();
-		testGameBoard = new GameBoard(pieces);	
+		testGameBoard = new GameBoard(pieces);
 	}
 
 	// If fox's head and tail both on the same column, can only move vertically
@@ -53,35 +53,38 @@ public class TestFox {
 	@Test
 	public void testFoxLegalVerticalMove() {
 		// Move downward once . Case 1.
-		testGameBoard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 2);
-		assertEquals(1, pieces.get(5).getX());
-		assertEquals(1, pieces.get(5).getY());
+		testGameBoard.movePiece(pieces.get(4).getX(), pieces.get(4).getY(), 2);
+		assertEquals(1, pieces.get(4).getX());
+		assertEquals(1, pieces.get(4).getY());
 
 	}
 
 	@Test
 	public void testFoxIllegalVerticalMove() {
 		// Move left
-		testGameBoard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 3);
-		assertEquals(1, pieces.get(5).getX());
-		assertEquals(0, pieces.get(5).getY());
+		testGameBoard.movePiece(pieces.get(4).getX(), pieces.get(4).getY(), 3);
+		assertEquals(true, jumpin.getGameBoard().equals(testGameBoard)); // check to see if any pieces moved
+		//assertEquals(1, pieces.get(4).getX());
+		//assertEquals(1, pieces.get(4).getY());
 
 		// Move right
-		testGameBoard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 1);
-		assertEquals(1, pieces.get(5).getX());
-		assertEquals(0, pieces.get(5).getY());
+		testGameBoard.movePiece(pieces.get(4).getX(), pieces.get(4).getY(), 1);
+		assertEquals(true, jumpin.getGameBoard().equals(testGameBoard)); // check to see if any pieces moved
+		//assertEquals(1, pieces.get(4).getX());
+		//assertEquals(1, pieces.get(4).getY());
 
 		// Move upward once. Case 3
-		testGameBoard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 0);
-		assertEquals(1, pieces.get(5).getX());
-		assertEquals(0, pieces.get(5).getY());
+		testGameBoard.movePiece(pieces.get(4).getX(), pieces.get(4).getY(), 0);
+		assertEquals(true, jumpin.getGameBoard().equals(testGameBoard)); // check to see if any pieces moved
+		//assertEquals(1, pieces.get(4).getX());
+		//assertEquals(1, pieces.get(4).getY());
 
 		// Move downward 3 times. Case 2
-		testGameBoard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 2);
-		testGameBoard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 2);
-		testGameBoard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 2);
-		assertEquals(1, pieces.get(5).getX());
-		assertEquals(2, pieces.get(5).getY());
+		testGameBoard.movePiece(pieces.get(4).getX(), pieces.get(4).getY(), 2);
+		testGameBoard.movePiece(pieces.get(4).getX(), pieces.get(4).getY(), 2);
+		testGameBoard.movePiece(pieces.get(4).getX(), pieces.get(4).getY(), 2);
+		assertEquals(1, pieces.get(4).getX());
+		assertEquals(2, pieces.get(4).getY());
 
 	}
 
@@ -92,9 +95,9 @@ public class TestFox {
 	@Test
 	public void testFoxLegalHorizontalMove() {
 		// Move left once. Case 1
-		testGameBoard.movePiece(pieces.get(6).getX(), pieces.get(6).getY(), 3);
-		assertEquals(2, pieces.get(6).getX());
-		assertEquals(3, pieces.get(6).getY());
+		testGameBoard.movePiece(pieces.get(7).getX(), pieces.get(7).getY(), 3);
+		assertEquals(2, pieces.get(7).getX());
+		assertEquals(3, pieces.get(7).getY());
 
 	}
 
@@ -107,28 +110,31 @@ public class TestFox {
 	@Test
 	public void testFoxIllegalHorizontalMove() {
 		// Move upward.
-		testGameBoard.movePiece(pieces.get(6).getX(), pieces.get(6).getY(), 0);
-		assertEquals(3, pieces.get(6).getX());
-		assertEquals(3, pieces.get(6).getY());
+		testGameBoard.movePiece(pieces.get(7).getX(), pieces.get(7).getY(), 0);
+		//assertEquals(true, jumpin.getGameBoard().equals(testGameBoard)); // check to see if any pieces moved
+		assertEquals(3, pieces.get(7).getX());
+		assertEquals(3, pieces.get(7).getY());
 
 		// Move downward.
-		testGameBoard.movePiece(pieces.get(6).getX(), pieces.get(6).getY(), 2);
-		assertEquals(3, pieces.get(6).getX());
-		assertEquals(3, pieces.get(6).getY());
+		testGameBoard.movePiece(pieces.get(7).getX(), pieces.get(7).getY(), 2);
+		//assertEquals(true, jumpin.getGameBoard().equals(testGameBoard)); // check to see if any pieces moved
+		assertEquals(3, pieces.get(7).getX());
+		assertEquals(3, pieces.get(7).getY());
 
 		// Move right. Case 3
-		testGameBoard.movePiece(pieces.get(6).getX(), pieces.get(6).getY(), 1);
-		assertEquals(3, pieces.get(6).getX());
-		assertEquals(3, pieces.get(6).getY());
+		testGameBoard.movePiece(pieces.get(7).getX(), pieces.get(7).getY(), 1);
+		//assertEquals(true, jumpin.getGameBoard().equals(testGameBoard)); // check to see if any pieces moved
+		assertEquals(3, pieces.get(7).getX());
+		assertEquals(3, pieces.get(7).getY());
 
 		// Move Fox1 downward to block Fox2
-		testGameBoard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 2);
-		testGameBoard.movePiece(pieces.get(5).getX(), pieces.get(5).getY(), 2);
+		testGameBoard.movePiece(pieces.get(4).getX(), pieces.get(4).getY(), 2);
+		testGameBoard.movePiece(pieces.get(4).getX(), pieces.get(4).getY(), 2);
 
 		// Move left 2 times. Case 3
-		testGameBoard.movePiece(pieces.get(6).getX(), pieces.get(6).getY(), 3);
-		testGameBoard.movePiece(pieces.get(6).getX(), pieces.get(6).getY(), 3);
-		assertEquals(2, pieces.get(6).getX());
-		assertEquals(3, pieces.get(6).getY());
+		testGameBoard.movePiece(pieces.get(7).getX(), pieces.get(7).getY(), 3);
+		testGameBoard.movePiece(pieces.get(7).getX(), pieces.get(7).getY(), 3);
+		assertEquals(2, pieces.get(7).getX());
+		assertEquals(3, pieces.get(7).getY());
 	}
 }
