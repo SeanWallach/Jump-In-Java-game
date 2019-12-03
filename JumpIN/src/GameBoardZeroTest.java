@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 import java.io.*;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import org.junit.*;
@@ -12,7 +13,7 @@ import org.junit.*;
  *
  */
 public class GameBoardZeroTest {
-
+	private ArrayList<GamePiece> pieces;
 	private Game jumpin = null;
 	private GameBoard testGameBoard = null;
 
@@ -27,7 +28,8 @@ public class GameBoardZeroTest {
 		chooser.setCurrentDirectory(new File("src/saves"));
 		String file = "test0.ser";
 		jumpin.load(file);
-		testGameBoard = new GameBoard(jumpin.getGameBoard().getPieces());
+		pieces = jumpin.getGameBoard().getPieces();
+		testGameBoard = new GameBoard(pieces);
 	}
 	
 	
@@ -50,7 +52,7 @@ public class GameBoardZeroTest {
 	 */
 	@Test
 	public void testUndo() {
-		testGameBoard.movePiece(jumpin.getGameBoard().getPieces().get(0).getX(), jumpin.getGameBoard().getPieces().get(0).getY(), 2);
+		testGameBoard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 2);
 		assertEquals(false, jumpin.getGameBoard().equals(testGameBoard)); // check that piece was moved from original position
 		testGameBoard.undo();
 		assertEquals(true, jumpin.getGameBoard().equals(testGameBoard));
@@ -64,12 +66,12 @@ public class GameBoardZeroTest {
 	 */
 	@Test
 	public void testRedo() {
-		testGameBoard.movePiece(jumpin.getGameBoard().getPieces().get(0).getX(), jumpin.getGameBoard().getPieces().get(0).getY(), 2);
+		testGameBoard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 2);
 		testGameBoard.undo();
 		assertEquals(true, jumpin.getGameBoard().equals(testGameBoard)); // check that undo was performed (piece should be back in original position)
 		testGameBoard.redo();
-		assertEquals(3, jumpin.getGameBoard().getPieces().get(0).getX());
-		assertEquals(2, jumpin.getGameBoard().getPieces().get(0).getY());
+		assertEquals(3, pieces.get(0).getX());
+		assertEquals(2, pieces.get(0).getY());
 		
 	}
 	
@@ -88,7 +90,7 @@ public class GameBoardZeroTest {
 	 */
 	@Test
 	public void testGetPieces() {
-		assertEquals(true, jumpin.getGameBoard().getPieces().equals(jumpin.getPieces()));
+		assertEquals(true, pieces.equals(jumpin.getPieces()));
 	}
 	
 	/**
