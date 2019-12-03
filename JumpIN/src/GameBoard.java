@@ -44,10 +44,18 @@ public class GameBoard implements Serializable{
 		}
 	}
 
+	/**
+	 * Adds a gamepiece to the board.
+	 * @param g the piece to be added.
+	 */
 	public void addPiece(GamePiece g) {
 		boardpieces.add(g);
 	}
 	
+	/**
+	 * Removes a piece, used by puzzle creator.
+	 * @param g the piece to remove.
+	 */
 	public void removeFromBoardPieces(GamePiece g) {
 		for(GamePiece piece: boardpieces) {
 			if(piece.equals(g)) {
@@ -56,6 +64,11 @@ public class GameBoard implements Serializable{
 			}
 		}
 	}
+	
+	/**
+	 * place a piece on the board (place it on the tiles)
+	 * @param g piece to place.
+	 */
 	public void placePiece(GamePiece g) {
 		int i = g.getX();
 		int j = g.getY();
@@ -68,7 +81,12 @@ public class GameBoard implements Serializable{
 		}
 	}
 
-	public void removePiece(int x, int y/* , GamePiece g */) {
+	/**
+	 * removes a piece from the list of pieces
+	 * @param x position of piece
+	 * @param y position of piece
+	 */
+	public void removePiece(int x, int y) {
 		getTile(x, y).setEmpty();
 	}
 	
@@ -137,7 +155,11 @@ public class GameBoard implements Serializable{
 
 	}
 	
-public boolean solve() {
+	/**
+	 * Solves the game
+	 * @return true if solvable.
+	 */
+	public boolean solve() {
 		
 		//Sets the pieces initial tile to memory
 		for(int i = 0; i<boardpieces.size(); i++) {
@@ -253,6 +275,10 @@ public boolean solve() {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @return the list of movablePieces.
+	 */
 	public ArrayList<GamePiece> getMovablePieces() {
 		ArrayList<GamePiece> simpieces = boardpieces;
 		ArrayList<GamePiece> movablepieces = new ArrayList<GamePiece>();
@@ -270,6 +296,12 @@ public boolean solve() {
 		return movablepieces;
 	}
 
+	/**
+	 * Used by solver
+	 * @param p
+	 * @param to
+	 * @return
+	 */
 	public boolean checkPieceMemory(GamePiece p, Tile to) {
 		if(p.getMemory().size()> 0) {
 			for(int i = 0; i < p.getMemory().size(); i++) {
@@ -280,6 +312,11 @@ public boolean solve() {
 		}
 		return false;
 	}
+	
+	/**
+	 * Used by solver
+	 * @return
+	 */
 	public int getTarget() {
 		int target = 0;
 		for(int i = 0; i< boardpieces.size();  i++) {
@@ -290,6 +327,13 @@ public boolean solve() {
 		return target;
 		
 	}
+	
+	/**
+	 * Used by solver
+	 * @param to
+	 * @param from
+	 * @return
+	 */
 	public int findDirection(Tile to, GamePiece from) {	
 		//check if the tile you're moving to is up or down from you
 		if(to.getX() == from.getX()) {
@@ -312,7 +356,11 @@ public boolean solve() {
 	}
 	
 	
-	// This function calculates the possible moves available to the selected GamePiece
+	/** 
+	 * This function calculates the possible moves available to the selected GamePiece
+	 * @param p the gamepiece.
+	 * @return all possible moves.
+	 */
 	public ArrayList<Tile> possibleMoves(GamePiece p) {
 		ArrayList<Tile> moves = new ArrayList<Tile>();
 		
@@ -478,10 +526,17 @@ public boolean solve() {
 		undoCalls.clear();
 	}
 	
+	/**
+	 * Checks if there is a possible undo
+	 * @return
+	 */
 	public boolean canUndo() {
 		return !movesMade.isEmpty();
 	}
 	
+	/**
+	 * Clears undo stack, this is done by solver such that the game cannot be further undone.
+	 */
 	public void clearUndoStack() {
 		this.movesMade.clear();
 	}
