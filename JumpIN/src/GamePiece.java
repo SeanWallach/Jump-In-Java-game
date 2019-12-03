@@ -29,12 +29,26 @@ public abstract class GamePiece implements Serializable {
 		this.name = name;
 		this.memory = new ArrayList<Tile>();
 	}
+	
+	/**
+	 * 
+	 * @return the gamePieces moves made.
+	 */
 	public ArrayList<Tile> getMemory(){
 		return memory;
 	}
+	
+	/**
+	 * 
+	 * @param lastTile the previous tile visited
+	 */
 	public void addToMemory(Tile lastTile) {
 		memory.add(lastTile);
 	}
+	
+	/**
+	 * Emptys the current piece's memory
+	 */
 	public void clearMemory() {
 		for(int i = 0; i< memory.size(); i++) {
 			memory.remove(0);
