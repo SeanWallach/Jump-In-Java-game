@@ -10,6 +10,9 @@ Instructions are included in Game Manual.md
 How to run tests:
 Run the GameBoardTests file, as this is the test suite.
 
+Known issues:
+Sometimes (on Windows) the gameboard tiles are not updates until you hover over them with your cursor. This appears to be a bug with Swing, not something on our end.
+
 #Milestone 1
 ---------------------------------
 
