@@ -1,15 +1,18 @@
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import javax.swing.JFileChooser;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class TestBunny {
 	private ArrayList<GamePiece> pieces;
-	private InfoBook book;
-	private GameBoard gameboard;
+	private GameBoard testGameBoard = null;
+	private Game jumpin = null;
 
 	// Puzzle 2:
 	// [O][ ][ ][B][O]
@@ -38,26 +41,37 @@ public class TestBunny {
 
 	@Before
 	public void setUp() throws Exception {
-		book = new InfoBook(2);
-		this.pieces = book.getPieces();
-		gameboard = new GameBoard(pieces);
+		jumpin = new Game();
+		
+
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new File("src/saves"));
+		String file = "test1.ser";
+		jumpin.load(file);
+		pieces = jumpin.getGameBoard().getPieces();
+		testGameBoard = new GameBoard(pieces);	
 
 		// Move Fox1 to the right to set up for test
-		gameboard.movePiece(pieces.get(4).getX(), pieces.get(4).getY(), 1);
+		//gameboard.movePiece(pieces.get(4).getX(), pieces.get(4).getY(), 1);
 	}
 
 	// Case 1: jump over 1 to 3 Gamepiece and land within wall
 	@Test
 	public void testBunnyLegalMove() {
 		// Move downward once. Case 1 with 1 Gamepiece
-		gameboard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 2);
-		assertEquals(3, pieces.get(0).getX());
-		assertEquals(2, pieces.get(0).getY());
-
-		// Move left. Case 1 with 2 Gamepiece
-		gameboard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 3);
-		assertEquals(0, pieces.get(0).getX());
-		assertEquals(2, pieces.get(0).getY());
+		testGameBoard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 2);
+		assertEquals(2, pieces.get(0).getX());
+		assertEquals(3, pieces.get(0).getY());
+		
+		// Move fox to the left so bunny can jump over
+		testGameBoard.movePiece(pieces.get(4).getX(), pieces.get(4).getY(), 3);
+		assertEquals(2, pieces.get(4).getX());
+		assertEquals(1, pieces.get(4).getY());
+		
+		// Move up. Case 1 with 2 Gamepiece
+		testGameBoard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 0);
+		assertEquals(2, pieces.get(0).getX());
+		assertEquals(0, pieces.get(0).getY());
 	}
 
 	// Case 1: move without jumping over Gamepiece(s)
@@ -66,9 +80,9 @@ public class TestBunny {
 	@Test
 	public void testBunnyIllegalMove() {
 		// Move left once . Case 1.
-		gameboard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 3);
-		assertEquals(3, pieces.get(0).getX());
-		assertEquals(0, pieces.get(0).getY());
+		testGameBoard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 0);
+		assertEquals(2, pieces.get(0).getX());
+		assertEquals(1, pieces.get(0).getY());
 
 		// Move downward once
 		// [O][ ][ ][ ][O]
@@ -76,17 +90,17 @@ public class TestBunny {
 		// [ ][M][M][B][M]
 		// [ ][ ][ ][ ][ ]
 		// [O][ ][ ][ ][O]
-		gameboard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 2);
+		//testGameBoard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 2);
 
 		// Move right. Case 3
-		gameboard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 1);
-		assertEquals(3, pieces.get(0).getX());
-		assertEquals(2, pieces.get(0).getY());
+		testGameBoard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 1);
+		assertEquals(2, pieces.get(0).getX());
+		assertEquals(1, pieces.get(0).getY());
 
 		// Move left. Case 2
-		gameboard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 3);
-		assertEquals(0, pieces.get(0).getX());
-		assertEquals(2, pieces.get(0).getY());
+		//testGameBoard.movePiece(pieces.get(0).getX(), pieces.get(0).getY(), 3);
+		//assertEquals(0, pieces.get(0).getX());
+		//assertEquals(2, pieces.get(0).getY());
 
 	}
 }
