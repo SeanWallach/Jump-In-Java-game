@@ -47,33 +47,26 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 		helpMenu = new JMenu("Instructions");
 
 		menuBar.add(addPieceMenu);
-		//menuBar.add(removePieceMenu);
-		//menuBar.add(savePuzzle);
-		//menuBar.add(helpMenu);
 
 		// Add Piece JMenu
 		addBunnyPiece = new JMenuItem("Standard Bunny");
 		addBunnyPiece.addActionListener(e -> {
 			currentPieceAdding = 1;
-			// System.out.println(currentPieceAdding);
 		});
 
 		addFoxPieceH = new JMenuItem("Horizontal Fox");
 		addFoxPieceH.addActionListener(e -> {
 			currentPieceAdding = 2;
-			// System.out.println(currentPieceAdding);
 		});
 
 		addFoxPieceV = new JMenuItem("Vertical Fox");
 		addFoxPieceV.addActionListener(e -> {
 			currentPieceAdding = 3;
-			// System.out.println(currentPieceAdding);
 		});
 
 		addMushroomPiece = new JMenuItem("Standard Mushroom");
 		addMushroomPiece.addActionListener(e -> {
 			currentPieceAdding = 4;
-			// System.out.println(currentPieceAdding);
 		});
 
 		addPieceMenu.add(addBunnyPiece);
@@ -85,7 +78,6 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 		removePiece = new JMenuItem("Remove");
 		removePiece.addActionListener(e -> {
 			currentPieceAdding = 0;
-			// System.out.println(currentPieceAdding);
 		});
 
 		menuBar.add(removePiece);
@@ -174,9 +166,7 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 					game.getGameBoard().placePiece(newPiece);
 					game.getGameBoard().addPiece(newPiece);
 					remainingBunnyPieces -= 1;
-					// System.out.println("Bunny should be added");
 				}
-				// else { //System.out.println("Bunny should not be added, to full"); }
 
 			}
 			// adding a Horizontal Moving Fox
@@ -189,15 +179,11 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 						GamePiece newPiece = new Fox("Fox", b.getX(), b.getY(), false);
 						game.getGameBoard().placePiece(newPiece);
 						game.getGameBoard().addPiece(newPiece);
-						
-						// game.getGameBoard().placePiece(new Fox("F",b.getX()+1, b.getY(), false));
+
 						remainingFoxPieces -= 1;
-						// System.out.println("Horizontal Fox to be made");
 
 					}
-					// else {//System.out.println("A fox cannot go there");}
 				}
-				// else { //System.out.println("Fox should not be added, to full"); }
 
 			}
 			// adding a Vertical Moving Fox
@@ -211,15 +197,10 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 						GamePiece newPiece = new Fox("Fox", b.getX(), b.getY(), true);
 						game.getGameBoard().placePiece(newPiece);
 						game.getGameBoard().addPiece(newPiece);
-						// updateBoardVisuals();
-						// game.getGameBoard().placePiece(new Fox("Fox",b.getX(), b.getY()+1, true));
 						remainingFoxPieces -= 1;
-						// System.out.println("Vertical Moving Fox to be made");
 
 					}
-					// else {//System.out.println("A fox cannot go there");}
 				}
-				// else { //System.out.println("Fox should not be added, to full"); }
 
 			}
 			// adding a Mushroom
@@ -231,9 +212,7 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 					game.getGameBoard().addPiece(newPiece);
 
 					remainingMushroomPieces -= 1;
-					// System.out.println("Mushroom should be added");
 				}
-				// else { //System.out.println("Mushroom should not be added, to full"); }
 			}
 
 		}
@@ -356,7 +335,6 @@ public class PuzzleBuilder extends JFrame implements ActionListener {
 					game.getGameBoard().removePiece(b.getX(), b.getY());
 					remainingMushroomPieces += 1;
 				}
-				// System.out.println("Piece Should be removed");
 			}
 
 			this.selectedPiece = game.getGameBoard().getTile(b.getX(), b.getY()).getOnTop();
