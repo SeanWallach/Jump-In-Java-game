@@ -7,6 +7,9 @@ Run Jar file (:
 How to play:
 Instructions are included in Game Manual.md 
 
+How to run tests:
+Run the GameBoardTests file, as this is the test suite.
+
 #Milestone 1
 ---------------------------------
 
